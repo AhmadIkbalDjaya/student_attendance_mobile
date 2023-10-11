@@ -9,6 +9,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: const Color(0xFF696CFF),
       actions: const [
         CircleAvatar(
+          backgroundColor: Colors.white70,
           child: Text(
             "A",
             style: TextStyle(
@@ -16,7 +17,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               fontSize: 24,
             ),
           ),
-          backgroundColor: Colors.white70,
         ),
         SizedBox(width: 10),
       ],
