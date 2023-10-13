@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/components/MyAppBar.dart';
 import 'package:student_attendance/components/MyDrawer.dart';
 
-class SemesterPage extends StatelessWidget {
-  const SemesterPage({super.key});
+class ClaassPage extends StatelessWidget {
+  const ClaassPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,14 @@ class SemesterPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Semester",
+                  "Kelas",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Text(
-                  "Tambah, Edit atau Hapus Semester",
+                  "Tambah, Edit atau Hapus Kelas",
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -44,57 +44,7 @@ class SemesterPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: const Text("Tambah Semester"),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Semester Aktif",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          height: 35,
-                          child: DropdownButtonFormField(
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            isExpanded: true,
-                            items: const [
-                              DropdownMenuItem(
-                                child: Text("sda"),
-                              ),
-                            ],
-                            onChanged: (value) {},
-                          ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF696CFF),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: const Text("Ubah Semester"),
-                      ),
-                    ),
-                  ],
+                  child: const Text("Tambah Kelas"),
                 ),
               ],
             ),
@@ -127,7 +77,7 @@ class SemesterPage extends StatelessWidget {
                         DataColumn(
                           label: Expanded(
                             child: Text(
-                              "Semester",
+                              "Nama Kelas",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.grey),
                             ),
@@ -136,7 +86,16 @@ class SemesterPage extends StatelessWidget {
                         DataColumn(
                           label: Expanded(
                             child: Text(
-                              "Status",
+                              "Kelas",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Expanded(
+                            child: Text(
+                              "Jurusan",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.grey),
                             ),
@@ -159,14 +118,24 @@ class SemesterPage extends StatelessWidget {
                               Text("1"),
                             ),
                             const DataCell(
-                              Text("Ganjil 2022/2023"),
+                              Text("10 IPA 1"),
                             ),
                             const DataCell(
-                              Text("Aktif"),
+                              Text("10"),
+                            ),
+                            const DataCell(
+                              Text("IPA"),
                             ),
                             DataCell(
                               Row(
                                 children: [
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                      Icons.remove_red_eye,
+                                      color: Colors.blue,
+                                    ),
+                                  ),
                                   IconButton(
                                     onPressed: () {},
                                     icon: const Icon(

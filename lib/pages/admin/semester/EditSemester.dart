@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/components/MyAppBar.dart';
 import 'package:student_attendance/components/MyDrawer.dart';
 
-class CreateSemesterPage extends StatelessWidget {
-  const CreateSemesterPage({super.key});
+class EditSemesterPage extends StatelessWidget {
+  const EditSemesterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class CreateSemesterPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Tambahkan Semester",
+                        "Edit Semester",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class CreateSemesterPage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Tambahkan Semester pada colom dibawah",
+                        "Ubah/Edit Semester pada colom dibawah",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
