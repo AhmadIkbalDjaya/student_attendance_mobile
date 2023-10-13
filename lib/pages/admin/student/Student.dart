@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/components/MyAppBar.dart';
 import 'package:student_attendance/components/MyDrawer.dart';
 
-class TeacherPage extends StatelessWidget {
-  const TeacherPage({super.key});
+class StudentPage extends StatelessWidget {
+  const StudentPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +22,14 @@ class TeacherPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Guru",
+                  "Siswa",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const Text(
-                  "Tambah, Edit atau Hapus Guru",
+                  "Tambah, Edit atau Hapus Siswa",
                   style: TextStyle(
                     fontSize: 16,
                   ),
@@ -44,7 +44,7 @@ class TeacherPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: const Text("Tambah Guru"),
+                  child: const Text("Tambah Siswa"),
                 ),
               ],
             ),
@@ -77,7 +77,7 @@ class TeacherPage extends StatelessWidget {
                         DataColumn(
                           label: Expanded(
                             child: Text(
-                              "NIP",
+                              "NIS",
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.grey),
                             ),
