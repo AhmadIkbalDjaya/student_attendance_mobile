@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/pages/teacher/attendance/Attendance.dart';
-import 'package:student_attendance/pages/teacher/recap/CourseRecap.dart';
-import 'package:student_attendance/pages/teacher/recap/RecapClaassList.dart';
+import 'package:student_attendance/pages/teacher/profil/Profil.dart';
 
 class TeacherPage extends StatelessWidget {
   const TeacherPage({super.key});
@@ -9,7 +7,7 @@ class TeacherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const AttendancePage(),
+      body: const ProfilPage(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF696CFF),
         type: BottomNavigationBarType.fixed,
