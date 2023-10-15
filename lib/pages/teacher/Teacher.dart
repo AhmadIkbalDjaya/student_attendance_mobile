@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/pages/teacher/attendance/Claass.dart';
-import 'package:student_attendance/pages/teacher/attendance/CourseAttendance.dart';
+import 'package:student_attendance/pages/teacher/attendance/Attendance.dart';
+import 'package:student_attendance/pages/teacher/recap/CourseRecap.dart';
+import 'package:student_attendance/pages/teacher/recap/RecapClaassList.dart';
 
 class TeacherPage extends StatelessWidget {
   const TeacherPage({super.key});
@@ -8,9 +9,9 @@ class TeacherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CourseAttendancePage(),
+      body: const AttendancePage(),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color(0xFF696CFF),
+        backgroundColor: const Color(0xFF696CFF),
         type: BottomNavigationBarType.fixed,
         currentIndex: 0,
         selectedItemColor: Colors.white,
