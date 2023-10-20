@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/MyAppBar.dart';
-import 'package:student_attendance/components/MyDrawer.dart';
+import 'package:student_attendance/components/my_app_bar.dart';
+import 'package:student_attendance/components/my_drawer.dart';
 
-class AdminEditCoursePage extends StatelessWidget {
-  const AdminEditCoursePage({super.key});
+class AdminCreateSemesterPage extends StatelessWidget {
+  const AdminCreateSemesterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AdminEditCoursePage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Edit Mapel",
+                        "Tambahkan Semester",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class AdminEditCoursePage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Edit Mapel pada colom dibawah",
+                        "Tambahkan Semester pada colom dibawah",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -72,80 +72,14 @@ class AdminEditCoursePage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      const SizedBox(
-                        height: 40,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            label: Text("Nama Mapel"),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                            ),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 0,
-                            ),
-                          ),
+                      const Text(
+                        "Semester",
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const SizedBox(height: 25),
-                      SizedBox(
-                        height: 40,
-                        width: double.infinity,
-                        child: DropdownButtonFormField(
-                          hint: const Text("Guru Pengajar"),
-                          items: const [
-                            DropdownMenuItem(
-                              value: "1",
-                              child: Text("Agung"),
-                            ),
-                            DropdownMenuItem(
-                              value: "2",
-                              child: Text("Umar"),
-                            ),
-                          ],
-                          decoration: const InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                            ),
-                          ),
-                          onChanged: (value) {},
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      SizedBox(
-                        height: 40,
-                        width: double.infinity,
-                        child: DropdownButtonFormField(
-                          hint: const Text("Kelas"),
-                          items: const [
-                            DropdownMenuItem(
-                              value: "10",
-                              child: Text("Al-Khawarizmi"),
-                            ),
-                            DropdownMenuItem(
-                              value: "11",
-                              child: Text("Al-Biruni"),
-                            ),
-                          ],
-                          decoration: const InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                            ),
-                          ),
-                          onChanged: (value) {},
-                        ),
-                      ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 10),
                       SizedBox(
                         height: 40,
                         width: double.infinity,
@@ -154,11 +88,11 @@ class AdminEditCoursePage extends StatelessWidget {
                           items: const [
                             DropdownMenuItem(
                               value: "1",
-                              child: Text("Ganjil 2022/2023"),
+                              child: Text("Ganjil"),
                             ),
                             DropdownMenuItem(
-                              value: "11",
-                              child: Text("Genap 2022/2023"),
+                              value: "0",
+                              child: Text("Genap"),
                             ),
                           ],
                           decoration: const InputDecoration(
@@ -173,6 +107,65 @@ class AdminEditCoursePage extends StatelessWidget {
                           onChanged: (value) {},
                         ),
                       ),
+                      const SizedBox(height: 25),
+                      SizedBox(
+                        height: 40,
+                        width: double.infinity,
+                        child: DropdownButtonFormField(
+                          hint: const Text("Tahun Ajaran"),
+                          items: const [
+                            DropdownMenuItem(
+                              value: "2023",
+                              child: Text("2023"),
+                            ),
+                            DropdownMenuItem(
+                              value: "2024",
+                              child: Text("2024"),
+                            ),
+                          ],
+                          decoration: const InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                            ),
+                          ),
+                          onChanged: (value) {},
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: const Color(0xFF696CFF),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Column(
+                          children: [
+                            Text(
+                              "Tahun Ajaran",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF696CFF),
+                              ),
+                            ),
+                            Text(
+                              "2023 / 2024",
+                              style: TextStyle(
+                                color: Color(0xFF696CFF),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                 ),

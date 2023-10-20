@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/MyAppBar.dart';
-import 'package:student_attendance/components/MyDrawer.dart';
+import 'package:student_attendance/components/my_app_bar.dart';
+import 'package:student_attendance/components/my_drawer.dart';
 
-class AdminDetailStudentPage extends StatelessWidget {
-  const AdminDetailStudentPage({super.key});
+class AdminDetailTeacherPage extends StatelessWidget {
+  const AdminDetailTeacherPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Informasi Siswa",
+                        "Informasi Guru",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Datail Informasi Siswa",
+                        "Datail Informasi Guru",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -92,12 +92,28 @@ class AdminDetailStudentPage extends StatelessWidget {
                       const Row(
                         children: [
                           Icon(
-                            Icons.class_,
+                            Icons.email_outlined,
                             size: 25,
                           ),
                           SizedBox(width: 10),
                           Text(
-                            "XII Al-Khawarizmi",
+                            "ikbaldjaya@gmail.com",
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.phone,
+                            size: 25,
+                          ),
+                          SizedBox(width: 10),
+                          Text(
+                            "081241250245",
                             style: TextStyle(
                               fontSize: 18,
                             ),

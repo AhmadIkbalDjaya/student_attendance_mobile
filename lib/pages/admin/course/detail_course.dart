@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/MyAppBar.dart';
-import 'package:student_attendance/components/MyDrawer.dart';
+import 'package:student_attendance/components/my_app_bar.dart';
+import 'package:student_attendance/components/my_drawer.dart';
 
-class AdminDetailTeacherPage extends StatelessWidget {
-  const AdminDetailTeacherPage({super.key});
+class AdminDetailCoursePage extends StatelessWidget {
+  const AdminDetailCoursePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AdminDetailTeacherPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Informasi Guru",
+                        "Informasi Mapel",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class AdminDetailTeacherPage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Datail Informasi Guru",
+                        "Datail Informasi Mata Pelajaran",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -75,14 +75,14 @@ class AdminDetailTeacherPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        "Ahmad Ikbal Djaya",
+                        "Bahasa Indonesia",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       const Text(
-                        "60200120073",
+                        "Arni Nurbaya S.pd",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -92,12 +92,12 @@ class AdminDetailTeacherPage extends StatelessWidget {
                       const Row(
                         children: [
                           Icon(
-                            Icons.email_outlined,
+                            Icons.class_,
                             size: 25,
                           ),
                           SizedBox(width: 10),
                           Text(
-                            "ikbaldjaya@gmail.com",
+                            "XII Al-Khawarizmi",
                             style: TextStyle(
                               fontSize: 18,
                             ),
@@ -108,28 +108,12 @@ class AdminDetailTeacherPage extends StatelessWidget {
                       const Row(
                         children: [
                           Icon(
-                            Icons.phone,
+                            Icons.format_list_numbered_rounded,
                             size: 25,
                           ),
                           SizedBox(width: 10),
                           Text(
-                            "081241250245",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.male,
-                            size: 25,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Laki-Laki",
+                            "Ganjil 2022/2023",
                             style: TextStyle(
                               fontSize: 18,
                             ),

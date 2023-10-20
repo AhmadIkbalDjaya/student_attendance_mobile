@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/MyAppBar.dart';
-import 'package:student_attendance/components/MyDrawer.dart';
+import 'package:student_attendance/components/my_app_bar.dart';
+import 'package:student_attendance/components/my_drawer.dart';
 
-class AdminEditTeacherPage extends StatelessWidget {
-  const AdminEditTeacherPage({super.key});
+class AdminCreateTeacherPage extends StatelessWidget {
+  const AdminCreateTeacherPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AdminEditTeacherPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Edit Guru",
+                        "Tambahkan Guru",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class AdminEditTeacherPage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Ubah/Edit Guru pada colom dibawah",
+                        "Tambahkan Guru pada colom di bawah",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/MyAppBar.dart';
-import 'package:student_attendance/components/MyDrawer.dart';
+import 'package:student_attendance/components/my_app_bar.dart';
+import 'package:student_attendance/components/my_drawer.dart';
 
-class AdminEditClaassPage extends StatelessWidget {
-  const AdminEditClaassPage({super.key});
+class AdminCreateCoursePage extends StatelessWidget {
+  const AdminCreateCoursePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AdminEditClaassPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Edit Kelas",
+                        "Tambahkan Mapel",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class AdminEditClaassPage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Ubah/Edit Kelas pada colom dibawah",
+                        "Tambahkan Mapel pada colom dibawah",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -72,19 +72,37 @@ class AdminEditClaassPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
+                      const SizedBox(
+                        height: 40,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            label: Text("Nama Mapel"),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 0,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 25),
                       SizedBox(
                         height: 40,
                         width: double.infinity,
                         child: DropdownButtonFormField(
-                          hint: const Text("Jurusan"),
+                          hint: const Text("Guru Pengajar"),
                           items: const [
                             DropdownMenuItem(
                               value: "1",
-                              child: Text("IPA"),
+                              child: Text("Agung"),
                             ),
                             DropdownMenuItem(
                               value: "2",
-                              child: Text("IPS"),
+                              child: Text("Umar"),
                             ),
                           ],
                           decoration: const InputDecoration(
@@ -108,15 +126,11 @@ class AdminEditClaassPage extends StatelessWidget {
                           items: const [
                             DropdownMenuItem(
                               value: "10",
-                              child: Text("10"),
+                              child: Text("Al-Khawarizmi"),
                             ),
                             DropdownMenuItem(
                               value: "11",
-                              child: Text("11"),
-                            ),
-                            DropdownMenuItem(
-                              value: "12",
-                              child: Text("12"),
+                              child: Text("Al-Biruni"),
                             ),
                           ],
                           decoration: const InputDecoration(
@@ -132,19 +146,33 @@ class AdminEditClaassPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 25),
-                      const SizedBox(
+                      SizedBox(
                         height: 40,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            label: Text("Nama Kelas"),
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 0,
+                        width: double.infinity,
+                        child: DropdownButtonFormField(
+                          hint: const Text("Semester"),
+                          items: const [
+                            DropdownMenuItem(
+                              value: "1",
+                              child: Text("Ganjil 2022/2023"),
+                            ),
+                            DropdownMenuItem(
+                              value: "11",
+                              child: Text("Genap 2022/2023"),
+                            ),
+                          ],
+                          decoration: const InputDecoration(
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 10),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8),
+                              ),
                             ),
                           ),
+                          onChanged: (value) {},
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ClaassList extends StatelessWidget {
-  const ClaassList({
-    super.key,
-  });
+  const ClaassList({super.key, this.nextpage = "attendance"});
+  final String nextpage;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +11,7 @@ class ClaassList extends StatelessWidget {
         color: Colors.grey[300],
         borderRadius: BorderRadius.circular(10),
       ),
-      margin: const EdgeInsets.symmetric(vertical: 15),
+      margin: const EdgeInsets.symmetric(vertical: 25),
       child: Column(
         children: [
           Container(
@@ -124,7 +123,15 @@ class ClaassList extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            if (nextpage == "attendance") {
+                              Navigator.pushNamed(
+                                  context, "/teacher/attendance/course");
+                            } else if (nextpage == "recap") {
+                              Navigator.pushNamed(
+                                  context, "/teacher/recap/course");
+                            }
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF696CFF),
                           ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:student_attendance/components/claass_list.dart';
 
-class ClaassPage extends StatelessWidget {
-  const ClaassPage({super.key});
+class RecapClaassListPage extends StatelessWidget {
+  const RecapClaassListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +18,13 @@ class ClaassPage extends StatelessWidget {
             child: const Column(
               children: [
                 Text(
-                  "KELAS",
+                  "REKAP",
                   style: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text("Pilih salah satu kelas di bawah"),
+                Text("Pilih salah satu kelas di dan lihat rekap absensi"),
               ],
             ),
           ),
@@ -36,7 +36,7 @@ class ClaassPage extends StatelessWidget {
               ),
               child: ListView(
                 children: const [
-                  ClaassList(),
+                  ClaassList(nextpage: "recap"),
                   ClaassList(),
                   ClaassList(),
                 ],

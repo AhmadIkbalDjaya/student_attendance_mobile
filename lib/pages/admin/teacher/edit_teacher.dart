@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/MyAppBar.dart';
-import 'package:student_attendance/components/MyDrawer.dart';
+import 'package:student_attendance/components/my_app_bar.dart';
+import 'package:student_attendance/components/my_drawer.dart';
 
-class AdminCreateStudentPage extends StatelessWidget {
-  const AdminCreateStudentPage({super.key});
+class AdminEditTeacherPage extends StatelessWidget {
+  const AdminEditTeacherPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class AdminCreateStudentPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "Tambahkan Siswa",
+                        "Edit Guru",
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class AdminCreateStudentPage extends StatelessWidget {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        "Tambahkan Siswa pada colom di bawah",
+                        "Ubah/Edit Guru pada colom dibawah",
                         style: TextStyle(fontSize: 16),
                       ),
                     ],
@@ -74,7 +74,7 @@ class AdminCreateStudentPage extends StatelessWidget {
                     children: [
                       TextField(
                         decoration: InputDecoration(
-                          label: const Text("NIS"),
+                          label: const Text("NIP"),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -84,6 +84,22 @@ class AdminCreateStudentPage extends StatelessWidget {
                           ),
                         ),
                         textInputAction: TextInputAction.next,
+                      ),
+                      const SizedBox(height: 25),
+                      TextField(
+                        decoration: InputDecoration(
+                          label: const Text("Password"),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 0,
+                          ),
+                          suffixIcon: const Icon(Icons.remove_red_eye),
+                        ),
+                        textInputAction: TextInputAction.next,
+                        obscureText: true,
                       ),
                       const SizedBox(height: 25),
                       TextField(
@@ -98,6 +114,36 @@ class AdminCreateStudentPage extends StatelessWidget {
                           ),
                         ),
                         textInputAction: TextInputAction.next,
+                      ),
+                      const SizedBox(height: 25),
+                      TextField(
+                        decoration: InputDecoration(
+                          label: const Text("Email"),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 0,
+                          ),
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 25),
+                      TextField(
+                        decoration: InputDecoration(
+                          label: const Text("Nomor Telepon"),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 0,
+                          ),
+                        ),
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.number,
                       ),
                       const SizedBox(height: 25),
                       DropdownButtonFormField(
@@ -121,30 +167,7 @@ class AdminCreateStudentPage extends StatelessWidget {
                             horizontal: 10,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 25),
-                      DropdownButtonFormField(
-                        hint: const Text("Kelas"),
-                        items: const [
-                          DropdownMenuItem(
-                            value: "1",
-                            child: Text("10 IPA I"),
-                          ),
-                          DropdownMenuItem(
-                            value: "2",
-                            child: Text("12 IPS II"),
-                          ),
-                        ],
-                        onChanged: (value) {},
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                          ),
-                        ),
-                      ),
+                      )
                     ],
                   ),
                 ),
