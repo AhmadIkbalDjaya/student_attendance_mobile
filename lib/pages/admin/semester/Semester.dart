@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/components/MyAppBar.dart';
 import 'package:student_attendance/components/MyDrawer.dart';
 
-class SemesterPage extends StatelessWidget {
-  const SemesterPage({super.key});
+class AdminSemesterPage extends StatelessWidget {
+  const AdminSemesterPage({super.key});
 
   @override
   Widget build(BuildContext context) {

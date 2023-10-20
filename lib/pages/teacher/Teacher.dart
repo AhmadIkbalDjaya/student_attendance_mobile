@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/pages/teacher/profil/Profil.dart';
+import 'package:student_attendance/components/ClaassList.dart';
+import 'package:student_attendance/pages/teacher/Home.dart';
 
 class TeacherPage extends StatelessWidget {
   const TeacherPage({super.key});
@@ -7,13 +8,15 @@ class TeacherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const ProfilPage(),
+      body: const ClaassList(),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0xFF696CFF),
         type: BottomNavigationBarType.fixed,
         currentIndex: 0,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.black26,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         onTap: (value) {},
         items: const [
           BottomNavigationBarItem(
@@ -38,33 +41,3 @@ class TeacherPage extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 35),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 150,
-            width: double.infinity,
-            color: Colors.grey,
-          ),
-          Container(
-            height: 150,
-            width: double.infinity,
-            color: Colors.grey,
-          ),
-          Container(
-            height: 150,
-            width: double.infinity,
-            color: Colors.grey,
-          ),
-        ],
-      ),
-    );
-  }
-}

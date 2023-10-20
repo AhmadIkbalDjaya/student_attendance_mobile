@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/components/MyAppBar.dart';
 import 'package:student_attendance/components/MyDrawer.dart';
 
-class ClaassPage extends StatelessWidget {
-  const ClaassPage({super.key});
+class AdminClaassPage extends StatelessWidget {
+  const AdminClaassPage({super.key});
 
   @override
   Widget build(BuildContext context) {
