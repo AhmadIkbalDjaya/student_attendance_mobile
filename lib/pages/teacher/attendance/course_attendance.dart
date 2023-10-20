@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/teacher_tab_bloc.dart';
+import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 
 class CourseAttendancePage extends StatelessWidget {
   const CourseAttendancePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TeacherTabBloc teacherTab = context.read<TeacherTabBloc>();
     return Scaffold(
       body: Column(
         children: [
@@ -92,6 +96,7 @@ class CourseAttendancePage extends StatelessWidget {
           ),
         ],
       ),
+      bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
     );
   }
 }
