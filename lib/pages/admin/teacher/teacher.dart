@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/my_app_bar.dart';
-import 'package:student_attendance/components/my_drawer.dart';
+import 'package:student_attendance/components/admin/button/delete_icon_button.dart';
+import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
+import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
+import 'package:student_attendance/components/admin/my_app_bar.dart';
+import 'package:student_attendance/components/admin/my_drawer.dart';
 
 class AdminTeacherPage extends StatelessWidget {
   const AdminTeacherPage({super.key});
@@ -35,7 +38,9 @@ class AdminTeacherPage extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/admin/teacher/create");
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF696CFF),
                     shape: const RoundedRectangleBorder(
@@ -102,42 +107,24 @@ class AdminTeacherPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                      rows: [
+                      rows: const [
                         DataRow(
                           cells: [
-                            const DataCell(
+                            DataCell(
                               Text("1"),
                             ),
-                            const DataCell(
+                            DataCell(
                               Text("60200120073"),
                             ),
-                            const DataCell(
+                            DataCell(
                               Text("Ahmad Ikbal Djaya"),
                             ),
                             DataCell(
                               Row(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.remove_red_eye,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.edit_square,
-                                      color: Colors.amber,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                  ),
+                                  DetailIB(route: "/admin/teacher/detail"),
+                                  EditIB(route: "/admin/teacher/edit"),
+                                  DeleteIB(),
                                 ],
                               ),
                             ),

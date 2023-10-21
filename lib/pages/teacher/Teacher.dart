@@ -19,7 +19,7 @@ class TeacherPage extends StatelessWidget {
           );
         },
       ),
-      bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
+      bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab, atHome: true),
     );
   }
 }

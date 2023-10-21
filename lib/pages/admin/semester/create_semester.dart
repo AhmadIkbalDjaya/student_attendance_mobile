@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/my_app_bar.dart';
-import 'package:student_attendance/components/my_drawer.dart';
+import 'package:student_attendance/components/admin/my_app_bar.dart';
+import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:student_attendance/components/prev_page_button.dart';
 
 class AdminCreateSemesterPage extends StatelessWidget {
   const AdminCreateSemesterPage({super.key});
@@ -19,10 +20,10 @@ class AdminCreateSemesterPage extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 0, bottom: 10, right: 10, left: 10),
             width: double.infinity,
-            child: Stack(
+            child: const Stack(
               alignment: Alignment.center,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Column(
                     children: [
@@ -44,10 +45,7 @@ class AdminCreateSemesterPage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_back),
-                  ),
+                  child: PrevPageButton(),
                 ),
               ],
             ),

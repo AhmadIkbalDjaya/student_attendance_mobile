@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/prev_page_button.dart';
 
 class AttendancePage extends StatelessWidget {
   const AttendancePage({super.key});
@@ -157,15 +158,10 @@ class AttendancePage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   top: 0,
                   left: 0,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                  ),
+                  child: PrevPageButton(),
                 ),
               ],
             ),

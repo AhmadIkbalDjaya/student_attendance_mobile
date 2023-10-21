@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/my_app_bar.dart';
-import 'package:student_attendance/components/my_drawer.dart';
+import 'package:student_attendance/components/admin/my_app_bar.dart';
+import 'package:student_attendance/components/admin/my_drawer.dart';
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({super.key});

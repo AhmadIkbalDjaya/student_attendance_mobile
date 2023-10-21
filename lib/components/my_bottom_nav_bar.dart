@@ -6,9 +6,11 @@ class MyBottomNavBar extends StatelessWidget {
   const MyBottomNavBar({
     super.key,
     required this.teacherTab,
+    this.atHome = false,
   });
 
   final TeacherTabBloc teacherTab;
+  final bool atHome;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,9 @@ class MyBottomNavBar extends StatelessWidget {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           onTap: (value) {
-            Navigator.pushNamed(context, "/teacher");
+            if (!atHome) {
+              Navigator.pushNamed(context, "/teacher");
+            }
             teacherTab.changeTab(value);
           },
           items: const [

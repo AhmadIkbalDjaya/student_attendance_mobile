@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/my_app_bar.dart';
-import 'package:student_attendance/components/my_drawer.dart';
+import 'package:student_attendance/components/admin/button/delete_icon_button.dart';
+import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
+import 'package:student_attendance/components/admin/my_app_bar.dart';
+import 'package:student_attendance/components/admin/my_drawer.dart';
 
 class AdminClaassPage extends StatelessWidget {
   const AdminClaassPage({super.key});
@@ -35,7 +37,9 @@ class AdminClaassPage extends StatelessWidget {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/admin/claass/create");
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF696CFF),
                     shape: const RoundedRectangleBorder(
@@ -111,45 +115,26 @@ class AdminClaassPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                      rows: [
+                      rows: const [
                         DataRow(
                           cells: [
-                            const DataCell(
+                            DataCell(
                               Text("1"),
                             ),
-                            const DataCell(
+                            DataCell(
                               Text("10 IPA 1"),
                             ),
-                            const DataCell(
+                            DataCell(
                               Text("10"),
                             ),
-                            const DataCell(
+                            DataCell(
                               Text("IPA"),
                             ),
                             DataCell(
                               Row(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.remove_red_eye,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.edit_square,
-                                      color: Colors.amber,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                  ),
+                                  EditIB(route: "/admin/claass/edit"),
+                                  DeleteIB(),
                                 ],
                               ),
                             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/teacher_tab_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
+import 'package:student_attendance/components/prev_page_button.dart';
 
 class CourseRecapPage extends StatelessWidget {
   const CourseRecapPage({super.key});
@@ -16,10 +17,10 @@ class CourseRecapPage extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(vertical: 0),
             color: const Color(0xFFD9D9D9),
-            child: Stack(
+            child: const Stack(
               alignment: Alignment.center,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
                   child: Column(
                     children: [
@@ -74,12 +75,7 @@ class CourseRecapPage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: const Icon(Icons.arrow_back),
-                  ),
+                  child: PrevPageButton(),
                 ),
               ],
             ),

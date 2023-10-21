@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/my_app_bar.dart';
-import 'package:student_attendance/components/my_drawer.dart';
+import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
+import 'package:student_attendance/components/admin/my_app_bar.dart';
+import 'package:student_attendance/components/admin/my_drawer.dart';
 
 class AdminRecapPage extends StatelessWidget {
   const AdminRecapPage({super.key});
@@ -88,28 +89,22 @@ class AdminRecapPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                      rows: [
+                      rows: const [
                         DataRow(
                           cells: [
-                            const DataCell(
+                            DataCell(
                               Text("1"),
                             ),
-                            const DataCell(
+                            DataCell(
                               Text("Bahasa Indonesia"),
                             ),
-                            const DataCell(
+                            DataCell(
                               Text("12 IPA 1"),
                             ),
                             DataCell(
                               Row(
                                 children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: const Icon(
-                                      Icons.remove_red_eye,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
+                                  DetailIB(route: "/admin/recap/course"),
                                 ],
                               ),
                             ),
