@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/admin_drawer_bloc.dart';
+import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/bloc/teacher_tab_bloc.dart';
 import 'package:student_attendance/routes/routes.dart';
 
@@ -18,11 +19,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AdminDrawerBloc(),
         ),
+        BlocProvider(
+          create: (context) => StudentBloc()..add(GetAllStudentEvent()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         // home: TeacherPage(),
-        initialRoute: "/teacher",
+        initialRoute: "/admin/student",
         onGenerateRoute: MyRoute().onRoute,
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/button/delete_icon_button.dart';
 import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
@@ -56,82 +58,127 @@ class AdminStudentPage extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 3),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 3),
               child: ListView(
                 children: [
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      border: TableBorder.all(
-                        width: 2,
-                        color: Colors.grey,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(3),
-                        ),
-                      ),
-                      columns: const [
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "No",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
-                            ),
+                  BlocBuilder<StudentBloc, StudentState>(
+                    builder: (context, state) {
+                      if (state is StudentLoading) {
+                        return const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 50),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                            ],
                           ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "NIS",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
+                        );
+                      }
+                      if (state is StudentSuccess) {
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            border: TableBorder.all(
+                              width: 2,
+                              color: Colors.grey,
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(3),
+                              ),
                             ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "Nama",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                        DataColumn(
-                          label: Expanded(
-                            child: Text(
-                              "Aksi",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                      ],
-                      rows: const [
-                        DataRow(
-                          cells: [
-                            DataCell(
-                              Text("1"),
-                            ),
-                            DataCell(
-                              Text("60200120073"),
-                            ),
-                            DataCell(
-                              Text("Ahmad Ikbal Djaya"),
-                            ),
-                            DataCell(
-                              Row(
-                                children: [
-                                  DetailIB(route: "/admin/student/detail"),
-                                  EditIB(route: "/admin/student/edit"),
-                                  DeleteIB(),
+                            columns: const [
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    "No",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    "NIS",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    "Nama",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                              ),
+                              DataColumn(
+                                label: Expanded(
+                                  child: Text(
+                                    "Aksi",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                              ),
+                            ],
+                            rows: List<DataRow>.generate(
+                              state.students.length,
+                              (index) => DataRow(
+                                cells: [
+                                  DataCell(
+                                    Text("${index + 1}"),
+                                  ),
+                                  DataCell(
+                                    Text(state.students[index].nis),
+                                  ),
+                                  DataCell(
+                                    Text(state.students[index].name),
+                                  ),
+                                  const DataCell(
+                                    Row(
+                                      children: [
+                                        DetailIB(
+                                            route: "/admin/student/detail"),
+                                        EditIB(route: "/admin/student/edit"),
+                                        DeleteIB(),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
+                            // rows: const [
+                            // DataRow(
+                            //   cells: [
+                            //     DataCell(
+                            //       Text("1"),
+                            //     ),
+                            //     DataCell(
+                            //       Text("60200120073"),
+                            //     ),
+                            //     DataCell(
+                            //       Text("Ahmad Ikbal Djaya"),
+                            //     ),
+                            //     DataCell(
+                            //       Row(
+                            //         children: [
+                            //           DetailIB(
+                            //               route: "/admin/student/detail"),
+                            //           EditIB(route: "/admin/student/edit"),
+                            //           DeleteIB(),
+                            //         ],
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            // ],
+                          ),
+                        );
+                      }
+                      return const Text("No Data");
+                    },
                   )
                 ],
               ),
