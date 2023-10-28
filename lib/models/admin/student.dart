@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-Student studentFromJson(String str) => Student.fromJson(json.decode(str));
+Student studentFromJson(String str) =>
+    Student.fromJson(json.decode(str)['data']);
 
 String studentToJson(Student data) => json.encode(data.toJson());
 
@@ -15,7 +16,7 @@ class Student {
   final String nis;
   final String name;
   String? gender;
-  int? claassId;
+  String? claassId;
   String? claassName;
 
   Student({
@@ -27,7 +28,7 @@ class Student {
     this.claassName,
   }) {
     gender ??= "-";
-    claassId ??= 0;
+    claassId ??= "-";
     claassName ??= "";
   }
 

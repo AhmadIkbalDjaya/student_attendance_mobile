@@ -136,44 +136,22 @@ class AdminStudentPage extends StatelessWidget {
                                   DataCell(
                                     Text(state.students[index].name),
                                   ),
-                                  const DataCell(
+                                  DataCell(
                                     Row(
                                       children: [
                                         DetailIB(
-                                            route: "/admin/student/detail"),
-                                        EditIB(route: "/admin/student/edit"),
-                                        DeleteIB(),
+                                          route: "/admin/student/detail",
+                                          id: state.students[index].id,
+                                        ),
+                                        const EditIB(
+                                            route: "/admin/student/edit"),
+                                        const DeleteIB(),
                                       ],
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            // rows: const [
-                            // DataRow(
-                            //   cells: [
-                            //     DataCell(
-                            //       Text("1"),
-                            //     ),
-                            //     DataCell(
-                            //       Text("60200120073"),
-                            //     ),
-                            //     DataCell(
-                            //       Text("Ahmad Ikbal Djaya"),
-                            //     ),
-                            //     DataCell(
-                            //       Row(
-                            //         children: [
-                            //           DetailIB(
-                            //               route: "/admin/student/detail"),
-                            //           EditIB(route: "/admin/student/edit"),
-                            //           DeleteIB(),
-                            //         ],
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
-                            // ],
                           ),
                         );
                       }

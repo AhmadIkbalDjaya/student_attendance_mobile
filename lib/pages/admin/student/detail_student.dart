@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
+import 'package:student_attendance/models/admin/student.dart';
 
 class AdminDetailStudentPage extends StatelessWidget {
   const AdminDetailStudentPage({super.key});
@@ -20,10 +22,10 @@ class AdminDetailStudentPage extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 0, bottom: 10, right: 10, left: 10),
             width: double.infinity,
-            child: const Stack(
+            child: Stack(
               alignment: Alignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Column(
                     children: [
@@ -45,7 +47,14 @@ class AdminDetailStudentPage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: PrevPageButton(),
+                  // child: PrevPageButton(),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      context.read<StudentBloc>().add(GetAllStudentEvent());
+                    },
+                    icon: const Icon(Icons.arrow_back),
+                  ),
                 ),
               ],
             ),
@@ -69,116 +78,138 @@ class AdminDetailStudentPage extends StatelessWidget {
                     color: Color(0xFFD9D9D9),
                   ),
                   width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Ahmad Ikbal Djaya",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const Text(
-                        "60200120073",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.class_,
-                            size: 25,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "XII Al-Khawarizmi",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.male,
-                            size: 25,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Laki-Laki",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.amber[300],
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 0,
+                  child: BlocBuilder<StudentBloc, StudentState>(
+                    builder: (context, state) {
+                      if (state is StudentLoading) {
+                        return const Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                          ],
+                        );
+                      }
+                      if (state is StudentDetailSuccess) {
+                        Student student = state.student;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              student.name,
+                              style: const TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            child: const Row(
+                            Text(
+                              student.nis,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
                               children: [
-                                Icon(
-                                  Icons.edit_square,
-                                  color: Colors.black,
-                                  size: 20,
+                                const Icon(
+                                  Icons.class_,
+                                  size: 25,
                                 ),
-                                SizedBox(width: 5),
+                                const SizedBox(width: 10),
                                 Text(
-                                  "Edit",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                                  student.claassName != null
+                                      ? student.claassName.toString()
+                                      : "-",
+                                  style: const TextStyle(
+                                    fontSize: 18,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          const SizedBox(width: 15),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 0,
-                              ),
-                            ),
-                            child: const Row(
+                            const SizedBox(height: 10),
+                            Row(
                               children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.black,
-                                  size: 20,
+                                const Icon(
+                                  Icons.male,
+                                  size: 25,
                                 ),
-                                SizedBox(width: 5),
+                                const SizedBox(width: 10),
                                 Text(
-                                  "Hapus",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                                  student.gender != null
+                                      ? student.gender == "male"
+                                          ? "Laki-Laki"
+                                          : "Perempuan"
+                                      : "-",
+                                  style: const TextStyle(
+                                    fontSize: 18,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.amber[300],
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 0,
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit_square,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        "Edit",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 0,
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        "Hapus",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      }
+                      return const Text("Kosong");
+                    },
                   ),
                 ),
               ],

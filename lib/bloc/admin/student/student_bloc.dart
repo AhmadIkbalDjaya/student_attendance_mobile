@@ -17,5 +17,14 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       );
       emit(StudentSuccess(students: studentsFromJson(response.body)));
     });
+    on<GetDetailStudentEvent>((event, emit) async {
+      emit(StudentLoading());
+      final response = await http.get(
+        Uri.parse(
+            "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.studentId}"),
+        headers: {HttpHeaders.acceptHeader: "application/json"},
+      );
+      emit(StudentDetailSuccess(student: studentFromJson(response.body)));
+    });
   }
 }
