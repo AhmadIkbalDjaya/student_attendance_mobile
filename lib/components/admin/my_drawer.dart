@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/bloc/admin/admin_drawer_bloc.dart';
+import 'package:student_attendance/cubit/admin_drawer_bloc.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});

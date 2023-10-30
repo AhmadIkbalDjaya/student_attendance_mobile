@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/bloc/teacher_tab_bloc.dart';
+import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 
 class MyBottomNavBar extends StatelessWidget {
   const MyBottomNavBar({

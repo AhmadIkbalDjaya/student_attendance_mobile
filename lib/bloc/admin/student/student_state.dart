@@ -18,3 +18,10 @@ class StudentDetailSuccess extends StudentState {
   final Student student;
   StudentDetailSuccess({required this.student});
 }
+
+class AddStudentSuccess extends StudentState {}
+
+class StudentValidationError extends StudentState {
+  String message;
+  StudentValidationError({required this.message});
+}

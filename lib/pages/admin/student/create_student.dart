@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/components/prev_page_button.dart';
 
 class AdminCreateStudentPage extends StatelessWidget {
-  const AdminCreateStudentPage({super.key});
+  AdminCreateStudentPage({super.key});
+  final nisController = TextEditingController();
+  final nameController = TextEditingController();
+  final genderValue = DropDownValueCubit();
+  final claassIdValue = DropDownValueCubit();
 
   @override
   Widget build(BuildContext context) {
+    StudentBloc studentbloc = context.read<StudentBloc>();
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -71,6 +78,7 @@ class AdminCreateStudentPage extends StatelessWidget {
                   child: Column(
                     children: [
                       TextField(
+                        controller: nisController,
                         decoration: InputDecoration(
                           label: const Text("NIS"),
                           border: OutlineInputBorder(
@@ -81,10 +89,12 @@ class AdminCreateStudentPage extends StatelessWidget {
                             vertical: 0,
                           ),
                         ),
+                        keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.next,
                       ),
                       const SizedBox(height: 25),
                       TextField(
+                        controller: nameController,
                         decoration: InputDecoration(
                           label: const Text("Nama"),
                           border: OutlineInputBorder(
@@ -102,15 +112,17 @@ class AdminCreateStudentPage extends StatelessWidget {
                         hint: const Text("Jenis Kelamin"),
                         items: const [
                           DropdownMenuItem(
-                            value: "Male",
+                            value: "male",
                             child: Text("Laki-Laki"),
                           ),
                           DropdownMenuItem(
-                            value: "Female",
+                            value: "female",
                             child: Text("Perempuan"),
                           ),
                         ],
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          genderValue.changeValue("$value");
+                        },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -129,11 +141,13 @@ class AdminCreateStudentPage extends StatelessWidget {
                             child: Text("10 IPA I"),
                           ),
                           DropdownMenuItem(
-                            value: "2",
+                            value: "3",
                             child: Text("12 IPS II"),
                           ),
                         ],
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          claassIdValue.changeValue(value.toString());
+                        },
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -148,12 +162,24 @@ class AdminCreateStudentPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF696CFF),
-                    ),
-                    child: const Text("Simpan"),
+                  child: BlocBuilder<StudentBloc, StudentState>(
+                    builder: (context, state) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          studentbloc.add(AddStudentEvent(
+                            nis: nisController.text,
+                            name: nameController.text,
+                            gender: genderValue.state,
+                            classId: claassIdValue.state,
+                            context: context,
+                          ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF696CFF),
+                        ),
+                        child: const Text("Simpan"),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -162,5 +188,13 @@ class AdminCreateStudentPage extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class DropDownValueCubit extends Cubit<String> {
+  DropDownValueCubit() : super("");
+
+  changeValue(String value) {
+    emit(value);
   }
 }

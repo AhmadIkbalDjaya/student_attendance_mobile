@@ -12,6 +12,7 @@ class AdminStudentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<StudentBloc>().add(GetAllStudentEvent());
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),

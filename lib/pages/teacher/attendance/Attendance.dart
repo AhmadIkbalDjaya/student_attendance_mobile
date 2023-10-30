@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/bloc/teacher_tab_bloc.dart';
+import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/prev_page_button.dart';
