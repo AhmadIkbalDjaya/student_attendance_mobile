@@ -4,6 +4,7 @@ import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/components/prev_page_button.dart';
+import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 
 class AdminCreateStudentPage extends StatelessWidget {
   AdminCreateStudentPage({super.key});
@@ -14,7 +15,7 @@ class AdminCreateStudentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    StudentBloc studentbloc = context.read<StudentBloc>();
+    StudentBloc studentBloc = context.read<StudentBloc>();
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -166,7 +167,7 @@ class AdminCreateStudentPage extends StatelessWidget {
                     builder: (context, state) {
                       return ElevatedButton(
                         onPressed: () {
-                          studentbloc.add(AddStudentEvent(
+                          studentBloc.add(AddStudentEvent(
                             nis: nisController.text,
                             name: nameController.text,
                             gender: genderValue.state,
@@ -191,10 +192,3 @@ class AdminCreateStudentPage extends StatelessWidget {
   }
 }
 
-class DropDownValueCubit extends Cubit<String> {
-  DropDownValueCubit() : super("");
-
-  changeValue(String value) {
-    emit(value);
-  }
-}

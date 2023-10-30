@@ -122,8 +122,8 @@ class AdminCoursePage extends StatelessWidget {
                             DataCell(
                               Row(
                                 children: [
-                                  DetailIB(route: "/admin/course/detail"),
-                                  EditIB(route: "/admin/course/edit"),
+                                  DetailIB(),
+                                  EditIB(),
                                   DeleteIB(),
                                 ],
                               ),

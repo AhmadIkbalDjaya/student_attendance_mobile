@@ -19,7 +19,7 @@ class StudentDetailSuccess extends StudentState {
   StudentDetailSuccess({required this.student});
 }
 
-class AddStudentSuccess extends StudentState {}
+class AddEditStudentSuccess extends StudentState {}
 
 class StudentValidationError extends StudentState {
   String message;

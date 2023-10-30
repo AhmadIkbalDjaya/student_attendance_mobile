@@ -16,7 +16,30 @@ class AddStudentEvent extends StudentEvent {
   String? gender;
   String? classId;
   BuildContext context;
-  AddStudentEvent({this.nis, this.name, this.gender, this.classId, required this.context}) {
+  AddStudentEvent(
+      {this.nis, this.name, this.gender, this.classId, required this.context}) {
+    nis ??= "";
+    name ??= "";
+    gender ??= "";
+    classId ??= "";
+  }
+}
+
+class EditStudentEvent extends StudentEvent {
+  int id;
+  String? nis;
+  String? name;
+  String? gender;
+  String? classId;
+  BuildContext context;
+  EditStudentEvent({
+    required this.id,
+    this.nis,
+    this.name,
+    this.gender,
+    this.classId,
+    required this.context,
+  }) {
     nis ??= "";
     name ??= "";
     gender ??= "";

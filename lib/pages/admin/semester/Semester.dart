@@ -171,7 +171,7 @@ class AdminSemesterPage extends StatelessWidget {
                             DataCell(
                               Row(
                                 children: [
-                                  EditIB(route: "/admin/semester/edit"),
+                                  EditIB(),
                                   DeleteIB(),
                                 ],
                               ),

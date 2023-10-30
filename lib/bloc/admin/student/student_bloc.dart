@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -44,8 +46,49 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
               HttpHeaders.acceptHeader: "application/json",
             });
         if (response.statusCode == 200) {
-          emit(AddStudentSuccess());
+          emit(AddEditStudentSuccess());
           Navigator.pushNamed(event.context, "/admin/student");
+          ScaffoldMessenger.of(event.context).showSnackBar(
+            const SnackBar(
+              content: Text("Siswa Berhasil Ditambahkan"),
+            ),
+          );
+        } else {
+          var message = json.decode(response.body)['message'];
+          emit(StudentValidationError(message: "error"));
+          ScaffoldMessenger.of(event.context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+            ),
+          );
+        }
+      } catch (e) {
+        emit(StudentFailure());
+      }
+    });
+    on<EditStudentEvent>((event, emit) async {
+      try {
+        emit(StudentLoading());
+        final response = await http.post(
+            Uri.parse(
+                "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.id}?_method=put"),
+            body: {
+              "nis": event.nis,
+              "name": event.name,
+              "gender": event.gender,
+              "claass_id": event.classId
+            },
+            headers: {
+              HttpHeaders.acceptHeader: "application/json",
+            });
+        if (response.statusCode == 200) {
+          emit(AddEditStudentSuccess());
+          Navigator.pushNamed(event.context, "/admin/student");
+          ScaffoldMessenger.of(event.context).showSnackBar(
+            const SnackBar(
+              content: Text("Siswa Berhasil DiEdit"),
+            ),
+          );
         } else {
           var message = json.decode(response.body)['message'];
           emit(StudentValidationError(message: "error"));

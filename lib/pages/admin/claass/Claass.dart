@@ -133,7 +133,7 @@ class AdminClaassPage extends StatelessWidget {
                             DataCell(
                               Row(
                                 children: [
-                                  EditIB(route: "/admin/claass/edit"),
+                                  EditIB(),
                                   DeleteIB(),
                                 ],
                               ),

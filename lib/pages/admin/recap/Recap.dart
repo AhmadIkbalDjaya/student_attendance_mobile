@@ -104,7 +104,7 @@ class AdminRecapPage extends StatelessWidget {
                             DataCell(
                               Row(
                                 children: [
-                                  DetailIB(route: "/admin/recap/course"),
+                                  DetailIB(),
                                 ],
                               ),
                             ),

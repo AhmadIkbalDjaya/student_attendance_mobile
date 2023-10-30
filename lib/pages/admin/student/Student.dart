@@ -12,7 +12,8 @@ class AdminStudentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<StudentBloc>().add(GetAllStudentEvent());
+    StudentBloc studentBloc = context.read<StudentBloc>();
+    studentBloc.add(GetAllStudentEvent());
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -141,11 +142,25 @@ class AdminStudentPage extends StatelessWidget {
                                     Row(
                                       children: [
                                         DetailIB(
-                                          route: "/admin/student/detail",
-                                          id: state.students[index].id,
+                                          onPress: () {
+                                            Navigator.pushNamed(context,
+                                                '/admin/student/detail');
+                                            studentBloc.add(
+                                                GetDetailStudentEvent(
+                                                    studentId: state
+                                                        .students[index].id));
+                                          },
                                         ),
-                                        const EditIB(
-                                            route: "/admin/student/edit"),
+                                        EditIB(
+                                          onPress: () {
+                                            Navigator.pushNamed(
+                                                context, "/admin/student/edit");
+                                            studentBloc.add(
+                                                GetDetailStudentEvent(
+                                                    studentId: state
+                                                        .students[index].id));
+                                          },
+                                        ),
                                         const DeleteIB(),
                                       ],
                                     ),

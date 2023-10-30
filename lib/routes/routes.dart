@@ -115,7 +115,7 @@ class MyRoute {
         );
       case "/admin/student/edit":
         return MaterialPageRoute(
-          builder: (context) => const AdminEditStudentPage(),
+          builder: (context) => AdminEditStudentPage(),
         );
 
       case "/admin/teacher":
