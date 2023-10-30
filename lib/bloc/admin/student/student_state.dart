@@ -9,9 +9,9 @@ final class StudentInitial extends StudentState {}
 class StudentLoading extends StudentState {}
 class StudentFailure extends StudentState {}
 
-class StudentSuccess extends StudentState {
+class StudentAllSuccess extends StudentState {
   final List<Student> students;
-  StudentSuccess({required this.students});
+  StudentAllSuccess({required this.students});
 }
 
 class StudentDetailSuccess extends StudentState {
@@ -19,7 +19,7 @@ class StudentDetailSuccess extends StudentState {
   StudentDetailSuccess({required this.student});
 }
 
-class AddEditStudentSuccess extends StudentState {}
+class StudentSuccess extends StudentState {}
 
 class StudentValidationError extends StudentState {
   String message;

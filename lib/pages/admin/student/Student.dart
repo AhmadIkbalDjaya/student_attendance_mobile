@@ -76,7 +76,7 @@ class AdminStudentPage extends StatelessWidget {
                           ),
                         );
                       }
-                      if (state is StudentSuccess) {
+                      if (state is StudentAllSuccess) {
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
@@ -161,7 +161,15 @@ class AdminStudentPage extends StatelessWidget {
                                                         .students[index].id));
                                           },
                                         ),
-                                        const DeleteIB(),
+                                        DeleteIB(
+                                            name: state.students[index].name,
+                                            deleteFunction: () {
+                                              studentBloc.add(
+                                                  DeleteStudentEvent(
+                                                      id: state
+                                                          .students[index].id,
+                                                      context: context));
+                                            }),
                                       ],
                                     ),
                                   ),

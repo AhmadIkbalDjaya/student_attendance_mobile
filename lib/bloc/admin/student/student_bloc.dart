@@ -19,7 +19,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         Uri.parse("https://mobile.attendance.sman17gowa.com/api/admin/student"),
         headers: {HttpHeaders.acceptHeader: "application/json"},
       );
-      emit(StudentSuccess(students: studentsFromJson(response.body)));
+      emit(StudentAllSuccess(students: studentsFromJson(response.body)));
     });
     on<GetDetailStudentEvent>((event, emit) async {
       emit(StudentLoading());
@@ -46,7 +46,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
               HttpHeaders.acceptHeader: "application/json",
             });
         if (response.statusCode == 200) {
-          emit(AddEditStudentSuccess());
+          emit(StudentSuccess());
           Navigator.pushNamed(event.context, "/admin/student");
           ScaffoldMessenger.of(event.context).showSnackBar(
             const SnackBar(
@@ -82,7 +82,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
               HttpHeaders.acceptHeader: "application/json",
             });
         if (response.statusCode == 200) {
-          emit(AddEditStudentSuccess());
+          emit(StudentSuccess());
           Navigator.pushNamed(event.context, "/admin/student");
           ScaffoldMessenger.of(event.context).showSnackBar(
             const SnackBar(
@@ -100,6 +100,32 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         }
       } catch (e) {
         emit(StudentFailure());
+      }
+    });
+    on<DeleteStudentEvent>((event, emit) async {
+      emit(StudentLoading());
+      final response = await http.delete(
+        Uri.parse(
+            "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.id}"),
+        headers: {HttpHeaders.acceptHeader: "application/json"},
+      );
+      if (response.statusCode == 200) {
+        emit(StudentSuccess());
+        Navigator.of(event.context).pop();
+        Navigator.pushNamed(event.context, "/admin/student");
+        ScaffoldMessenger.of(event.context).showSnackBar(
+          const SnackBar(
+            content: Text("Siswa Berhasil Dihapus"),
+          ),
+        );
+      } else {
+        emit(StudentFailure());
+        Navigator.pushNamed(event.context, "/admin/student");
+        ScaffoldMessenger.of(event.context).showSnackBar(
+          const SnackBar(
+            content: Text("Siswa Gagal Dihapus"),
+          ),
+        );
       }
     });
   }

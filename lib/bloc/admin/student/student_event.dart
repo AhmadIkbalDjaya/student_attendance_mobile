@@ -1,6 +1,5 @@
 part of 'student_bloc.dart';
 
-// @immutable
 sealed class StudentEvent {}
 
 class GetAllStudentEvent extends StudentEvent {}
@@ -45,4 +44,10 @@ class EditStudentEvent extends StudentEvent {
     gender ??= "";
     classId ??= "";
   }
+}
+
+class DeleteStudentEvent extends StudentEvent {
+  int id;
+  BuildContext context;
+  DeleteStudentEvent({required this.id, required this.context});
 }
