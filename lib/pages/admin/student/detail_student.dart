@@ -6,10 +6,12 @@ import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/models/admin/student.dart';
 
 class AdminDetailStudentPage extends StatelessWidget {
-  const AdminDetailStudentPage({super.key});
-
+  const AdminDetailStudentPage({super.key, required this.studentId});
+  final int studentId;
   @override
   Widget build(BuildContext context) {
+    StudentBloc studentBloc = context.read<StudentBloc>();
+    studentBloc.add(GetDetailStudentEvent(studentId: studentId));
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -51,7 +53,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                   child: IconButton(
                     onPressed: () {
                       Navigator.pop(context);
-                      context.read<StudentBloc>().add(GetAllStudentEvent());
+                      studentBloc.add(GetAllStudentEvent());
                     },
                     icon: const Icon(Icons.arrow_back),
                   ),

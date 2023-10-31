@@ -8,16 +8,17 @@ import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/student.dart';
 
 class AdminEditStudentPage extends StatelessWidget {
-  AdminEditStudentPage({super.key});
+  AdminEditStudentPage({super.key, required this.studentId});
+  final int studentId;
   final nisController = TextEditingController();
   final nameController = TextEditingController();
   DropDownValueCubit genderValue = DropDownValueCubit();
   DropDownValueCubit claassIdValue = DropDownValueCubit();
-  int id = 0;
 
   @override
   Widget build(BuildContext context) {
     StudentBloc studentBloc = context.read<StudentBloc>();
+    studentBloc.add(GetDetailStudentEvent(studentId: studentId));
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -90,7 +91,6 @@ class AdminEditStudentPage extends StatelessWidget {
                       }
                       if (state is StudentDetailSuccess) {
                         Student student = state.student;
-                        id = student.id;
                         nisController.text = student.nis;
                         nameController.text = student.name;
                         if (student.gender != null) {
@@ -198,7 +198,7 @@ class AdminEditStudentPage extends StatelessWidget {
                       return ElevatedButton(
                         onPressed: () {
                           studentBloc.add(EditStudentEvent(
-                            id: id,
+                            id: studentId,
                             nis: nisController.text,
                             name: nameController.text,
                             gender: genderValue.state,

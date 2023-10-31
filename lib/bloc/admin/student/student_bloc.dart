@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -21,6 +19,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       );
       emit(StudentAllSuccess(students: studentsFromJson(response.body)));
     });
+
     on<GetDetailStudentEvent>((event, emit) async {
       emit(StudentLoading());
       final response = await http.get(
@@ -30,6 +29,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       );
       emit(StudentDetailSuccess(student: studentFromJson(response.body)));
     });
+
     on<AddStudentEvent>((event, emit) async {
       try {
         emit(StudentLoading());
@@ -47,20 +47,9 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
             });
         if (response.statusCode == 200) {
           emit(StudentSuccess());
-          Navigator.pushNamed(event.context, "/admin/student");
-          ScaffoldMessenger.of(event.context).showSnackBar(
-            const SnackBar(
-              content: Text("Siswa Berhasil Ditambahkan"),
-            ),
-          );
         } else {
           var message = json.decode(response.body)['message'];
-          emit(StudentValidationError(message: "error"));
-          ScaffoldMessenger.of(event.context).showSnackBar(
-            SnackBar(
-              content: Text(message),
-            ),
-          );
+          emit(StudentValidationError(message: message));
         }
       } catch (e) {
         emit(StudentFailure());

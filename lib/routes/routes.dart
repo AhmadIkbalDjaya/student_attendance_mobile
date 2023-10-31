@@ -33,6 +33,7 @@ import 'package:student_attendance/pages/teacher/teacher.dart';
 
 class MyRoute {
   Route onRoute(RouteSettings settings) {
+    final arguments = settings.arguments;
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(
@@ -110,13 +111,27 @@ class MyRoute {
           builder: (context) => AdminCreateStudentPage(),
         );
       case "/admin/student/detail":
-        return MaterialPageRoute(
-          builder: (context) => const AdminDetailStudentPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final studentId = arguments['studentId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminDetailStudentPage(studentId: studentId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/student/edit":
-        return MaterialPageRoute(
-          builder: (context) => AdminEditStudentPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final studentId = arguments['studentId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminEditStudentPage(studentId: studentId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
 
       case "/admin/teacher":
         return MaterialPageRoute(

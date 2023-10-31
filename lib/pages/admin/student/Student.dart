@@ -144,21 +144,21 @@ class AdminStudentPage extends StatelessWidget {
                                         DetailIB(
                                           onPress: () {
                                             Navigator.pushNamed(context,
-                                                '/admin/student/detail');
-                                            studentBloc.add(
-                                                GetDetailStudentEvent(
-                                                    studentId: state
-                                                        .students[index].id));
+                                                '/admin/student/detail',
+                                                arguments: {
+                                                  "studentId":
+                                                      state.students[index].id
+                                                });
                                           },
                                         ),
                                         EditIB(
                                           onPress: () {
                                             Navigator.pushNamed(
-                                                context, "/admin/student/edit");
-                                            studentBloc.add(
-                                                GetDetailStudentEvent(
-                                                    studentId: state
-                                                        .students[index].id));
+                                                context, "/admin/student/edit",
+                                                arguments: {
+                                                  "studentId":
+                                                      state.students[index].id
+                                                });
                                           },
                                         ),
                                         DeleteIB(
@@ -179,7 +179,7 @@ class AdminStudentPage extends StatelessWidget {
                           ),
                         );
                       }
-                      return const Text("No Data");
+                      return Container();
                     },
                   )
                 ],
