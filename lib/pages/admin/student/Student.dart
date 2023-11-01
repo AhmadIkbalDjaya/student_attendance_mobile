@@ -6,6 +6,7 @@ import 'package:student_attendance/components/admin/button/detail_icon_button.da
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:student_attendance/models/admin/student.dart';
 
 class AdminStudentPage extends StatelessWidget {
   const AdminStudentPage({super.key});
@@ -127,54 +128,85 @@ class AdminStudentPage extends StatelessWidget {
                             ],
                             rows: List<DataRow>.generate(
                               state.students.length,
-                              (index) => DataRow(
-                                cells: [
-                                  DataCell(
-                                    Text("${index + 1}"),
-                                  ),
-                                  DataCell(
-                                    Text(state.students[index].nis),
-                                  ),
-                                  DataCell(
-                                    Text(state.students[index].name),
-                                  ),
-                                  DataCell(
-                                    Row(
-                                      children: [
-                                        DetailIB(
-                                          onPress: () {
-                                            Navigator.pushNamed(context,
-                                                '/admin/student/detail',
-                                                arguments: {
-                                                  "studentId":
-                                                      state.students[index].id
-                                                });
-                                          },
-                                        ),
-                                        EditIB(
-                                          onPress: () {
-                                            Navigator.pushNamed(
-                                                context, "/admin/student/edit",
-                                                arguments: {
-                                                  "studentId":
-                                                      state.students[index].id
-                                                });
-                                          },
-                                        ),
-                                        DeleteIB(
-                                            name: state.students[index].name,
-                                            deleteFunction: () {
-                                              studentBloc.add(
-                                                  DeleteStudentEvent(
-                                                      id: state
-                                                          .students[index].id,
-                                                      context: context));
-                                            }),
-                                      ],
+                              (index) {
+                                Student student = state.students[index];
+                                return DataRow(
+                                  cells: [
+                                    DataCell(
+                                      Text("${index + 1}"),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                    DataCell(
+                                      Text(student.nis),
+                                    ),
+                                    DataCell(
+                                      Text(student.name),
+                                    ),
+                                    DataCell(
+                                      Row(
+                                        children: [
+                                          DetailIB(
+                                            onPress: () {
+                                              Navigator.pushNamed(context,
+                                                  '/admin/student/detail',
+                                                  arguments: {
+                                                    "studentId": student.id
+                                                  });
+                                            },
+                                          ),
+                                          EditIB(
+                                            onPress: () {
+                                              Navigator.pushNamed(context,
+                                                  "/admin/student/edit",
+                                                  arguments: {
+                                                    "studentId": student.id
+                                                  });
+                                            },
+                                          ),
+                                          BlocListener<StudentBloc,
+                                              StudentState>(
+                                            listener: (context, state) {
+                                              if (state is StudentSuccess) {
+                                                Navigator.of(context).pop();
+                                                Navigator.pushNamed(
+                                                    context, "/admin/student");
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        "Siswa Berhasil Dihapus"),
+                                                  ),
+                                                );
+                                              } else if (state
+                                                  is StudentFailure) {
+                                                Navigator.pushNamed(
+                                                    context, "/admin/student");
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        "Siswa Gagal Dihapus"),
+                                                  ),
+                                                );
+                                              }
+                                            },
+                                            child: DeleteIB(
+                                              name: student.name,
+                                              deleteFunction: () {
+                                                studentBloc.add(
+                                                  DeleteStudentEvent(
+                                                    id: student.id,
+                                                    context: context,
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
                             ),
                           ),
                         );

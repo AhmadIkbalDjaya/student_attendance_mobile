@@ -172,67 +172,60 @@ class AdminCreateStudentPage extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: MultiBlocListener(
-                      listeners: [
-                        BlocListener<StudentBloc, StudentState>(
-                          listener: (context, state) {
-                            if (state is StudentSuccess) {
-                              Navigator.pushNamed(context, "/admin/student");
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text("Siswa Berhasil Ditambahkan"),
-                                ),
-                              );
-                            } else if (state is StudentValidationError) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(state.message),
-                                ),
-                              );
-                            }
-                          },
-                          listenWhen: (previous, current) {
-                            if (current is StudentSuccess) {
-                              return true;
-                            } else if (current is StudentValidationError) {
-                              return true;
-                            }
-                            return false;
-                          },
-                        ),
-                      ],
-                      child: BlocBuilder<StudentBloc, StudentState>(
-                        builder: (context, state) {
-                          if (state is StudentLoading) {
-                            return ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF696CFF),
-                              ),
-                              child: const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                      color: Colors.white)),
-                            );
-                          }
+                    child: BlocConsumer<StudentBloc, StudentState>(
+                      builder: (context, state) {
+                        if (state is StudentLoading) {
                           return ElevatedButton(
-                            onPressed: () {
-                              studentBloc.add(AddStudentEvent(
-                                nis: nisController.text,
-                                name: nameController.text,
-                                gender: genderValue.state,
-                                classId: claassIdValue.state,
-                                context: context,
-                              ));
-                            },
+                            onPressed: () {},
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF696CFF),
                             ),
-                            child: const Text("Simpan"),
+                            child: const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                    color: Colors.white)),
                           );
-                        },
-                      ),
+                        }
+                        return ElevatedButton(
+                          onPressed: () {
+                            studentBloc.add(AddStudentEvent(
+                              nis: nisController.text,
+                              name: nameController.text,
+                              gender: genderValue.state,
+                              classId: claassIdValue.state,
+                              context: context,
+                            ));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF696CFF),
+                          ),
+                          child: const Text("Simpan"),
+                        );
+                      },
+                      listener: (context, state) {
+                        if (state is StudentSuccess) {
+                          Navigator.pushNamed(context, "/admin/student");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Siswa Berhasil Ditambahkan"),
+                            ),
+                          );
+                        } else if (state is StudentValidationError) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(state.message),
+                            ),
+                          );
+                        }
+                      },
+                      // listenWhen: (previous, current) {
+                      //   if (current is StudentSuccess ||
+                      //       current is StudentValidationError) {
+                      //     return true;
+                      //   }
+                      //   return false;
+                      // },
                     ),
                   ),
                 ],
