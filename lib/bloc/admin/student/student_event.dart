@@ -48,6 +48,5 @@ class EditStudentEvent extends StudentEvent {
 
 class DeleteStudentEvent extends StudentEvent {
   int id;
-  BuildContext context;
-  DeleteStudentEvent({required this.id, required this.context});
+  DeleteStudentEvent({required this.id});
 }

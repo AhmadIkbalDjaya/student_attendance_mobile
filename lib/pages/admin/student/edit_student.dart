@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/student.dart';
 
@@ -36,10 +35,10 @@ class AdminEditStudentPage extends StatelessWidget {
               padding: const EdgeInsets.only(
                   top: 0, bottom: 10, right: 10, left: 10),
               width: double.infinity,
-              child: const Stack(
+              child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: Column(
                       children: [
@@ -61,7 +60,12 @@ class AdminEditStudentPage extends StatelessWidget {
                   Positioned(
                     top: 0,
                     left: 0,
-                    child: PrevPageButton(),
+                    child: BackButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        studentBloc.add(GetAllStudentEvent());
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -86,7 +90,7 @@ class AdminEditStudentPage extends StatelessWidget {
                     ),
                     child: BlocBuilder<StudentBloc, StudentState>(
                       builder: (context, state) {
-                        if (state is StudentLoading) {
+                        if (state is StudentGetLoading) {
                           return const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -192,7 +196,90 @@ class AdminEditStudentPage extends StatelessWidget {
                             ],
                           );
                         }
-                        return const Text("null");
+                        return Column(
+                          children: [
+                            TextField(
+                              controller: nisController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                label: const Text("NIS"),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 0,
+                                ),
+                              ),
+                              textInputAction: TextInputAction.next,
+                            ),
+                            const SizedBox(height: 25),
+                            TextField(
+                              controller: nameController,
+                              decoration: InputDecoration(
+                                label: const Text("Nama"),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 0,
+                                ),
+                              ),
+                              textInputAction: TextInputAction.next,
+                            ),
+                            const SizedBox(height: 25),
+                            DropdownButtonFormField(
+                              hint: const Text("Jenis Kelamin"),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: "male",
+                                  child: Text("Laki-Laki"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "female",
+                                  child: Text("Perempuan"),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                genderValue.changeValue("$value");
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 25),
+                            DropdownButtonFormField(
+                              hint: const Text("Kelas"),
+                              items: const [
+                                DropdownMenuItem(
+                                  value: "1",
+                                  child: Text("10 IPA I"),
+                                ),
+                                DropdownMenuItem(
+                                  value: "2",
+                                  child: Text("12 IPS II"),
+                                ),
+                              ],
+                              onChanged: (value) {
+                                claassIdValue.changeValue("$value");
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
                       },
                     ),
                   ),
@@ -200,6 +287,19 @@ class AdminEditStudentPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: BlocConsumer<StudentBloc, StudentState>(
                       builder: (context, state) {
+                        if (state is StudentLoading) {
+                          return ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF696CFF),
+                            ),
+                            child: const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                    color: Colors.white)),
+                          );
+                        }
                         return ElevatedButton(
                           onPressed: () {
                             studentBloc.add(EditStudentEvent(

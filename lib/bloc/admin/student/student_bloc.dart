@@ -12,7 +12,7 @@ part 'student_state.dart';
 class StudentBloc extends Bloc<StudentEvent, StudentState> {
   StudentBloc() : super(StudentInitial()) {
     on<GetAllStudentEvent>((event, emit) async {
-      emit(StudentLoading());
+      emit(StudentGetLoading());
       final response = await http.get(
         Uri.parse("https://mobile.attendance.sman17gowa.com/api/admin/student"),
         headers: {HttpHeaders.acceptHeader: "application/json"},
@@ -21,7 +21,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     });
 
     on<GetDetailStudentEvent>((event, emit) async {
-      emit(StudentLoading());
+      emit(StudentGetLoading());
       final response = await http.get(
         Uri.parse(
             "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.studentId}"),
@@ -73,20 +73,9 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
             });
         if (response.statusCode == 200) {
           emit(StudentSuccess());
-          // Navigator.pushNamed(event.context, "/admin/student");
-          // ScaffoldMessenger.of(event.context).showSnackBar(
-          //   const SnackBar(
-          //     content: Text("Siswa Berhasil DiEdit"),
-          //   ),
-          // );
         } else {
           var message = json.decode(response.body)['message'];
           emit(StudentValidationError(message: message));
-          // ScaffoldMessenger.of(event.context).showSnackBar(
-          //   SnackBar(
-          //     content: Text(message),
-          //   ),
-          // );
         }
       } catch (e) {
         emit(StudentFailure());
@@ -102,21 +91,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       );
       if (response.statusCode == 200) {
         emit(StudentSuccess());
-        // Navigator.of(event.context).pop();
-        // Navigator.pushNamed(event.context, "/admin/student");
-        // ScaffoldMessenger.of(event.context).showSnackBar(
-        //   const SnackBar(
-        //     content: Text("Siswa Berhasil Dihapus"),
-        //   ),
-        // );
       } else {
         emit(StudentFailure());
-        // Navigator.pushNamed(event.context, "/admin/student");
-        // ScaffoldMessenger.of(event.context).showSnackBar(
-        //   const SnackBar(
-        //     content: Text("Siswa Gagal Dihapus"),
-        //   ),
-        // );
       }
     });
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
-import 'package:student_attendance/components/admin/button/delete_icon_button.dart';
 import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
@@ -66,7 +65,7 @@ class AdminStudentPage extends StatelessWidget {
                 children: [
                   BlocBuilder<StudentBloc, StudentState>(
                     builder: (context, state) {
-                      if (state is StudentLoading) {
+                      if (state is StudentGetLoading) {
                         return const Padding(
                           padding: EdgeInsets.symmetric(vertical: 50),
                           child: Row(
@@ -162,43 +161,98 @@ class AdminStudentPage extends StatelessWidget {
                                                   });
                                             },
                                           ),
-                                          BlocListener<StudentBloc,
-                                              StudentState>(
-                                            listener: (context, state) {
-                                              if (state is StudentSuccess) {
-                                                Navigator.of(context).pop();
-                                                Navigator.pushNamed(
-                                                    context, "/admin/student");
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                        "Siswa Berhasil Dihapus"),
-                                                  ),
-                                                );
-                                              } else if (state
-                                                  is StudentFailure) {
-                                                Navigator.pushNamed(
-                                                    context, "/admin/student");
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    content: Text(
-                                                        "Siswa Gagal Dihapus"),
-                                                  ),
-                                                );
-                                              }
+                                          IconButton(
+                                            onPressed: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return BlocConsumer<
+                                                      StudentBloc,
+                                                      StudentState>(
+                                                    listener: (context, state) {
+                                                      if (state
+                                                          is StudentSuccess) {
+                                                        studentBloc.add(
+                                                            GetAllStudentEvent());
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                "Siswa Berhasil Dihapus"),
+                                                          ),
+                                                        );
+                                                      } else if (state
+                                                          is StudentFailure) {
+                                                        studentBloc.add(
+                                                            GetAllStudentEvent());
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                          const SnackBar(
+                                                            content: Text(
+                                                                "Siswa Gagal Dihapus"),
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                    builder: (context, state) {
+                                                      return AlertDialog(
+                                                        title: const Text(
+                                                          "Konfirmasi Hapus",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        content: state
+                                                                is StudentLoading
+                                                            ? const Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                                  CircularProgressIndicator(),
+                                                                ],
+                                                              )
+                                                            : Text(
+                                                                "Yakin Ingin Menghapus ${student.name}?",
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                        actions: [
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            child: const Text(
+                                                                "Tidak"),
+                                                          ),
+                                                          TextButton(
+                                                            onPressed: () {
+                                                              studentBloc.add(
+                                                                  DeleteStudentEvent(
+                                                                      id: student
+                                                                          .id));
+                                                            },
+                                                            child: const Text(
+                                                                "Ya"),
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                              );
                                             },
-                                            child: DeleteIB(
-                                              name: student.name,
-                                              deleteFunction: () {
-                                                studentBloc.add(
-                                                  DeleteStudentEvent(
-                                                    id: student.id,
-                                                    context: context,
-                                                  ),
-                                                );
-                                              },
+                                            icon: const Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
                                             ),
                                           ),
                                         ],

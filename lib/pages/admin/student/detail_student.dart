@@ -82,7 +82,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                   width: double.infinity,
                   child: BlocBuilder<StudentBloc, StudentState>(
                     builder: (context, state) {
-                      if (state is StudentLoading) {
+                      if (state is StudentGetLoading) {
                         return const Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -210,7 +210,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                           ],
                         );
                       }
-                      return const Text("Kosong");
+                      return Container();
                     },
                   ),
                 ),

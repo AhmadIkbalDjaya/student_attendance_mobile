@@ -7,6 +7,9 @@ final class StudentInitial extends StudentState {}
 
 // student
 class StudentLoading extends StudentState {}
+
+class StudentGetLoading extends StudentState {}
+
 class StudentFailure extends StudentState {}
 
 class StudentAllSuccess extends StudentState {
