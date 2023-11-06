@@ -49,13 +49,11 @@ class AdminDetailStudentPage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  // child: PrevPageButton(),
-                  child: IconButton(
+                  child: BackButton(
                     onPressed: () {
                       Navigator.pop(context);
                       studentBloc.add(GetAllStudentEvent());
                     },
-                    icon: const Icon(Icons.arrow_back),
                   ),
                 ),
               ],

@@ -139,16 +139,34 @@ class MyRoute {
         );
       case "/admin/teacher/create":
         return MaterialPageRoute(
-          builder: (context) => const AdminCreateTeacherPage(),
+          builder: (context) => AdminCreateTeacherPage(),
         );
       case "/admin/teacher/detail":
-        return MaterialPageRoute(
-          builder: (context) => const AdminDetailTeacherPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final teacherId = arguments['teacherId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminDetailTeacherPage(
+              teacherId: teacherId,
+            ),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/teacher/edit":
-        return MaterialPageRoute(
-          builder: (context) => const AdminEditTeacherPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final teacherId = arguments['teacherId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminEditTeacherPage(
+              teacherId: teacherId,
+            ),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
 
       // Teacher Page
       case "/teacher":

@@ -5,6 +5,7 @@ import 'package:student_attendance/components/admin/button/detail_icon_button.da
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/admin/student.dart';
 
 class AdminStudentPage extends StatelessWidget {
@@ -171,18 +172,16 @@ class AdminStudentPage extends StatelessWidget {
                                                       StudentState>(
                                                     listener: (context, state) {
                                                       if (state
-                                                          is StudentSuccess) {
-                                                        studentBloc.add(
-                                                            GetAllStudentEvent());
+                                                          is StudentDeleteSuccess) {
                                                         Navigator.of(context)
                                                             .pop();
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                "Siswa Berhasil Dihapus"),
-                                                          ),
+                                                        studentBloc.add(
+                                                            GetAllStudentEvent());
+                                                        showCostumSnackBar(
+                                                          context: context,
+                                                          message:
+                                                              "Siswa Behasil Dihapus",
+                                                          type: "success",
                                                         );
                                                       } else if (state
                                                           is StudentFailure) {
@@ -190,13 +189,11 @@ class AdminStudentPage extends StatelessWidget {
                                                             GetAllStudentEvent());
                                                         Navigator.of(context)
                                                             .pop();
-                                                        ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                                "Siswa Gagal Dihapus"),
-                                                          ),
+                                                        showCostumSnackBar(
+                                                          context: context,
+                                                          message:
+                                                              "Siswa Gagal Dihapus",
+                                                          type: "danger",
                                                         );
                                                       }
                                                     },

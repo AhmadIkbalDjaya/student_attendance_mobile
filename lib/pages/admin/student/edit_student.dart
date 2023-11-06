@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/student.dart';
 
@@ -11,8 +12,8 @@ class AdminEditStudentPage extends StatelessWidget {
   final int studentId;
   final nisController = TextEditingController();
   final nameController = TextEditingController();
-  DropDownValueCubit genderValue = DropDownValueCubit();
-  DropDownValueCubit claassIdValue = DropDownValueCubit();
+  final genderValue = DropDownValueCubit();
+  final claassIdValue = DropDownValueCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -88,16 +89,8 @@ class AdminEditStudentPage extends StatelessWidget {
                       ),
                       color: Color(0xFFD9D9D9),
                     ),
-                    child: BlocBuilder<StudentBloc, StudentState>(
-                      builder: (context, state) {
-                        if (state is StudentGetLoading) {
-                          return const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                            ],
-                          );
-                        }
+                    child: BlocConsumer<StudentBloc, StudentState>(
+                      listener: (context, state) {
                         if (state is StudentDetailSuccess) {
                           Student student = state.student;
                           nisController.text = student.nis;
@@ -109,90 +102,14 @@ class AdminEditStudentPage extends StatelessWidget {
                             claassIdValue
                                 .changeValue(student.claassId.toString());
                           }
-                          return Column(
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is StudentGetLoading) {
+                          return const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              TextField(
-                                controller: nisController,
-                                keyboardType: TextInputType.number,
-                                decoration: InputDecoration(
-                                  label: const Text("NIS"),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 0,
-                                  ),
-                                ),
-                                textInputAction: TextInputAction.next,
-                              ),
-                              const SizedBox(height: 25),
-                              TextField(
-                                controller: nameController,
-                                decoration: InputDecoration(
-                                  label: const Text("Nama"),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 0,
-                                  ),
-                                ),
-                                textInputAction: TextInputAction.next,
-                              ),
-                              const SizedBox(height: 25),
-                              DropdownButtonFormField(
-                                value: genderValue.state,
-                                hint: const Text("Jenis Kelamin"),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: "male",
-                                    child: Text("Laki-Laki"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "female",
-                                    child: Text("Perempuan"),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  genderValue.changeValue("$value");
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 25),
-                              DropdownButtonFormField(
-                                value: claassIdValue.state,
-                                hint: const Text("Kelas"),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: "1",
-                                    child: Text("10 IPA I"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "2",
-                                    child: Text("12 IPS II"),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  claassIdValue.changeValue("$value");
-                                },
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                ),
-                              ),
+                              CircularProgressIndicator(),
                             ],
                           );
                         }
@@ -230,6 +147,9 @@ class AdminEditStudentPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 25),
                             DropdownButtonFormField(
+                              value: genderValue.state != ""
+                                  ? genderValue.state
+                                  : null,
                               hint: const Text("Jenis Kelamin"),
                               items: const [
                                 DropdownMenuItem(
@@ -255,6 +175,9 @@ class AdminEditStudentPage extends StatelessWidget {
                             ),
                             const SizedBox(height: 25),
                             DropdownButtonFormField(
+                              value: claassIdValue.state != ""
+                                  ? claassIdValue.state
+                                  : null,
                               hint: const Text("Kelas"),
                               items: const [
                                 DropdownMenuItem(
@@ -308,7 +231,6 @@ class AdminEditStudentPage extends StatelessWidget {
                               name: nameController.text,
                               gender: genderValue.state,
                               classId: claassIdValue.state,
-                              context: context,
                             ));
                           },
                           style: ElevatedButton.styleFrom(
@@ -318,18 +240,18 @@ class AdminEditStudentPage extends StatelessWidget {
                         );
                       },
                       listener: (context, state) {
-                        if (state is StudentSuccess) {
+                        if (state is StudentEditSuccess) {
                           Navigator.pushNamed(context, "/admin/student");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Siswa Berhasil DiEdit"),
-                            ),
+                          showCostumSnackBar(
+                            context: context,
+                            message: "Siswa Berhasil Diedit",
+                            type: "success",
                           );
                         } else if (state is StudentValidationError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.message),
-                            ),
+                          showCostumSnackBar(
+                            context: context,
+                            message: state.message,
+                            type: "danger",
                           );
                         }
                       },

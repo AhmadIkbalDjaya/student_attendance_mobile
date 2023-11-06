@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 
 class AdminCreateStudentPage extends StatelessWidget {
@@ -194,7 +195,6 @@ class AdminCreateStudentPage extends StatelessWidget {
                               name: nameController.text,
                               gender: genderValue.state,
                               classId: claassIdValue.state,
-                              context: context,
                             ));
                           },
                           style: ElevatedButton.styleFrom(
@@ -204,18 +204,18 @@ class AdminCreateStudentPage extends StatelessWidget {
                         );
                       },
                       listener: (context, state) {
-                        if (state is StudentSuccess) {
+                        if (state is StudentAddSuccess) {
                           Navigator.pushNamed(context, "/admin/student");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Siswa Berhasil Ditambahkan"),
-                            ),
+                          showCostumSnackBar(
+                            context: context,
+                            message: "Siswa Berhasil Ditambahkan",
+                            type: "success",
                           );
                         } else if (state is StudentValidationError) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(state.message),
-                            ),
+                          showCostumSnackBar(
+                            context: context,
+                            message: state.message,
+                            type: "danger",
                           );
                         }
                       },
