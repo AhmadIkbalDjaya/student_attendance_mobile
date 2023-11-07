@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
+import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 
 class AdminCreateClaassPage extends StatelessWidget {
-  const AdminCreateClaassPage({super.key});
+  AdminCreateClaassPage({super.key});
+  final nameController = TextEditingController();
+  final majorValue = DropDownValueCubit();
+  final levelValue = DropDownValueCubit();
 
   @override
   Widget build(BuildContext context) {
+    ClaassBloc claassBloc = context.read<ClaassBloc>();
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -20,10 +27,10 @@ class AdminCreateClaassPage extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 0, bottom: 10, right: 10, left: 10),
             width: double.infinity,
-            child: const Stack(
+            child: Stack(
               alignment: Alignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Column(
                     children: [
@@ -45,7 +52,12 @@ class AdminCreateClaassPage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: PrevPageButton(),
+                  child: BackButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      claassBloc.add(GetAllClaassEvent());
+                    },
+                  ),
                 ),
               ],
             ),
@@ -94,7 +106,9 @@ class AdminCreateClaassPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            majorValue.changeValue("$value");
+                          },
                         ),
                       ),
                       const SizedBox(height: 25),
@@ -126,14 +140,17 @@ class AdminCreateClaassPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            levelValue.changeValue("$value");
+                          },
                         ),
                       ),
                       const SizedBox(height: 25),
-                      const SizedBox(
+                      SizedBox(
                         height: 40,
                         child: TextField(
-                          decoration: InputDecoration(
+                          controller: nameController,
+                          decoration: const InputDecoration(
                             label: Text("Nama Kelas"),
                             border: OutlineInputBorder(),
                             contentPadding: EdgeInsets.symmetric(
@@ -148,12 +165,51 @@ class AdminCreateClaassPage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF696CFF),
-                    ),
-                    child: const Text("Simpan"),
+                  child: BlocConsumer<ClaassBloc, ClaassState>(
+                    listener: (context, state) {
+                      if (state is ClaassAddSuccess) {
+                        Navigator.pushNamed(context, "/admin/claass");
+                        showCostumSnackBar(
+                          context: context,
+                          message: "Kelas Berhasil Ditambahkan",
+                          type: "success",
+                        );
+                      } else if (state is ClaassValidationError) {
+                        showCostumSnackBar(
+                          context: context,
+                          message: state.message,
+                          type: "danger",
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is ClaassLoading) {
+                        return ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF696CFF),
+                          ),
+                          child: const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                  color: Colors.white)),
+                        );
+                      }
+                      return ElevatedButton(
+                        onPressed: () {
+                          claassBloc.add(AddClaassEvent(
+                            majorId: majorValue.state,
+                            level: levelValue.state,
+                            name: nameController.text,
+                          ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF696CFF),
+                        ),
+                        child: const Text("Simpan"),
+                      );
+                    },
                   ),
                 ),
               ],

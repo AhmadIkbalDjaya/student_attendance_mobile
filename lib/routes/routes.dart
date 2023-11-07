@@ -56,12 +56,19 @@ class MyRoute {
         );
       case "/admin/claass/create":
         return MaterialPageRoute(
-          builder: (context) => const AdminCreateClaassPage(),
+          builder: (context) => AdminCreateClaassPage(),
         );
       case "/admin/claass/edit":
-        return MaterialPageRoute(
-          builder: (context) => const AdminEditClaassPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final claassId = arguments['claassId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminEditClaassPage(claassId: claassId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
 
       case "/admin/course":
         return MaterialPageRoute(

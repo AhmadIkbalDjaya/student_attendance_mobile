@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/student.dart';
@@ -106,12 +108,7 @@ class AdminEditStudentPage extends StatelessWidget {
                       },
                       builder: (context, state) {
                         if (state is StudentGetLoading) {
-                          return const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                            ],
-                          );
+                          return const CenterLoading();
                         }
                         return Column(
                           children: [
@@ -211,17 +208,7 @@ class AdminEditStudentPage extends StatelessWidget {
                     child: BlocConsumer<StudentBloc, StudentState>(
                       builder: (context, state) {
                         if (state is StudentLoading) {
-                          return ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF696CFF),
-                            ),
-                            child: const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                    color: Colors.white)),
-                          );
+                          return const LoadingButton();
                         }
                         return ElevatedButton(
                           onPressed: () {

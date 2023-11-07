@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/bloc/admin/teacher/teacher_bloc.dart';
 import 'package:student_attendance/cubit/admin_drawer_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
@@ -26,10 +27,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => TeacherBloc(),
         ),
+        BlocProvider(
+          create: (context) => ClaassBloc(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: "/admin/teacher",
+        initialRoute: "/admin/claass",
         onGenerateRoute: MyRoute().onRoute,
       ),
     );
