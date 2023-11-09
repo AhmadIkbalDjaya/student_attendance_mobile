@@ -37,6 +37,11 @@ class EditSemesterEvent extends SemesterEvent {
 }
 
 class DeleteSemesterEvent extends SemesterEvent {
-  int id;
+  final int id;
   DeleteSemesterEvent({required this.id});
+}
+
+class ChangeSemesterEvent extends SemesterEvent {
+  final String id;
+  ChangeSemesterEvent({required this.id});
 }

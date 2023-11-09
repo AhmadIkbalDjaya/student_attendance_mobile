@@ -17,6 +17,8 @@ class SemesterEditSuccess extends SemesterState {}
 
 class SemesterDeleteSuccess extends SemesterState {}
 
+class SemesterChangeSuccess extends SemesterState {}
+
 class SemesterAllSuccess extends SemesterState {
   final List<Semester> semesters;
   SemesterAllSuccess({required this.semesters});

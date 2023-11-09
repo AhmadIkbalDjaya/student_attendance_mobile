@@ -6,15 +6,19 @@ import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
+import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/semester.dart';
 
 class AdminSemesterPage extends StatelessWidget {
-  const AdminSemesterPage({super.key});
+  AdminSemesterPage({super.key});
+  final activeSemesterValue = DropDownValueCubit();
 
   @override
   Widget build(BuildContext context) {
     SemesterBloc semesterBloc = context.read<SemesterBloc>();
+    SemesterBloc semesterBloc2 = SemesterBloc();
     semesterBloc.add(GetAllSemesterEvent());
+    semesterBloc2.add(GetAllSemesterEvent());
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -56,55 +60,105 @@ class AdminSemesterPage extends StatelessWidget {
                   ),
                   child: const Text("Tambah Semester"),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Semester Aktif",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 200,
-                          height: 35,
-                          child: DropdownButtonFormField(
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
+                BlocConsumer<SemesterBloc, SemesterState>(
+                  bloc: semesterBloc2,
+                  listener: (context, state) {
+                    if (state is SemesterAllSuccess) {
+                      for (var semester in state.semesters) {
+                        if (semester.isActive == "1") {
+                          activeSemesterValue.changeValue(
+                            semester.id.toString(),
+                          );
+                        }
+                      }
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is SemesterGetLoading) {
+                      return const CenterLoading();
+                    }
+                    if (state is SemesterAllSuccess) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Semester Aktif",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
-                            isExpanded: true,
-                            items: const [
-                              DropdownMenuItem(
-                                child: Text("sda"),
-                              ),
+                              SizedBox(
+                                width: 200,
+                                height: 35,
+                                child: DropdownButtonFormField(
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  isExpanded: true,
+                                  value: activeSemesterValue.state != ""
+                                      ? activeSemesterValue.state
+                                      : null,
+                                  items: List<DropdownMenuItem>.generate(
+                                    state.semesters.length,
+                                    (index) {
+                                      Semester semester =
+                                          state.semesters[index];
+                                      return DropdownMenuItem(
+                                        value: "${semester.id}",
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              semester.oddEven == "1"
+                                                  ? "Ganjil ${semester.startYear}/${semester.endYear}"
+                                                  : "Genap ${semester.startYear}/${semester.endYear}",
+                                            ),
+                                            semester.isActive == "1"
+                                                ? const Icon(Icons.done_rounded)
+                                                : Container()
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  onChanged: (value) {
+                                    activeSemesterValue.changeValue(
+                                      value.toString(),
+                                    );
+                                  },
+                                ),
+                              )
                             ],
-                            onChanged: (value) {},
                           ),
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF696CFF),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 15),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                semesterBloc2.add(ChangeSemesterEvent(
+                                  id: activeSemesterValue.state,
+                                ));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF696CFF),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              child: const Text("Ubah Semester"),
+                            ),
                           ),
-                        ),
-                        child: const Text("Ubah Semester"),
-                      ),
-                    ),
-                  ],
+                        ],
+                      );
+                    }
+                    return Container();
+                  },
                 ),
               ],
             ),

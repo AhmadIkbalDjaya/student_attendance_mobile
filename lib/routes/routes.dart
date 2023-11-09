@@ -98,7 +98,7 @@ class MyRoute {
 
       case "/admin/semester":
         return MaterialPageRoute(
-          builder: (context) => const AdminSemesterPage(),
+          builder: (context) => AdminSemesterPage(),
         );
       case "/admin/semester/create":
         return MaterialPageRoute(
