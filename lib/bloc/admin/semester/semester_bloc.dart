@@ -91,17 +91,21 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
     });
 
     on<ChangeSemesterEvent>((event, emit) async {
-      emit(SemesterLoading());
-      final response = await http.get(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.id}/setActive"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      if (response.statusCode == 200) {
-        emit(SemesterChangeSuccess());
-      } else {
-        final message = jsonDecode(response.body)["message"];
-        emit(SemesterValidationError(message: message));
+      try {
+        emit(SemesterLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.id}/setActive"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(SemesterChangeSuccess());
+        } else {
+          final message = jsonDecode(response.body)["message"];
+          emit(SemesterValidationError(message: message));
+        }
+      } catch (e) {
+        emit(SemesterFailure());
       }
     });
   }

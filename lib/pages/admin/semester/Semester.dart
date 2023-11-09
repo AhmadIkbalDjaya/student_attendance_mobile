@@ -5,6 +5,7 @@ import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/semester.dart';
@@ -60,38 +61,35 @@ class AdminSemesterPage extends StatelessWidget {
                   ),
                   child: const Text("Tambah Semester"),
                 ),
-                BlocConsumer<SemesterBloc, SemesterState>(
-                  bloc: semesterBloc2,
-                  listener: (context, state) {
-                    if (state is SemesterAllSuccess) {
-                      for (var semester in state.semesters) {
-                        if (semester.isActive == "1") {
-                          activeSemesterValue.changeValue(
-                            semester.id.toString(),
-                          );
-                        }
-                      }
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is SemesterGetLoading) {
-                      return const CenterLoading();
-                    }
-                    if (state is SemesterAllSuccess) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Semester Aktif",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              SizedBox(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Semester Aktif",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        BlocConsumer<SemesterBloc, SemesterState>(
+                          bloc: semesterBloc2,
+                          listener: (context, state) {
+                            if (state is SemesterAllSuccess) {
+                              for (var semester in state.semesters) {
+                                if (semester.isActive == "1") {
+                                  activeSemesterValue.changeValue(
+                                    semester.id.toString(),
+                                  );
+                                }
+                              }
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is SemesterAllSuccess) {
+                              return SizedBox(
                                 width: 200,
                                 height: 35,
                                 child: DropdownButtonFormField(
@@ -134,31 +132,78 @@ class AdminSemesterPage extends StatelessWidget {
                                     );
                                   },
                                 ),
-                              )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                semesterBloc2.add(ChangeSemesterEvent(
-                                  id: activeSemesterValue.state,
-                                ));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF696CFF),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                              );
+                            }
+                            return SizedBox(
+                              width: 200,
+                              height: 35,
+                              child: DropdownButtonFormField(
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
+                                isExpanded: true,
+                                value: activeSemesterValue.state != ""
+                                    ? activeSemesterValue.state
+                                    : null,
+                                items: const [],
+                                onChanged: (value) {
+                                  activeSemesterValue.changeValue(
+                                    value.toString(),
+                                  );
+                                },
                               ),
-                              child: const Text("Ubah Semester"),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: BlocConsumer<SemesterBloc, SemesterState>(
+                        bloc: semesterBloc2,
+                        listener: (context, state) {
+                          if (state is SemesterChangeSuccess) {
+                            semesterBloc.add(GetAllSemesterEvent());
+                            semesterBloc2.add(GetAllSemesterEvent());
+                            showCostumSnackBar(
+                              context: context,
+                              message: "Semester berhasil diubah",
+                              type: "success",
+                            );
+                          } else if (state is SemesterValidationError) {
+                            showCostumSnackBar(
+                              context: context,
+                              message: "Semester Gagal diubah",
+                              type: "danger",
+                            );
+                          }
+                        },
+                        builder: (context, state) {
+                          if (state is SemesterLoading) {
+                            return const LoadingButton();
+                          }
+                          return ElevatedButton(
+                            onPressed: () {
+                              semesterBloc2.add(ChangeSemesterEvent(
+                                id: activeSemesterValue.state,
+                              ));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF696CFF),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
                             ),
-                          ),
-                        ],
-                      );
-                    }
-                    return Container();
-                  },
+                            child: const Text("Ubah Semester"),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
