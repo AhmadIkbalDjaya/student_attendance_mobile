@@ -4,6 +4,7 @@ import 'package:student_attendance/components/admin/button/edit_icon_button.dart
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/admin/claass.dart';
 
@@ -66,15 +67,7 @@ class AdminClaassPage extends StatelessWidget {
                   BlocBuilder<ClaassBloc, ClaassState>(
                     builder: (context, state) {
                       if (state is ClaassGetLoading) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 50),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                            ],
-                          ),
-                        );
+                        return const CenterLoading();
                       }
                       if (state is ClaassAllSuccess) {
                         return SingleChildScrollView(

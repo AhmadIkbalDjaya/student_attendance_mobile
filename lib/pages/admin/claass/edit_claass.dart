@@ -90,12 +90,8 @@ class AdminEditClaassPage extends StatelessWidget {
                       if (state is ClaassDetailSuccess) {
                         Claass claass = state.claass;
                         nameController.text = claass.name;
-                        if (claass.majorId != null) {
-                          majorValue.changeValue(claass.majorId);
-                        }
-                        if (claass.level != null) {
-                          levelValue.changeValue(claass.level);
-                        }
+                        majorValue.changeValue(claass.majorId);
+                        levelValue.changeValue(claass.level);
                       }
                     },
                     builder: (context, state) {

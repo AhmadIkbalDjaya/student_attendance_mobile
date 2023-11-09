@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
+// import 'package:student_attendance/components/prev_page_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/loading_button.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
+import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 
 class AdminCreateSemesterPage extends StatelessWidget {
-  const AdminCreateSemesterPage({super.key});
+  AdminCreateSemesterPage({super.key});
+  final oddEvenValue = DropDownValueCubit();
+  final startYear = DropDownValueCubit();
 
   @override
   Widget build(BuildContext context) {
+    SemesterBloc semesterBloc = context.read<SemesterBloc>();
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -20,10 +28,10 @@ class AdminCreateSemesterPage extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 0, bottom: 10, right: 10, left: 10),
             width: double.infinity,
-            child: const Stack(
+            child: Stack(
               alignment: Alignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Column(
                     children: [
@@ -45,7 +53,12 @@ class AdminCreateSemesterPage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: PrevPageButton(),
+                  child: BackButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      semesterBloc.add(GetAllSemesterEvent());
+                    },
+                  ),
                 ),
               ],
             ),
@@ -102,7 +115,9 @@ class AdminCreateSemesterPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            oddEvenValue.changeValue(value.toString());
+                          },
                         ),
                       ),
                       const SizedBox(height: 25),
@@ -120,6 +135,10 @@ class AdminCreateSemesterPage extends StatelessWidget {
                               value: "2024",
                               child: Text("2024"),
                             ),
+                            DropdownMenuItem(
+                              value: "2025",
+                              child: Text("2025"),
+                            ),
                           ],
                           decoration: const InputDecoration(
                             contentPadding:
@@ -130,51 +149,88 @@ class AdminCreateSemesterPage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            startYear.changeValue(value.toString());
+                          },
                         ),
                       ),
                       const SizedBox(height: 25),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: const Color(0xFF696CFF),
-                            width: 2,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Column(
-                          children: [
-                            Text(
-                              "Tahun Ajaran",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Color(0xFF696CFF),
+                      BlocBuilder<DropDownValueCubit, String>(
+                        bloc: startYear,
+                        builder: (context, state) {
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: const Color(0xFF696CFF),
+                                width: 2,
                               ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                            Text(
-                              "2023 / 2024",
-                              style: TextStyle(
-                                color: Color(0xFF696CFF),
-                                fontWeight: FontWeight.w500,
-                              ),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "Tahun Ajaran",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color(0xFF696CFF),
+                                  ),
+                                ),
+                                startYear.state != ""
+                                    ? Text(
+                                        "${startYear.state} / ${int.parse(startYear.state) + 1}",
+                                        style: const TextStyle(
+                                          color: Color(0xFF696CFF),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      )
+                                    : Container(),
+                              ],
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       )
                     ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF696CFF),
-                    ),
-                    child: const Text("Simpan"),
+                  child: BlocConsumer<SemesterBloc, SemesterState>(
+                    listener: (context, state) {
+                      if (state is SemesterAddSuccess) {
+                        Navigator.pushNamed(context, "/admin/semester");
+                        showCostumSnackBar(
+                          context: context,
+                          message: "Semester Berhasil Ditambahkan",
+                          type: "success",
+                        );
+                      } else if (state is SemesterValidationError) {
+                        showCostumSnackBar(
+                          context: context,
+                          message: state.message,
+                          type: "danger",
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is SemesterLoading) {
+                        return const LoadingButton();
+                      }
+                      return ElevatedButton(
+                        onPressed: () {
+                          semesterBloc.add(AddSemesterEvent(
+                            oddEven: oddEvenValue.state,
+                            startYear: startYear.state,
+                          ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF696CFF),
+                        ),
+                        child: const Text("Simpan"),
+                      );
+                    },
                   ),
                 ),
               ],

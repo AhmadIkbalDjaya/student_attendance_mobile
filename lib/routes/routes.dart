@@ -102,13 +102,19 @@ class MyRoute {
         );
       case "/admin/semester/create":
         return MaterialPageRoute(
-          builder: (context) => const AdminCreateSemesterPage(),
+          builder: (context) => AdminCreateSemesterPage(),
         );
       case "/admin/semester/edit":
-        return MaterialPageRoute(
-          builder: (context) => const AdminEditSemesterPage(),
-        );
-
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final semesterId = arguments['semesterId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminEditSemesterPage(semesterId: semesterId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/student":
         return MaterialPageRoute(
           builder: (context) => const AdminStudentPage(),
@@ -139,7 +145,6 @@ class MyRoute {
             builder: (context) => const NotFoundPage(),
           );
         }
-
       case "/admin/teacher":
         return MaterialPageRoute(
           builder: (context) => const AdminTeacherPage(),

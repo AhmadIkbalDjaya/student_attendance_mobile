@@ -3,6 +3,7 @@ import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 
@@ -184,17 +185,7 @@ class AdminCreateClaassPage extends StatelessWidget {
                     },
                     builder: (context, state) {
                       if (state is ClaassLoading) {
-                        return ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF696CFF),
-                          ),
-                          child: const SizedBox(
-                              width: 20,
-                              height: 20,
-                              child: CircularProgressIndicator(
-                                  color: Colors.white)),
-                        );
+                        return const LoadingButton();
                       }
                       return ElevatedButton(
                         onPressed: () {
