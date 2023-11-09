@@ -12,17 +12,17 @@ class GetDetailCourseEvent extends CourseEvent {
 
 class AddCourseEvent extends CourseEvent {
   String? name;
-  String? classId;
+  String? claassId;
   String? teacherId;
   String? semesterId;
   AddCourseEvent({
     this.name,
-    this.classId,
+    this.claassId,
     this.teacherId,
     this.semesterId,
   }) {
     name ??= "";
-    classId ??= "";
+    claassId ??= "";
     teacherId ??= "";
     semesterId ??= "";
   }
@@ -31,18 +31,18 @@ class AddCourseEvent extends CourseEvent {
 class EditCourseEvent extends CourseEvent {
   final int id;
   String? name;
-  String? classId;
+  String? claassId;
   String? teacherId;
   String? semesterId;
   EditCourseEvent({
     required this.id,
     this.name,
-    this.classId,
+    this.claassId,
     this.teacherId,
     this.semesterId,
   }) {
     name ??= "";
-    classId ??= "";
+    claassId ??= "";
     teacherId ??= "";
     semesterId ??= "";
   }

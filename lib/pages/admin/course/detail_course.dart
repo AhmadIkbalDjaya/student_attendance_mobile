@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/models/admin/course.dart';
 
 class AdminDetailCoursePage extends StatelessWidget {
-  const AdminDetailCoursePage({super.key});
+  const AdminDetailCoursePage({super.key, required this.courseId});
+  final int courseId;
 
   @override
   Widget build(BuildContext context) {
+    CourseBloc courseBloc = context.read<CourseBloc>();
+    courseBloc.add(GetDetailCourseEvent(id: courseId));
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -20,10 +26,10 @@ class AdminDetailCoursePage extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 0, bottom: 10, right: 10, left: 10),
             width: double.infinity,
-            child: const Stack(
+            child: Stack(
               alignment: Alignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Column(
                     children: [
@@ -45,7 +51,12 @@ class AdminDetailCoursePage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: PrevPageButton(),
+                  child: BackButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      courseBloc.add(GetAllCourseEvent());
+                    },
+                  ),
                 ),
               ],
             ),
@@ -69,116 +80,127 @@ class AdminDetailCoursePage extends StatelessWidget {
                     color: Color(0xFFD9D9D9),
                   ),
                   width: double.infinity,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "Bahasa Indonesia",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const Text(
-                        "Arni Nurbaya S.pd",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.class_,
-                            size: 25,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "XII Al-Khawarizmi",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      const Row(
-                        children: [
-                          Icon(
-                            Icons.format_list_numbered_rounded,
-                            size: 25,
-                          ),
-                          SizedBox(width: 10),
-                          Text(
-                            "Ganjil 2022/2023",
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.amber[300],
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 0,
+                  child: BlocBuilder<CourseBloc, CourseState>(
+                    builder: (context, state) {
+                      if (state is CourseGetLoading) {
+                        return const CenterLoading();
+                      }
+                      if (state is CourseDetailSuccess) {
+                        Course course = state.course;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              course.name,
+                              style: const TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            child: const Row(
+                            Text(
+                              "${course.teacher}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
                               children: [
-                                Icon(
-                                  Icons.edit_square,
-                                  color: Colors.black,
-                                  size: 20,
+                                const Icon(
+                                  Icons.class_,
+                                  size: 25,
                                 ),
-                                SizedBox(width: 5),
+                                const SizedBox(width: 10),
                                 Text(
-                                  "Edit",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                                  course.claass,
+                                  style: const TextStyle(
+                                    fontSize: 18,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                          const SizedBox(width: 15),
-                          ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
-                                vertical: 0,
-                              ),
-                            ),
-                            child: const Row(
+                            const SizedBox(height: 10),
+                            Row(
                               children: [
-                                Icon(
-                                  Icons.delete,
-                                  color: Colors.black,
-                                  size: 20,
+                                const Icon(
+                                  Icons.format_list_numbered_rounded,
+                                  size: 25,
                                 ),
-                                SizedBox(width: 5),
+                                const SizedBox(width: 10),
                                 Text(
-                                  "Hapus",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16,
+                                  "${course.semester}",
+                                  style: const TextStyle(
+                                    fontSize: 18,
                                   ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      )
-                    ],
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.amber[300],
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 0,
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.edit_square,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        "Edit",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 0,
+                                    ),
+                                  ),
+                                  child: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.black,
+                                        size: 20,
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        "Hapus",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      }
+                      return Container();
+                    },
                   ),
                 ),
               ],

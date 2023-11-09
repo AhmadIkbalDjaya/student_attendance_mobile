@@ -14,22 +14,28 @@ class Course {
   final int id;
   final String name;
   final String claass;
-  final String claassId;
-  final String teacher;
-  final String teacherId;
-  final String semester;
-  final String semesterId;
+  String? claassId;
+  String? teacher;
+  String? teacherId;
+  String? semester;
+  String? semesterId;
 
   Course({
     required this.id,
     required this.name,
     required this.claass,
-    required this.claassId,
-    required this.teacher,
-    required this.teacherId,
-    required this.semester,
-    required this.semesterId,
-  });
+    this.claassId,
+    this.teacher,
+    this.teacherId,
+    this.semester,
+    this.semesterId,
+  }) {
+    claassId ??= "";
+    teacher ??= "";
+    teacherId ??= "";
+    semester ??= "";
+    semesterId ??= "";
+  }
 
   factory Course.fromJson(Map<String, dynamic> json) => Course(
         id: json["id"],

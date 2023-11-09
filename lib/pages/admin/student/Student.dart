@@ -5,6 +5,7 @@ import 'package:student_attendance/components/admin/button/detail_icon_button.da
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/admin/student.dart';
 
@@ -67,15 +68,7 @@ class AdminStudentPage extends StatelessWidget {
                   BlocBuilder<StudentBloc, StudentState>(
                     builder: (context, state) {
                       if (state is StudentGetLoading) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 50),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                            ],
-                          ),
-                        );
+                        return const CenterLoading();
                       }
                       if (state is StudentAllSuccess) {
                         return SingleChildScrollView(

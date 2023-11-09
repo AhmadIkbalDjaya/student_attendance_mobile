@@ -1,13 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
+import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
+import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
+import 'package:student_attendance/bloc/admin/teacher/teacher_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/loading_button.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
+import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
+import 'package:student_attendance/models/admin/claass.dart';
+import 'package:student_attendance/models/admin/semester.dart';
+import 'package:student_attendance/models/admin/teacher.dart';
 
 class AdminCreateCoursePage extends StatelessWidget {
-  const AdminCreateCoursePage({super.key});
+  AdminCreateCoursePage({super.key});
+  final nameController = TextEditingController();
+  final teacherIdValue = DropDownValueCubit();
+  final claassIdValue = DropDownValueCubit();
+  final semesterIdValue = DropDownValueCubit();
 
   @override
   Widget build(BuildContext context) {
+    CourseBloc courseBloc = context.read<CourseBloc>();
+    TeacherBloc teacherBloc = context.read<TeacherBloc>();
+    teacherBloc.add(GetAllTeacherEvent());
+    ClaassBloc claassBloc = context.read<ClaassBloc>();
+    claassBloc.add(GetAllClaassEvent());
+    SemesterBloc semesterBloc = context.read<SemesterBloc>();
+    semesterBloc.add(GetAllSemesterEvent());
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -20,10 +41,10 @@ class AdminCreateCoursePage extends StatelessWidget {
             padding:
                 const EdgeInsets.only(top: 0, bottom: 10, right: 10, left: 10),
             width: double.infinity,
-            child: const Stack(
+            child: Stack(
               alignment: Alignment.center,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Column(
                     children: [
@@ -45,7 +66,12 @@ class AdminCreateCoursePage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: PrevPageButton(),
+                  child: BackButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      courseBloc.add(GetAllCourseEvent());
+                    },
+                  ),
                 ),
               ],
             ),
@@ -70,10 +96,12 @@ class AdminCreateCoursePage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         height: 40,
                         child: TextField(
-                          decoration: InputDecoration(
+                          controller: nameController,
+                          textInputAction: TextInputAction.next,
+                          decoration: const InputDecoration(
                             label: Text("Nama Mapel"),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(
@@ -91,84 +119,157 @@ class AdminCreateCoursePage extends StatelessWidget {
                       SizedBox(
                         height: 40,
                         width: double.infinity,
-                        child: DropdownButtonFormField(
-                          hint: const Text("Guru Pengajar"),
-                          items: const [
-                            DropdownMenuItem(
-                              value: "1",
-                              child: Text("Agung"),
-                            ),
-                            DropdownMenuItem(
-                              value: "2",
-                              child: Text("Umar"),
-                            ),
-                          ],
-                          decoration: const InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
+                        child: BlocBuilder<TeacherBloc, TeacherState>(
+                          builder: (context, state) {
+                            if (state is TeacherAllSuccess) {
+                              return DropdownButtonFormField(
+                                hint: const Text("Guru Pengajar"),
+                                items: List<DropdownMenuItem>.generate(
+                                    state.teachers.length, (index) {
+                                  Teacher teacher = state.teachers[index];
+                                  return DropdownMenuItem(
+                                    value: "${teacher.id}",
+                                    child: Text(teacher.name),
+                                  );
+                                }),
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  teacherIdValue.changeValue(value);
+                                },
+                              );
+                            }
+                            return DropdownButtonFormField(
+                              hint: const Text("Guru Pengajar"),
+                              items: const [],
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          onChanged: (value) {},
+                              onChanged: (value) {},
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 25),
                       SizedBox(
                         height: 40,
                         width: double.infinity,
-                        child: DropdownButtonFormField(
-                          hint: const Text("Kelas"),
-                          items: const [
-                            DropdownMenuItem(
-                              value: "10",
-                              child: Text("Al-Khawarizmi"),
-                            ),
-                            DropdownMenuItem(
-                              value: "11",
-                              child: Text("Al-Biruni"),
-                            ),
-                          ],
-                          decoration: const InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
+                        child: BlocBuilder<ClaassBloc, ClaassState>(
+                          builder: (context, state) {
+                            if (state is ClaassAllSuccess) {
+                              return DropdownButtonFormField(
+                                hint: const Text("Kelas"),
+                                items: List<DropdownMenuItem>.generate(
+                                    state.claasses.length, (index) {
+                                  Claass claass = state.claasses[index];
+                                  return DropdownMenuItem(
+                                    value: "${claass.id}",
+                                    child: Text(claass.name),
+                                  );
+                                }),
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  claassIdValue.changeValue(value);
+                                },
+                              );
+                            }
+                            return DropdownButtonFormField(
+                              hint: const Text("Kelas"),
+                              items: const [],
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          onChanged: (value) {},
+                              onChanged: (value) {},
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(height: 25),
                       SizedBox(
                         height: 40,
                         width: double.infinity,
-                        child: DropdownButtonFormField(
-                          hint: const Text("Semester"),
-                          items: const [
-                            DropdownMenuItem(
-                              value: "1",
-                              child: Text("Ganjil 2022/2023"),
-                            ),
-                            DropdownMenuItem(
-                              value: "11",
-                              child: Text("Genap 2022/2023"),
-                            ),
-                          ],
-                          decoration: const InputDecoration(
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: 10),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
+                        child: BlocBuilder<SemesterBloc, SemesterState>(
+                          builder: (context, state) {
+                            if (state is SemesterAllSuccess) {
+                              return DropdownButtonFormField(
+                                hint: const Text("Semester"),
+                                items: List<DropdownMenuItem>.generate(
+                                  state.semesters.length,
+                                  (index) {
+                                    Semester semester = state.semesters[index];
+                                    return DropdownMenuItem(
+                                      value: "${semester.id}",
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            semester.oddEven == "1"
+                                                ? "Ganjil ${semester.startYear}/${semester.endYear}"
+                                                : "Genap ${semester.startYear}/${semester.endYear}",
+                                          ),
+                                          semester.isActive == "1"
+                                              ? const Icon(Icons.done_rounded)
+                                              : Container()
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  semesterIdValue.changeValue(value);
+                                },
+                              );
+                            }
+                            return DropdownButtonFormField(
+                              hint: const Text("Semester"),
+                              items: const [],
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 10),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          onChanged: (value) {},
+                              onChanged: (value) {},
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -176,12 +277,42 @@ class AdminCreateCoursePage extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF696CFF),
-                    ),
-                    child: const Text("Simpan"),
+                  child: BlocConsumer<CourseBloc, CourseState>(
+                    listener: (context, state) {
+                      if (state is CourseAddSuccess) {
+                        Navigator.pushNamed(context, "/admin/course");
+                        showCostumSnackBar(
+                          context: context,
+                          message: "Mapel Berhasil Ditambahkan",
+                          type: "success",
+                        );
+                      } else if (state is CourseValidationError) {
+                        showCostumSnackBar(
+                          context: context,
+                          message: state.message,
+                          type: "danger",
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is CourseLoading) {
+                        return const LoadingButton();
+                      }
+                      return ElevatedButton(
+                        onPressed: () {
+                          courseBloc.add(AddCourseEvent(
+                            name: nameController.text,
+                            teacherId: teacherIdValue.state,
+                            claassId: claassIdValue.state,
+                            semesterId: semesterIdValue.state,
+                          ));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF696CFF),
+                        ),
+                        child: const Text("Simpan"),
+                      );
+                    },
                   ),
                 ),
               ],

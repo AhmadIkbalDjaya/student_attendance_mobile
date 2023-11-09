@@ -76,17 +76,30 @@ class MyRoute {
         );
       case "/admin/course/create":
         return MaterialPageRoute(
-          builder: (context) => const AdminCreateCoursePage(),
+          builder: (context) => AdminCreateCoursePage(),
         );
       case "/admin/course/detail":
-        return MaterialPageRoute(
-          builder: (context) => const AdminDetailCoursePage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final int courseId = arguments['courseId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminDetailCoursePage(courseId: courseId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/course/edit":
-        return MaterialPageRoute(
-          builder: (context) => const AdminEditCoursePage(),
-        );
-
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final int courseId = arguments['courseId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminEditCoursePage(courseId: courseId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/recap":
         return MaterialPageRoute(
           builder: (context) => const AdminRecapPage(),

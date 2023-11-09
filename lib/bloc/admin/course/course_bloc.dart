@@ -11,7 +11,7 @@ part 'course_state.dart';
 class CourseBloc extends Bloc<CourseEvent, CourseState> {
   CourseBloc() : super(CourseInitial()) {
     on<GetAllCourseEvent>((event, emit) async {
-      emit(CourseLoading());
+      emit(CourseGetLoading());
       final response = await http.get(
         Uri.parse("https://mobile.attendance.sman17gowa.com/api/admin/course"),
         headers: {HttpHeaders.acceptHeader: "application/json"},
@@ -20,7 +20,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     });
 
     on<GetDetailCourseEvent>((event, emit) async {
-      emit(CourseLoading());
+      emit(CourseGetLoading());
       final response = await http.get(
         Uri.parse(
             "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}"),
@@ -39,7 +39,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
             headers: {HttpHeaders.acceptHeader: "application/json"},
             body: {
               "name": event.name,
-              "claass_id": event.classId,
+              "claass_id": event.claassId,
               "teacher_id": event.teacherId,
               "semester_id": event.semesterId,
             },
@@ -65,7 +65,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "name": event.name,
-            "claass_id": event.classId,
+            "claass_id": event.claassId,
             "teacher_id": event.teacherId,
             "semester_id": event.semesterId,
           },
