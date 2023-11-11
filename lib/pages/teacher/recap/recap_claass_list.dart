@@ -36,9 +36,9 @@ class RecapClaassListPage extends StatelessWidget {
               ),
               child: ListView(
                 children: const [
-                  ClaassList(nextpage: "recap"),
-                  ClaassList(),
-                  ClaassList(),
+                  // ClaassList(nextpage: "recap"),
+                  // ClaassList(),
+                  // ClaassList(),
                 ],
               ),
             ),
