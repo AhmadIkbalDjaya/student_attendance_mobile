@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:student_attendance/models/teacher/teacher_course.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ClaassList extends StatelessWidget {
-  const ClaassList(
+  ClaassList(
       {super.key, this.nextpage = "attendance", required this.teacherCourse});
   final String nextpage;
   final TeacherCourse teacherCourse;
+  final showCourses = ShowCoursesCubit();
+  // final claassCourses = ClassCoursesCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +103,13 @@ class ClaassList extends StatelessWidget {
                                                 padding: const EdgeInsets.only(
                                                     right: 10),
                                                 child: ElevatedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    showCourses.handleClick(
+                                                        claassName:
+                                                            claass.claassName,
+                                                        courses:
+                                                            claass.courses);
+                                                  },
                                                   style:
                                                       ElevatedButton.styleFrom(
                                                           backgroundColor:
@@ -124,41 +133,58 @@ class ClaassList extends StatelessWidget {
                           },
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(15),
-                        margin: const EdgeInsets.only(top: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 2,
-                            color: Colors.grey,
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("10 IPA 1"),
-                            SizedBox(
+                      BlocBuilder<ShowCoursesCubit, Map<String, dynamic>>(
+                        bloc: showCourses,
+                        builder: (context, state) {
+                          if (state["show"] == true) {
+                            return Container(
                               width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (nextpage == "attendance") {
-                                    Navigator.pushNamed(
-                                        context, "/teacher/attendance/course");
-                                  } else if (nextpage == "recap") {
-                                    Navigator.pushNamed(
-                                        context, "/teacher/recap/course");
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF696CFF),
+                              padding: const EdgeInsets.all(15),
+                              margin: const EdgeInsets.only(top: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 2,
+                                  color: Colors.grey,
                                 ),
-                                child: const Text("Bahasa Indonesia"),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                            ),
-                          ],
-                        ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(state["claassName"]),
+                                  Column(
+                                    children: List<Widget>.generate(
+                                      state["courses"].length,
+                                      (index) {
+                                        Course course = state["courses"][index];
+                                        return SizedBox(
+                                          width: double.infinity,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              if (nextpage == "attendance") {
+                                                Navigator.pushNamed(context,
+                                                    "/teacher/attendance/course");
+                                              } else if (nextpage == "recap") {
+                                                Navigator.pushNamed(context,
+                                                    "/teacher/recap/course");
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color(0xFF696CFF),
+                                            ),
+                                            child: Text(course.courseName),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          return Container();
+                        },
                       ),
                     ],
                   ),
@@ -168,3 +194,39 @@ class ClaassList extends StatelessWidget {
     );
   }
 }
+
+class ShowCoursesCubit extends Cubit<Map<String, dynamic>> {
+  ShowCoursesCubit({
+    bool? show,
+    String? claassName,
+    List<Course>? courses,
+  }) : super({
+          "show": show ?? false,
+          "claassName": claassName ?? "",
+          "courses": courses ?? <Course>[],
+        });
+
+  void handleClick({String? claassName, List<Course>? courses}) {
+    emit({
+      "show": !state["show"],
+      "claassName": claassName,
+      "courses": courses,
+      // "claassName": state["show"] == true ? claassName : "",
+      // "courses": state["courses"] == true ? courses : <Course>[],
+    });
+  }
+}
+// class ShowCoursesCubit extends Cubit<bool> {
+//   ShowCoursesCubit() : super(false);
+
+//   void click() {
+//     emit(!state);
+//   }
+// }
+
+// class ClassCoursesCubit extends Cubit<List<Course>> {
+//   ClassCoursesCubit() : super([]);
+//   void setCourses(courses) {
+//     emit(courses);
+//   }
+// }

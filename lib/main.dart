@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
           create: (context) => CourseBloc(),
         ),
         BlocProvider(
-          create: (context) => TeacherCourseBloc(),
+          create: (context) => TeacherCourseBloc()..add(GetTeacherCourseEvent()),
         ),
       ],
       child: MaterialApp(
