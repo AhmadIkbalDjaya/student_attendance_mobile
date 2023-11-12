@@ -5,7 +5,8 @@ import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:student_attendance/components/prev_page_button.dart';
 
 class CreateAttendancePage extends StatelessWidget {
-  const CreateAttendancePage({super.key});
+  const CreateAttendancePage({super.key, required this.courseId});
+  final int courseId;
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,6 @@ class ClaassList extends StatelessWidget {
   final String nextpage;
   final TeacherCourse teacherCourse;
   final showCourses = ShowCoursesCubit();
-  // final claassCourses = ClassCoursesCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -162,11 +161,21 @@ class ClaassList extends StatelessWidget {
                                           child: ElevatedButton(
                                             onPressed: () {
                                               if (nextpage == "attendance") {
-                                                Navigator.pushNamed(context,
-                                                    "/teacher/attendance/course");
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  "/teacher/attendance/course",
+                                                  arguments: {
+                                                    "courseId": course.id
+                                                  },
+                                                );
                                               } else if (nextpage == "recap") {
-                                                Navigator.pushNamed(context,
-                                                    "/teacher/recap/course");
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  "/teacher/recap/course",
+                                                  arguments: {
+                                                    "courseId": course.id
+                                                  },
+                                                );
                                               }
                                             },
                                             style: ElevatedButton.styleFrom(
@@ -211,22 +220,6 @@ class ShowCoursesCubit extends Cubit<Map<String, dynamic>> {
       "show": !state["show"],
       "claassName": claassName,
       "courses": courses,
-      // "claassName": state["show"] == true ? claassName : "",
-      // "courses": state["courses"] == true ? courses : <Course>[],
     });
   }
 }
-// class ShowCoursesCubit extends Cubit<bool> {
-//   ShowCoursesCubit() : super(false);
-
-//   void click() {
-//     emit(!state);
-//   }
-// }
-
-// class ClassCoursesCubit extends Cubit<List<Course>> {
-//   ClassCoursesCubit() : super([]);
-//   void setCourses(courses) {
-//     emit(courses);
-//   }
-// }

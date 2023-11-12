@@ -4,6 +4,7 @@ import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
 import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
 import 'package:student_attendance/bloc/admin/teacher/teacher_bloc.dart';
+import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/teacher_course/teacher_course_bloc.dart';
 import 'package:student_attendance/cubit/admin_drawer_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
@@ -40,7 +41,11 @@ class MyApp extends StatelessWidget {
           create: (context) => CourseBloc(),
         ),
         BlocProvider(
-          create: (context) => TeacherCourseBloc()..add(GetTeacherCourseEvent()),
+          create: (context) =>
+              TeacherCourseBloc()..add(GetTeacherCourseEvent()),
+        ),
+        BlocProvider(
+          create: (context) => AttendanceBloc(),
         ),
       ],
       child: MaterialApp(

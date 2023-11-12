@@ -203,25 +203,47 @@ class MyRoute {
           builder: (context) => const ClaassPage(),
         );
       case "/teacher/attendance/course":
-        return MaterialPageRoute(
-          builder: (context) => const CourseAttendancePage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final courseId = arguments['courseId'];
+          return MaterialPageRoute(
+            builder: (context) => CourseAttendancePage(courseId: courseId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/teacher/attendance/attend":
         return MaterialPageRoute(
           builder: (context) => const AttendancePage(),
         );
       case "/teacher/attendance/create":
-        return MaterialPageRoute(
-          builder: (context) => const CreateAttendancePage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final courseId = arguments['courseId'];
+          return MaterialPageRoute(
+            builder: (context) => CreateAttendancePage(courseId: courseId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/teacher/recap":
         return MaterialPageRoute(
           builder: (context) => const RecapClaassListPage(),
         );
       case "/teacher/recap/course":
-        return MaterialPageRoute(
-          builder: (context) => const CourseRecapPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final courseId = arguments['courseId'];
+          return MaterialPageRoute(
+            builder: (context) => CourseRecapPage(courseId: courseId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
+
       default:
         return MaterialPageRoute(
           builder: (context) => const NotFoundPage(),

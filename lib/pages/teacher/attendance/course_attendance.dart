@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
+import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/components/teacher/attendance_box.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
+import 'package:student_attendance/models/teacher/course_attendance.dart';
 
 class CourseAttendancePage extends StatelessWidget {
-  const CourseAttendancePage({super.key});
+  const CourseAttendancePage({super.key, required this.courseId});
+  final int courseId;
 
   @override
   Widget build(BuildContext context) {
     TeacherTabBloc teacherTab = context.read<TeacherTabBloc>();
+    AttendanceBloc attendanceBloc = context.read<AttendanceBloc>();
+    attendanceBloc.add(GetCourseAttendanceEvent(courseId: courseId));
     return Scaffold(
       body: Column(
         children: [
@@ -35,38 +41,51 @@ class CourseAttendancePage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Bahasa Indonesia (XII IPA 1)",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w500,
+                      BlocBuilder<AttendanceBloc, AttendanceState>(
+                        builder: (context, state) {
+                          if (state is AttendanceGetLoading) {
+                            return const CenterLoading();
+                          }
+                          if (state is AttendanceGetSuccess) {
+                            Course course = state.courseAttendance.course;
+                            return SizedBox(
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "${course.name} (${course.claass})",
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  Text(
+                                    course.semester,
+                                    style: const TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(context,
+                                          "/teacher/attendance/create",arguments: {
+                                            "courseId": state.courseAttendance.course.id
+                                          });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xFF696CFF),
+                                    ),
+                                    child: const Text("Buat Absensi"),
+                                  ),
+                                ],
                               ),
-                            ),
-                            const Text(
-                              "(Genap) 2022/2023",
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, "/teacher/attendance/create");
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF696CFF),
-                              ),
-                              child: const Text("Buat Absensi"),
-                            ),
-                          ],
-                        ),
+                            );
+                          }
+                          return Container();
+                        },
                       )
                     ],
                   ),
@@ -74,7 +93,7 @@ class CourseAttendancePage extends StatelessWidget {
                 const Positioned(
                   top: 0,
                   left: 0,
-                  child: PrevPageButton(),
+                  child: BackButton(),
                 ),
               ],
             ),
@@ -82,101 +101,32 @@ class CourseAttendancePage extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: ListView(
-                children: const [
-                  AttendanceBox(),
-                  AttendanceBox(),
-                ],
+              child: BlocConsumer<AttendanceBloc, AttendanceState>(
+                listener: (context, state) {
+                  // TODO: implement listener
+                },
+                builder: (context, state) {
+                  if (state is AttendanceGetSuccess) {
+                    return ListView(
+                      children: List<Widget>.generate(
+                        state.courseAttendance.attendances.length,
+                        (index) {
+                          return AttendanceBox(
+                            attendance:
+                                state.courseAttendance.attendances[index],
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  return Container();
+                },
               ),
             ),
           ),
         ],
       ),
       bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
-    );
-  }
-}
-
-class AttendanceBox extends StatelessWidget {
-  const AttendanceBox({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Color(0xFFC4C4C4),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: const Text(
-              "Pertemuan 1",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, "/teacher/attendance/attend");
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.people),
-                        SizedBox(width: 5),
-                        Text(
-                          "Kehadiran",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 5,
-                      height: 5,
-                      child: Checkbox(
-                        value: false,
-                        onChanged: (value) {},
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.delete),
-                    )
-                  ],
-                )
-              ],
-            ),
-          )
-        ],
-      ),
     );
   }
 }

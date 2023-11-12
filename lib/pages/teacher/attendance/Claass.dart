@@ -9,8 +9,6 @@ class ClaassPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TeacherCourseBloc teacherCourseBloc = context.read<TeacherCourseBloc>();
-    // teacherCourseBloc.add(GetTeacherCourseEvent());
     return Scaffold(
       body: Column(
         children: [

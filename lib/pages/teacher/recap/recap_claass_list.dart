@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/components/claass_list.dart';
 
 class RecapClaassListPage extends StatelessWidget {
   const RecapClaassListPage({super.key});
