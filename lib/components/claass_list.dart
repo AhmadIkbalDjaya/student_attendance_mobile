@@ -160,23 +160,13 @@ class ClaassList extends StatelessWidget {
                                           width: double.infinity,
                                           child: ElevatedButton(
                                             onPressed: () {
-                                              if (nextpage == "attendance") {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  "/teacher/attendance/course",
-                                                  arguments: {
-                                                    "courseId": course.id
-                                                  },
-                                                );
-                                              } else if (nextpage == "recap") {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  "/teacher/recap/course",
-                                                  arguments: {
-                                                    "courseId": course.id
-                                                  },
-                                                );
-                                              }
+                                              Navigator.pushNamed(
+                                                context,
+                                                "/teacher/$nextpage/course",
+                                                arguments: {
+                                                  "courseId": course.id
+                                                },
+                                              );
                                             },
                                             style: ElevatedButton.styleFrom(
                                               backgroundColor:

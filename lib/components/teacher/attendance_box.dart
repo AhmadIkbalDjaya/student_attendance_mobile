@@ -50,7 +50,7 @@ class AttendanceBox extends StatelessWidget {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        "/teacher/attendance/attend",
+                        "/teacher/attendance/student_attendance",
                         arguments: {
                           "attendanceId": attendance.id,
                         },

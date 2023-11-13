@@ -5,6 +5,7 @@ import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
 import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
 import 'package:student_attendance/bloc/admin/teacher/teacher_bloc.dart';
 import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
+import 'package:student_attendance/bloc/teacher/course_recap/course_recap_bloc.dart';
 import 'package:student_attendance/bloc/teacher/create_attendance/create_attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/student_attendance/student_attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/teacher_course/teacher_course_bloc.dart';
@@ -54,6 +55,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => StudentAttendanceBloc(),
+        ),
+        BlocProvider(
+          create: (context) => CourseRecapBloc(),
         ),
       ],
       child: MaterialApp(

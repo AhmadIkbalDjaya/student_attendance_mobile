@@ -37,9 +37,8 @@ class ClaassPage extends StatelessWidget {
                 vertical: 15,
                 horizontal: 20,
               ),
-              child: BlocConsumer<TeacherCourseBloc, TeacherCourseState>(
-                listener: (context, state) {},
-                builder: (context, state) {
+              child: BlocBuilder<TeacherCourseBloc, TeacherCourseState>(
+                builder: (conteximpot, state) {
                   if (state is TeacherCourseGetLoading) {
                     return const CenterLoading();
                   }

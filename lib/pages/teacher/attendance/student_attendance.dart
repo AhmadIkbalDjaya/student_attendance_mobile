@@ -6,8 +6,8 @@ import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/models/teacher/student_attendance.dart';
 
-class AttendancePage extends StatelessWidget {
-  const AttendancePage({super.key, required this.attendanceId});
+class StudentAttendancePage extends StatelessWidget {
+  const StudentAttendancePage({super.key, required this.attendanceId});
   final int attendanceId;
 
   @override
