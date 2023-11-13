@@ -214,9 +214,16 @@ class MyRoute {
           );
         }
       case "/teacher/attendance/attend":
-        return MaterialPageRoute(
-          builder: (context) => const AttendancePage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final int attendanceId = arguments["attendanceId"];
+          return MaterialPageRoute(
+            builder: (context) => AttendancePage(attendanceId: attendanceId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/teacher/attendance/create":
         if (arguments != null && arguments is Map<String, dynamic>) {
           final courseId = arguments['courseId'];

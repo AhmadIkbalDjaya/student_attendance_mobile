@@ -49,7 +49,12 @@ class AttendanceBox extends StatelessWidget {
                   child: InkWell(
                     onTap: () {
                       Navigator.pushNamed(
-                          context, "/teacher/attendance/attend");
+                        context,
+                        "/teacher/attendance/attend",
+                        arguments: {
+                          "attendanceId": attendance.id,
+                        },
+                      );
                     },
                     child: const Row(
                       children: [
