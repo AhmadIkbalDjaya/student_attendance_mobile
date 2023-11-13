@@ -10,24 +10,50 @@ part 'attendance_state.dart';
 
 class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
   AttendanceBloc() : super(AttendanceInitial()) {
-    on<GetCourseAttendanceEvent>((event, emit) async {
-      try {
-        emit(AttendanceGetLoading());
-        final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/teacher/attendance/list/${event.courseId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
-        );
-        if (response.statusCode == 200) {
-          emit(AttendanceGetSuccess(
-              courseAttendance: courseAttendanceFromJson(response.body)));
-        } else {
-          emit(
-              AttendanceFailure(message: jsonDecode(response.body)['message']));
+    on<GetCourseAttendanceEvent>(
+      (event, emit) async {
+        try {
+          emit(AttendanceGetLoading());
+          final response = await http.get(
+            Uri.parse(
+                "https://mobile.attendance.sman17gowa.com/api/teacher/attendance/list/${event.courseId}"),
+            headers: {HttpHeaders.acceptHeader: "application/json"},
+          );
+          if (response.statusCode == 200) {
+            emit(AttendanceGetSuccess(
+                courseAttendance: courseAttendanceFromJson(response.body)));
+          } else {
+            emit(AttendanceFailure(
+                message: jsonDecode(response.body)['message']));
+          }
+        } catch (e) {
+          emit(AttendanceFailure(message: e.toString()));
         }
-      } catch (e) {
-        emit(AttendanceFailure(message: e.toString()));
-      }
-    });
+      },
+    );
+
+    on<DeleteAttendanceEvent>(
+      (event, emit) async {
+        try {
+          emit(AttendanceLoading());
+          final response = await http.delete(
+            Uri.parse(
+                "https://mobile.attendance.sman17gowa.com/api/teacher/attendance/${event.attendanceId}"),
+            headers: {
+              HttpHeaders.acceptHeader: "application/json",
+            },
+          );
+          if (response.statusCode == 200) {
+            emit(AttendanceDeleteSuccess());
+          } else {
+            emit(
+              AttendanceFailure(message: jsonDecode(response.body)["message"]),
+            );
+          }
+        } catch (e) {
+          emit(AttendanceFailure(message: e.toString()));
+        }
+      },
+    );
   }
 }

@@ -199,14 +199,7 @@ class AdminStudentPage extends StatelessWidget {
                                                         ),
                                                         content: state
                                                                 is StudentLoading
-                                                            ? const Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  CircularProgressIndicator(),
-                                                                ],
-                                                              )
+                                                            ? const CenterLoading()
                                                             : Text(
                                                                 "Yakin Ingin Menghapus ${student.name}?",
                                                                 textAlign:

@@ -5,6 +5,8 @@ sealed class AttendanceState {}
 
 final class AttendanceInitial extends AttendanceState {}
 
+class AttendanceLoading extends AttendanceState {}
+
 class AttendanceGetLoading extends AttendanceState {}
 
 class AttendanceGetSuccess extends AttendanceState {
@@ -12,7 +14,7 @@ class AttendanceGetSuccess extends AttendanceState {
   AttendanceGetSuccess({required this.courseAttendance});
 }
 
-class AttendanceLoading extends AttendanceState {}
+class AttendanceDeleteSuccess extends AttendanceState {}
 
 class AttendanceFailure extends AttendanceState {
   String message;

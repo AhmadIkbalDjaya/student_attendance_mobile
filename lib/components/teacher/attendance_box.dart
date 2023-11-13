@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
+import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/teacher/course_attendance.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AttendanceBox extends StatelessWidget {
-  const AttendanceBox({super.key, required this.attendance});
+  const AttendanceBox(
+      {super.key, required this.attendance, required this.courseId});
   final Attendance attendance;
+  final int courseId;
   @override
   Widget build(BuildContext context) {
+    AttendanceBloc attendanceBloc = context.read<AttendanceBloc>();
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[300],
@@ -69,7 +76,66 @@ class AttendanceBox extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return BlocConsumer<AttendanceBloc,
+                                AttendanceState>(
+                              listener: (context, state) {
+                                if (state is AttendanceDeleteSuccess) {
+                                  Navigator.pop(context);
+                                  attendanceBloc.add(
+                                    GetCourseAttendanceEvent(
+                                        courseId: courseId),
+                                  );
+                                  showCostumSnackBar(
+                                    context: context,
+                                    message: "Absensi Berhasil Dihapus",
+                                    type: "success",
+                                  );
+                                }
+                                if (state is AttendanceFailure) {
+                                  showCostumSnackBar(
+                                    context: context,
+                                    message: state.message,
+                                    type: "danger",
+                                  );
+                                }
+                              },
+                              builder: (context, state) {
+                                return AlertDialog(
+                                  title: const Text("Konfirmasi Hapus"),
+                                  content: state is AttendanceLoading
+                                      ? const CenterLoading()
+                                      : Text(
+                                          "Yakin Ingin Menghapus ${attendance.title}",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text("Tidak"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        attendanceBloc.add(
+                                          DeleteAttendanceEvent(
+                                            attendanceId: attendance.id,
+                                          ),
+                                        );
+                                      },
+                                      child: const Text("Ya"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
                       icon: const Icon(Icons.delete),
                     )
                   ],

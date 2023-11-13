@@ -70,9 +70,11 @@ class CourseAttendancePage extends StatelessWidget {
                                   const SizedBox(height: 10),
                                   ElevatedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(context,
-                                          "/teacher/attendance/create",arguments: {
-                                            "courseId": state.courseAttendance.course.id
+                                      Navigator.pushNamed(
+                                          context, "/teacher/attendance/create",
+                                          arguments: {
+                                            "courseId":
+                                                state.courseAttendance.course.id
                                           });
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -112,6 +114,7 @@ class CourseAttendancePage extends StatelessWidget {
                         state.courseAttendance.attendances.length,
                         (index) {
                           return AttendanceBox(
+                            courseId: courseId,
                             attendance:
                                 state.courseAttendance.attendances[index],
                           );
