@@ -207,36 +207,6 @@ class CourseRecapPage extends StatelessWidget {
                                 );
                               },
                             ),
-                            // const [
-                            //   DataRow(
-                            //     cells: [
-                            //       DataCell(
-                            //         Text("1"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("Ahmad Ikbal Djaya"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("60200120073"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("P"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("1"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("1"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("1"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("1"),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ],
                           ),
                         ),
                         ElevatedButton(

@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/teacher/student_attendance/student_attendance_bloc.dart';
 import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/cubit/radio_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/models/teacher/student_attendance.dart';
 
 class StudentAttendancePage extends StatelessWidget {
-  const StudentAttendancePage({super.key, required this.attendanceId});
+  StudentAttendancePage({super.key, required this.attendanceId});
   final int attendanceId;
+  final RadioCubit idsValue = RadioCubit();
+  final RadioCubit statusesValue = RadioCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +196,20 @@ class StudentAttendancePage extends StatelessWidget {
               child:
                   BlocConsumer<StudentAttendanceBloc, StudentAttendanceState>(
                 listener: (context, state) {
-                  // TODO: implement listener
+                  if (state is StudentAttendanceGetSuccess) {
+                    for (var i = 0;
+                        i < state.studentAttendance.studentAttendances.length;
+                        i++) {
+                      StudentAttendanceElement studentAttendance =
+                          state.studentAttendance.studentAttendances[i];
+
+                      idsValue.setInitValue(
+                        i,
+                        studentAttendance.id.toString(),
+                      );
+                      statusesValue.setInitValue(i, studentAttendance.statusId);
+                    }
+                  }
                 },
                 builder: (context, state) {
                   if (state is StudentAttendanceGetLoading) {
@@ -298,35 +314,68 @@ class StudentAttendancePage extends StatelessWidget {
                                       ),
                                     ),
                                     DataCell(
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Radio(
-                                            value: "1",
-                                            groupValue:
-                                                studentAttendance.statusId,
-                                            onChanged: (value) {},
-                                          ),
-                                          Radio(
-                                            value: "2",
-                                            groupValue:
-                                                studentAttendance.statusId,
-                                            onChanged: (value) {},
-                                          ),
-                                          Radio(
-                                            value: "3",
-                                            groupValue:
-                                                studentAttendance.statusId,
-                                            onChanged: (value) {},
-                                          ),
-                                          Radio(
-                                            value: "4",
-                                            groupValue:
-                                                studentAttendance.statusId,
-                                            onChanged: (value) {},
-                                          ),
-                                        ],
+                                      BlocBuilder<RadioCubit, List<String>>(
+                                        bloc: statusesValue,
+                                        builder: (context, state) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Radio(
+                                                value: "1",
+                                                groupValue: statusesValue
+                                                        .state.isNotEmpty
+                                                    ? statusesValue.state[index]
+                                                    : null,
+                                                onChanged: (value) {
+                                                  statusesValue.setRadioValue(
+                                                    index,
+                                                    "1",
+                                                  );
+                                                },
+                                              ),
+                                              Radio(
+                                                value: "2",
+                                                groupValue: statusesValue
+                                                        .state.isNotEmpty
+                                                    ? statusesValue.state[index]
+                                                    : null,
+                                                onChanged: (value) {
+                                                  statusesValue.setRadioValue(
+                                                    index,
+                                                    "2",
+                                                  );
+                                                },
+                                              ),
+                                              Radio(
+                                                value: "3",
+                                                groupValue: statusesValue
+                                                        .state.isNotEmpty
+                                                    ? statusesValue.state[index]
+                                                    : null,
+                                                onChanged: (value) {
+                                                  statusesValue.setRadioValue(
+                                                    index,
+                                                    "3",
+                                                  );
+                                                },
+                                              ),
+                                              Radio(
+                                                value: "4",
+                                                groupValue: statusesValue
+                                                        .state.isNotEmpty
+                                                    ? statusesValue.state[index]
+                                                    : null,
+                                                onChanged: (value) {
+                                                  statusesValue.setRadioValue(
+                                                    index,
+                                                    "4",
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       ),
                                     ),
                                   ],
