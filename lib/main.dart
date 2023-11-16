@@ -9,6 +9,7 @@ import 'package:student_attendance/bloc/teacher/course_recap/course_recap_bloc.d
 import 'package:student_attendance/bloc/teacher/create_attendance/create_attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/student_attendance/student_attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/teacher_course/teacher_course_bloc.dart';
+import 'package:student_attendance/bloc/teacher/update_student_attendance/update_student_attendance_bloc.dart';
 import 'package:student_attendance/cubit/admin_drawer_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
@@ -55,6 +56,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => StudentAttendanceBloc(),
+        ),
+        BlocProvider(
+          create: (context) => UpdateStudentAttendanceBloc(),
         ),
         BlocProvider(
           create: (context) => CourseRecapBloc(),

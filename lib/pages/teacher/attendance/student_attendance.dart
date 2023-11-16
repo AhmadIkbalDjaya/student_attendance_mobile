@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/teacher/student_attendance/student_attendance_bloc.dart';
+import 'package:student_attendance/bloc/teacher/update_student_attendance/update_student_attendance_bloc.dart';
 import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/components/loading_button.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/radio_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
@@ -384,12 +387,45 @@ class StudentAttendancePage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF696CFF),
-                          ),
-                          child: const Text("Simpan"),
+                        BlocConsumer<UpdateStudentAttendanceBloc,
+                            UpdateStudentAttendanceState>(
+                          listener: (context, state) {
+                            if (state is UpdateStudentAttendanceSuccess) {
+                              showCostumSnackBar(
+                                context: context,
+                                message: "Absensi Berhasil di simpan",
+                                type: "success",
+                              );
+                              Navigator.pop(context);
+                            }
+                            if (state is UpdateStudentAttendanceFailure) {
+                              showCostumSnackBar(
+                                context: context,
+                                message: state.message,
+                                type: "danger",
+                              );
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is UpdateStudentAttendanceLoading) {
+                              return const LoadingButton();
+                            }
+                            return ElevatedButton(
+                              onPressed: () {
+                                context.read<UpdateStudentAttendanceBloc>().add(
+                                      UpdateEvent(
+                                        attendanceId: attendanceId,
+                                        ids: idsValue.state,
+                                        statusesId: statusesValue.state,
+                                      ),
+                                    );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF696CFF),
+                              ),
+                              child: const Text("Simpan"),
+                            );
+                          },
                         ),
                       ],
                     );
