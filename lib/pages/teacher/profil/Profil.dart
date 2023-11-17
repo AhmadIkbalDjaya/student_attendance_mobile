@@ -65,10 +65,22 @@ class ProfilPage extends StatelessWidget {
                   color: const Color(0xFFD9D9D9),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: const Column(
+                child: Column(
                   children: [
-                    ProfilMenu(icon: Icons.settings, text: "Pengaturan Akun"),
-                    ProfilMenu(icon: Icons.key, text: "Ganti Password"),
+                    ProfilMenu(
+                      icon: Icons.settings,
+                      text: "Pengaturan Akun",
+                      onTap: () {
+                        Navigator.pushNamed(context, "/profil/account");
+                      },
+                    ),
+                    ProfilMenu(
+                      icon: Icons.key,
+                      text: "Ganti Password",
+                      onTap: () {
+                        Navigator.pushNamed(context, "/profil/changePass");
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -94,10 +106,20 @@ class ProfilPage extends StatelessWidget {
                   color: const Color(0xFFD9D9D9),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: const Column(
+                child: Column(
                   children: [
-                    ProfilMenu(icon: Icons.help, text: "Panduan Pengguna"),
-                    ProfilMenu(icon: Icons.info, text: "Tentang Kami"),
+                    ProfilMenu(
+                      icon: Icons.help,
+                      text: "Panduan Pengguna",
+                      onTap: () =>
+                          Navigator.pushNamed(context, "/profil/userGuide"),
+                    ),
+                    ProfilMenu(
+                      icon: Icons.info,
+                      text: "Tentang Kami",
+                      onTap: () =>
+                          Navigator.pushNamed(context, "/profil/aboutUs"),
+                    ),
                   ],
                 ),
               ),
@@ -105,7 +127,9 @@ class ProfilPage extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, "/");
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF696CFF),
             ),
@@ -150,41 +174,52 @@ class ProfilList extends StatelessWidget {
 }
 
 class ProfilMenu extends StatelessWidget {
-  const ProfilMenu({super.key, required this.icon, required this.text});
+  const ProfilMenu({
+    super.key,
+    required this.icon,
+    required this.text,
+    this.onTap = defaultFunction,
+  });
   final IconData icon;
   final String text;
-
+  final Function onTap;
+  static void defaultFunction() {}
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      padding: const EdgeInsets.only(bottom: 6),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 2, color: Colors.grey),
+    return GestureDetector(
+      onTap: () {
+        onTap();
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.only(bottom: 6),
+        decoration: const BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 2, color: Colors.grey),
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(icon, size: 28),
-              const SizedBox(width: 20),
-              Text(
-                text,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(icon, size: 28),
+                const SizedBox(width: 20),
+                Text(
+                  text,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Icon(
-            Icons.navigate_next,
-            size: 35,
-          ),
-        ],
+              ],
+            ),
+            const Icon(
+              Icons.navigate_next,
+              size: 35,
+            ),
+          ],
+        ),
       ),
     );
   }

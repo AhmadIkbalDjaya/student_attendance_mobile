@@ -27,6 +27,11 @@ import 'package:student_attendance/pages/teacher/attendance/student_attendance.d
 import 'package:student_attendance/pages/teacher/attendance/Claass.dart';
 import 'package:student_attendance/pages/teacher/attendance/create_attendance.dart';
 import 'package:student_attendance/pages/teacher/attendance/course_attendance.dart';
+import 'package:student_attendance/pages/teacher/profil/about_us.dart';
+import 'package:student_attendance/pages/teacher/profil/account.dart';
+import 'package:student_attendance/pages/teacher/profil/change_password.dart';
+import 'package:student_attendance/pages/teacher/profil/profil.dart';
+import 'package:student_attendance/pages/teacher/profil/user_guide.dart';
 import 'package:student_attendance/pages/teacher/recap/course_recap.dart';
 import 'package:student_attendance/pages/teacher/recap/recap_claass_list.dart';
 import 'package:student_attendance/pages/teacher/teacher.dart';
@@ -251,6 +256,26 @@ class MyRoute {
             builder: (context) => const NotFoundPage(),
           );
         }
+      case "/profil":
+        return MaterialPageRoute(
+          builder: (context) => const ProfilPage(),
+        );
+      case "/profil/account":
+        return MaterialPageRoute(
+          builder: (context) => const AccountPage(),
+        );
+      case "/profil/changePass":
+        return MaterialPageRoute(
+          builder: (context) => ChangePasswordPage(),
+        );
+      case "/profil/userGuide":
+        return MaterialPageRoute(
+          builder: (context) => const UserGuidePage(),
+        );
+      case "/profil/aboutUs":
+        return MaterialPageRoute(
+          builder: (context) => const AboutUsPage(),
+        );
 
       default:
         return MaterialPageRoute(

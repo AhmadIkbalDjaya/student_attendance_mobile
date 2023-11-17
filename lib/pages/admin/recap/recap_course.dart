@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/prev_page_button.dart';
 
 class AdminRecapCoursePage extends StatelessWidget {
   const AdminRecapCoursePage({super.key});
@@ -70,7 +69,7 @@ class AdminRecapCoursePage extends StatelessWidget {
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: PrevPageButton(),
+                  child: BackButton(),
                 ),
               ],
             ),
