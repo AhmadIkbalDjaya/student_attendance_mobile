@@ -128,33 +128,46 @@ class ProfilPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          BlocListener<LoginBloc, LoginState>(
+          BlocConsumer<LoginBloc, LoginState>(
             listener: (context, state) {
               if (state is UserSignOut) {
                 Navigator.pushNamed(context, "/");
               }
             },
-            child: ElevatedButton(
-              onPressed: () {
-                context.read<LoginBloc>().add(SignOut());
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF696CFF),
-              ),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.logout, size: 24),
-                  SizedBox(width: 5),
-                  Text(
-                    "Keluar",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            builder: (context, state) {
+              return ElevatedButton(
+                onPressed: () {
+                  state is LoginLoading
+                      ? null
+                      : context.read<LoginBloc>().add(SignOut());
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF696CFF),
+                ),
+                child: state is LoginLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.logout, size: 24),
+                          SizedBox(width: 5),
+                          Text(
+                            "Keluar",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
+                        ],
+                      ),
+              );
+            },
           ),
         ],
       ),

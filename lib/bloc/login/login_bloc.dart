@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_attendance/models/login.dart';
+import 'package:student_attendance/values/constant.dart' as constant;
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -16,7 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         try {
           emit(LoginLoading());
           final response = await http.post(
-            Uri.parse("https://mobile.attendance.sman17gowa.com/api/login"),
+            Uri.parse("${constant.apiUrl}/login"),
             headers: {HttpHeaders.acceptHeader: "application/json"},
             body: {
               "username": event.username,
@@ -27,7 +28,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             Login login = loginFromJson(response.body);
             emit(UserSignIn(login: login));
             SharedPreferences pref = await SharedPreferences.getInstance();
-            // pref.setBool("login", true);
             pref.setString("token", login.token);
             pref.setString("role", login.role);
             pref.setInt("id", login.user.id);
@@ -50,15 +50,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<SignOut>((event, emit) async {
       if (state is UserSignIn) {
         try {
-          // emit(LoginLoading());
+          emit(LoginLoading());
           SharedPreferences pref = await SharedPreferences.getInstance();
           String? token = pref.getString("token");
-          final response = await http.get(
-              Uri.parse("https://mobile.attendance.sman17gowa.com/api/logout"),
-              headers: {
-                HttpHeaders.acceptHeader: "application/json",
-                HttpHeaders.authorizationHeader: "Bearer $token",
-              });
+          final response =
+              await http.get(Uri.parse("${constant.apiUrl}/logout"), headers: {
+            HttpHeaders.acceptHeader: "application/json",
+            HttpHeaders.authorizationHeader: "Bearer $token",
+          });
           if (response.statusCode == 200) {
             pref.remove("token");
             pref.remove("role");
@@ -69,14 +68,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             pref.remove("phone");
             pref.remove("gender");
             emit(UserSignOut());
+          } else {
+            Login? savedLogin = await getLoginFromSharedPreferences();
+            emit(LoginFailure(message: jsonDecode(response.body)["message"]));
+            if (savedLogin != null) {
+              emit(UserSignIn(login: savedLogin));
+            }
           }
-          // } else {
-          //   // emit(LoginFailure(message: jsonDecode(response.body)["message"]));
-          //   // emit(UserSignIn(login: login));
-          // }
         } catch (e) {
-          // emit(LoginFailure(message: e.toString()));
-          // emit(UserSignIn(login: login));
+          Login? savedLogin = await getLoginFromSharedPreferences();
+          emit(LoginFailure(message: e.toString()));
+          if (savedLogin != null) {
+            emit(UserSignIn(login: savedLogin));
+          }
         }
       }
     });
@@ -92,7 +96,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
   Future<Login?> getLoginFromSharedPreferences() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    // String? isLogin = pref.getString("token");
     String? token = pref.getString("token");
     String? role = pref.getString("role");
     int? id = pref.getInt("id");
@@ -102,13 +105,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     String? phone = pref.getString("phone");
     String? gender = pref.getString("gender");
 
-    // Memeriksa apakah data lengkap sebelum membuat instance Login
     if (token != null &&
         username != null &&
         email != null &&
         id != null &&
         role != null) {
-      // Membuat instance User terlebih dahulu
       User user = User(
         id: id,
         username: username,
@@ -118,7 +119,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         gender: gender,
       );
 
-      // Membuat instance Login dengan nilai dari SharedPreferences
       Login login = Login(
         token: token,
         user: user,

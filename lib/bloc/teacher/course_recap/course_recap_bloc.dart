@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/models/teacher/course_recap.dart';
+import 'package:student_attendance/values/constant.dart' as constant;
 
 part 'course_recap_event.dart';
 part 'course_recap_state.dart';
@@ -14,8 +15,7 @@ class CourseRecapBloc extends Bloc<CourseRecapEvent, CourseRecapState> {
       try {
         emit(CourseRecapGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/teacher/recap/${event.courseId}"),
+          Uri.parse("${constant.apiUrl}/teacher/recap/${event.courseId}"),
           headers: {
             HttpHeaders.acceptHeader: "application/json",
           },

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/models/admin/claass.dart';
+import 'package:student_attendance/values/constant.dart' as constant;
 
 part 'claass_event.dart';
 part 'claass_state.dart';
@@ -14,8 +15,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/claass"),
+          Uri.parse("${constant.apiUrl}/admin/claass"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -32,8 +32,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/claass/${event.claassId}"),
+          Uri.parse("${constant.apiUrl}/admin/claass/${event.claassId}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -50,8 +49,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassLoading());
         final response = await http.post(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/claass"),
+          Uri.parse("${constant.apiUrl}/admin/claass"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "major_id": event.majorId,
@@ -74,8 +72,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassLoading());
         final response = await http.post(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/claass/${event.id}?_method=put"),
+          Uri.parse("${constant.apiUrl}/admin/claass/${event.id}?_method=put"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "major_id": event.majorId,
@@ -98,8 +95,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassLoading());
         final response = await http.delete(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/claass/${event.id}"),
+          Uri.parse("${constant.apiUrl}/admin/claass/${event.id}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:student_attendance/values/constant.dart' as constant;
 import 'package:student_attendance/models/admin/teacher.dart';
 
 part 'teacher_event.dart';
@@ -14,8 +15,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/teacher"),
+          Uri.parse("${constant.apiUrl}/admin/teacher"),
           headers: {HttpHeaders.acceptHeader: "apllication/json"},
         );
         if (response.statusCode == 200) {
@@ -32,8 +32,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/teacher/${event.teacherId}"),
+          Uri.parse("${constant.apiUrl}/admin/teacher/${event.teacherId}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -50,8 +49,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherLoading());
         final response = await http.post(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/teacher"),
+          Uri.parse("${constant.apiUrl}/admin/teacher"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "username": event.username,
@@ -78,7 +76,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
         emit(TeacherLoading());
         final response = await http.post(
             Uri.parse(
-                "https://mobile.attendance.sman17gowa.com/api/admin/teacher/${event.id}?_method=put"),
+                "${constant.apiUrl}/admin/teacher/${event.id}?_method=put"),
             body: {
               "username": event.username,
               "password": event.password,
@@ -105,8 +103,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherLoading());
         final response = await http.delete(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/teacher/${event.id}"),
+          Uri.parse("${constant.apiUrl}/admin/teacher/${event.id}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {

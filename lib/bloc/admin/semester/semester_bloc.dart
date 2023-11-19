@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:student_attendance/values/constant.dart' as constant;
 import 'package:student_attendance/models/admin/semester.dart';
 
 part 'semester_event.dart';
@@ -14,8 +15,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/semester"),
+          Uri.parse("${constant.apiUrl}/admin/semester"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -32,8 +32,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.semesterId}"),
+          Uri.parse("${constant.apiUrl}/admin/semester/${event.semesterId}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -51,8 +50,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterLoading());
         final response = await http.post(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/semester"),
+          Uri.parse("${constant.apiUrl}/admin/semester"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "start_year": event.startYear,
@@ -75,7 +73,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
         emit(SemesterLoading());
         final response = await http.post(
           Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.id}?_method=put"),
+              "${constant.apiUrl}/admin/semester/${event.id}?_method=put"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "start_year": event.startYear,
@@ -97,8 +95,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterLoading());
         final response = await http.delete(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.id}"),
+          Uri.parse("${constant.apiUrl}/admin/semester/${event.id}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -115,8 +112,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.id}/setActive"),
+          Uri.parse("${constant.apiUrl}/admin/semester/${event.id}/setActive"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {

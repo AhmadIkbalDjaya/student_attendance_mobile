@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:student_attendance/values/constant.dart' as constant;
 
 part 'create_attendance_event.dart';
 part 'create_attendance_state.dart';
@@ -15,7 +16,7 @@ class CreateAttendanceBloc
         emit(CreateAttendanceLoading());
         final response = await http.post(
           Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/teacher/attendance/create/${event.courseId}"),
+              "${constant.apiUrl}/teacher/attendance/create/${event.courseId}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "title": event.title,

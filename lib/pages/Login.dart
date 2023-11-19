@@ -13,6 +13,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginBloc loginBloc = context.read<LoginBloc>();
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 0, left: 50, right: 50),

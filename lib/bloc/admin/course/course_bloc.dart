@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:student_attendance/values/constant.dart' as constant;
 import 'package:student_attendance/models/admin/course.dart';
 
 part 'course_event.dart';
@@ -14,8 +15,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/course"),
+          Uri.parse("${constant.apiUrl}/admin/course"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -32,8 +32,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}"),
+          Uri.parse("${constant.apiUrl}/admin/course/${event.id}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {
@@ -50,8 +49,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseLoading());
         final response = await http.post(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/course"),
+          Uri.parse("${constant.apiUrl}/admin/course"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "name": event.name,
@@ -75,8 +73,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseLoading());
         final response = await http.post(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}?_method=put"),
+          Uri.parse("${constant.apiUrl}/admin/course/${event.id}?_method=put"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "name": event.name,
@@ -100,8 +97,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseLoading());
         final response = await http.delete(
-          Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}"),
+          Uri.parse("${constant.apiUrl}/admin/course/${event.id}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
         );
         if (response.statusCode == 200) {

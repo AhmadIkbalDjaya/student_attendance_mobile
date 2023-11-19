@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:student_attendance/values/constant.dart' as constant;
 part 'update_student_attendance_event.dart';
 part 'update_student_attendance_state.dart';
 
@@ -20,7 +20,7 @@ class UpdateStudentAttendanceBloc
         }
         final response = await http.post(
           Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/teacher/attendance/update/${event.attendanceId}"),
+              "${constant.apiUrl}/teacher/attendance/update/${event.attendanceId}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: requrestBody,
         );
