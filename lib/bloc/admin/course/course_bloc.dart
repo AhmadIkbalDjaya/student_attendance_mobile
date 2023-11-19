@@ -11,50 +11,65 @@ part 'course_state.dart';
 class CourseBloc extends Bloc<CourseEvent, CourseState> {
   CourseBloc() : super(CourseInitial()) {
     on<GetAllCourseEvent>((event, emit) async {
-      emit(CourseGetLoading());
-      final response = await http.get(
-        Uri.parse("https://mobile.attendance.sman17gowa.com/api/admin/course"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(CourseAllSuccess(courses: coursesFromJson(response.body)));
+      try {
+        emit(CourseGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/course"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(CourseAllSuccess(courses: coursesFromJson(response.body)));
+        } else {
+          emit(CourseFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(CourseFailure(message: e.toString()));
+      }
     });
 
     on<GetDetailCourseEvent>((event, emit) async {
-      emit(CourseGetLoading());
-      final response = await http.get(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(CourseDetailSuccess(course: courseFromJson(response.body)));
+      try {
+        emit(CourseGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(CourseDetailSuccess(course: courseFromJson(response.body)));
+        } else {
+          emit(CourseFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(CourseFailure(message: e.toString()));
+      }
     });
 
-    on<AddCourseEvent>(
-      (event, emit) async {
-        try {
-          emit(CourseLoading());
-          final response = await http.post(
-            Uri.parse(
-                "https://mobile.attendance.sman17gowa.com/api/admin/course"),
-            headers: {HttpHeaders.acceptHeader: "application/json"},
-            body: {
-              "name": event.name,
-              "claass_id": event.claassId,
-              "teacher_id": event.teacherId,
-              "semester_id": event.semesterId,
-            },
-          );
-          if (response.statusCode == 200) {
-            emit(CourseAddSuccess());
-          } else {
-            final message = jsonDecode(response.body)["message"];
-            emit(CourseValidationError(message: message));
-          }
-        } catch (e) {
-          emit(CourseFailure());
+    on<AddCourseEvent>((event, emit) async {
+      try {
+        emit(CourseLoading());
+        final response = await http.post(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/course"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+          body: {
+            "name": event.name,
+            "claass_id": event.claassId,
+            "teacher_id": event.teacherId,
+            "semester_id": event.semesterId,
+          },
+        );
+        if (response.statusCode == 200) {
+          emit(CourseAddSuccess());
+        } else {
+          final message = jsonDecode(response.body)["message"];
+          emit(CourseValidationError(message: message));
         }
-      },
-    );
+      } catch (e) {
+        emit(CourseFailure(message: e.toString()));
+      }
+    });
 
     on<EditCourseEvent>((event, emit) async {
       try {
@@ -77,21 +92,25 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
           emit(CourseValidationError(message: message));
         }
       } catch (e) {
-        emit(CourseFailure());
+        emit(CourseFailure(message: e.toString()));
       }
     });
 
     on<DeleteCourseEvent>((event, emit) async {
-      emit(CourseLoading());
-      final response = await http.delete(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      if (response.statusCode == 200) {
-        emit(CourseDeleteSuccess());
-      } else {
-        emit(CourseFailure());
+      try {
+        emit(CourseLoading());
+        final response = await http.delete(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/course/${event.id}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(CourseDeleteSuccess());
+        } else {
+          emit(CourseFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(CourseFailure(message: e.toString()));
       }
     });
   }

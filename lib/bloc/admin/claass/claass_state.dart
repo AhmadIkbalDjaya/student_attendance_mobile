@@ -17,7 +17,10 @@ class ClaassEditSuccess extends ClaassState {}
 
 class ClaassDeleteSuccess extends ClaassState {}
 
-class ClaassFailure extends ClaassState {}
+class ClaassFailure extends ClaassState {
+  String message;
+  ClaassFailure({this.message = "error"});
+}
 
 class ClaassAllSuccess extends ClaassState {
   final List<Claass> claasses;
@@ -33,4 +36,3 @@ class ClaassValidationError extends ClaassState {
   String message;
   ClaassValidationError({required this.message});
 }
-

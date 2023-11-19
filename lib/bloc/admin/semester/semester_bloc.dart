@@ -11,23 +11,40 @@ part 'semester_state.dart';
 class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
   SemesterBloc() : super(SemesterInitial()) {
     on<GetAllSemesterEvent>((event, emit) async {
-      emit(SemesterGetLoading());
-      final response = await http.get(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/semester"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(SemesterAllSuccess(semesters: semestersFromJson(response.body)));
+      try {
+        emit(SemesterGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/semester"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(SemesterAllSuccess(semesters: semestersFromJson(response.body)));
+        } else {
+          emit(SemesterFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(SemesterFailure(message: e.toString()));
+      }
     });
 
     on<GetDetailSemesterEvent>((event, emit) async {
-      emit(SemesterGetLoading());
-      final response = await http.get(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.semesterId}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(SemesterDetailSuccess(semester: semesterFromJson(response.body)));
+      try {
+        emit(SemesterGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.semesterId}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(
+              SemesterDetailSuccess(semester: semesterFromJson(response.body)));
+        } else {
+          emit(SemesterFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(SemesterFailure(message: e.toString()));
+      }
     });
 
     on<AddSemesterEvent>((event, emit) async {
@@ -49,7 +66,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
           emit(SemesterValidationError(message: message));
         }
       } catch (e) {
-        emit(SemesterFailure());
+        emit(SemesterFailure(message: e.toString()));
       }
     });
 
@@ -72,21 +89,25 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
           emit(SemesterValidationError(message: message));
         }
       } catch (e) {
-        emit(SemesterFailure());
+        emit(SemesterFailure(message: e.toString()));
       }
     });
 
     on<DeleteSemesterEvent>((event, emit) async {
-      emit(SemesterLoading());
-      final response = await http.delete(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.id}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      if (response.statusCode == 200) {
-        emit(SemesterDeleteSuccess());
-      } else {
-        emit(SemesterFailure());
+      try {
+        emit(SemesterLoading());
+        final response = await http.delete(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/semester/${event.id}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(SemesterDeleteSuccess());
+        } else {
+          emit(SemesterFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(SemesterFailure(message: e.toString()));
       }
     });
 
@@ -105,7 +126,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
           emit(SemesterValidationError(message: message));
         }
       } catch (e) {
-        emit(SemesterFailure());
+        emit(SemesterFailure(message: e.toString()));
       }
     });
   }

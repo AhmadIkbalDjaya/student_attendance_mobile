@@ -34,4 +34,7 @@ class SemesterValidationError extends SemesterState {
   SemesterValidationError({required this.message});
 }
 
-class SemesterFailure extends SemesterState {}
+class SemesterFailure extends SemesterState {
+  String message;
+  SemesterFailure({this.message = "error"});
+}

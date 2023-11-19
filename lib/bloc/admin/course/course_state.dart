@@ -32,4 +32,7 @@ class CourseValidationError extends CourseState {
   CourseValidationError({required this.message});
 }
 
-class CourseFailure extends CourseState {}
+class CourseFailure extends CourseState {
+  String message;
+  CourseFailure({this.message = "error"});
+}

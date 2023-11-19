@@ -11,22 +11,39 @@ part 'claass_state.dart';
 class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
   ClaassBloc() : super(ClaassInitial()) {
     on<GetAllClaassEvent>((event, emit) async {
-      emit(ClaassGetLoading());
-      final response = await http.get(
-        Uri.parse("https://mobile.attendance.sman17gowa.com/api/admin/claass"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(ClaassAllSuccess(claasses: claassesFromJson(response.body)));
+      try {
+        emit(ClaassGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/claass"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(ClaassAllSuccess(claasses: claassesFromJson(response.body)));
+        } else {
+          emit(ClaassFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(ClaassFailure(message: e.toString()));
+      }
     });
 
     on<GetDetailClaassEvent>((event, emit) async {
-      emit(ClaassGetLoading());
-      final response = await http.get(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/claass/${event.claassId}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(ClaassDetailSuccess(claass: claassFromJson(response.body)));
+      try {
+        emit(ClaassGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/claass/${event.claassId}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(ClaassDetailSuccess(claass: claassFromJson(response.body)));
+        } else {
+          emit(ClaassFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(ClaassFailure(message: e.toString()));
+      }
     });
 
     on<AddClaassEvent>((event, emit) async {
@@ -78,16 +95,20 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
     });
 
     on<DeleteClaassEvent>((event, emit) async {
-      emit(ClaassLoading());
-      final response = await http.delete(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/claass/${event.id}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      if (response.statusCode == 200) {
-        emit(ClaassDeleteSuccess());
-      } else {
-        emit(ClaassFailure());
+      try {
+        emit(ClaassLoading());
+        final response = await http.delete(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/claass/${event.id}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(ClaassDeleteSuccess());
+        } else {
+          emit(ClaassFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(ClaassFailure(message: e.toString()));
       }
     });
   }

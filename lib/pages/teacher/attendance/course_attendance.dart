@@ -103,10 +103,7 @@ class CourseAttendancePage extends StatelessWidget {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: BlocConsumer<AttendanceBloc, AttendanceState>(
-                listener: (context, state) {
-                  // TODO: implement listener
-                },
+              child: BlocBuilder<AttendanceBloc, AttendanceState>(
                 builder: (context, state) {
                   if (state is AttendanceGetSuccess) {
                     return ListView(

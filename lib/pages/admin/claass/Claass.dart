@@ -66,6 +66,9 @@ class AdminClaassPage extends StatelessWidget {
                 children: [
                   BlocBuilder<ClaassBloc, ClaassState>(
                     builder: (context, state) {
+                      if (state is ClaassFailure) {
+                        return Text(state.message);
+                      }
                       if (state is ClaassGetLoading) {
                         return const CenterLoading();
                       }

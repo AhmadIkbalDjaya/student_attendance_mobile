@@ -17,7 +17,10 @@ class StudentEditSuccess extends StudentState {}
 
 class StudentDeleteSuccess extends StudentState {}
 
-class StudentFailure extends StudentState {}
+class StudentFailure extends StudentState {
+  String message;
+  StudentFailure({this.message = "error"});
+}
 
 class StudentAllSuccess extends StudentState {
   final List<Student> students;

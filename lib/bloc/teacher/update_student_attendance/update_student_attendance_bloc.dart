@@ -23,10 +23,6 @@ class UpdateStudentAttendanceBloc
               "https://mobile.attendance.sman17gowa.com/api/teacher/attendance/update/${event.attendanceId}"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: requrestBody,
-          // body: {
-          //   "ids": jsonEncode(event.ids),
-          //   "status_ids": jsonEncode(event.statusesId),
-          // },
         );
         if (response.statusCode == 200) {
           emit(UpdateStudentAttendanceSuccess());

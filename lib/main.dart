@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: "/teacher",
+        initialRoute: "/admin",
         onGenerateRoute: MyRoute().onRoute,
       ),
     );

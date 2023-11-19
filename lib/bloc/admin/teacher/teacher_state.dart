@@ -17,7 +17,10 @@ class TeacherEditSuccess extends TeacherState {}
 
 class TeacherDeleteSuccess extends TeacherState {}
 
-class TeacherFailure extends TeacherState {}
+class TeacherFailure extends TeacherState {
+  String message;
+  TeacherFailure({this.message = "error"});
+}
 
 class TeacherAllSuccess extends TeacherState {
   final List<Teacher> teachers;

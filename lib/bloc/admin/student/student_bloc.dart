@@ -11,22 +11,39 @@ part 'student_state.dart';
 class StudentBloc extends Bloc<StudentEvent, StudentState> {
   StudentBloc() : super(StudentInitial()) {
     on<GetAllStudentEvent>((event, emit) async {
-      emit(StudentGetLoading());
-      final response = await http.get(
-        Uri.parse("https://mobile.attendance.sman17gowa.com/api/admin/student"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(StudentAllSuccess(students: studentsFromJson(response.body)));
+      try {
+        emit(StudentGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/student"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(StudentAllSuccess(students: studentsFromJson(response.body)));
+        } else {
+          emit(StudentFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(StudentFailure(message: e.toString()));
+      }
     });
 
     on<GetDetailStudentEvent>((event, emit) async {
-      emit(StudentGetLoading());
-      final response = await http.get(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.studentId}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(StudentDetailSuccess(student: studentFromJson(response.body)));
+      try {
+        emit(StudentGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.studentId}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(StudentDetailSuccess(student: studentFromJson(response.body)));
+        } else {
+          emit(StudentFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(StudentFailure(message: e.toString()));
+      }
     });
 
     on<AddStudentEvent>((event, emit) async {
@@ -51,7 +68,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           emit(StudentValidationError(message: message));
         }
       } catch (e) {
-        emit(StudentFailure());
+        emit(StudentFailure(message: e.toString()));
       }
     });
 
@@ -77,21 +94,25 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
           emit(StudentValidationError(message: message));
         }
       } catch (e) {
-        emit(StudentFailure());
+        emit(StudentFailure(message: e.toString()));
       }
     });
 
     on<DeleteStudentEvent>((event, emit) async {
-      emit(StudentLoading());
-      final response = await http.delete(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.id}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      if (response.statusCode == 200) {
-        emit(StudentDeleteSuccess());
-      } else {
-        emit(StudentFailure());
+      try {
+        emit(StudentLoading());
+        final response = await http.delete(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/student/${event.id}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(StudentDeleteSuccess());
+        } else {
+          emit(StudentFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(StudentFailure(message: e.toString()));
       }
     });
   }

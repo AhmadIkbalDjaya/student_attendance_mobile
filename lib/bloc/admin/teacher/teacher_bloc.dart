@@ -11,22 +11,39 @@ part 'teacher_state.dart';
 class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
   TeacherBloc() : super(TeacherInitial()) {
     on<GetAllTeacherEvent>((event, emit) async {
-      emit(TeacherGetLoading());
-      final response = await http.get(
-        Uri.parse("https://mobile.attendance.sman17gowa.com/api/admin/teacher"),
-        headers: {HttpHeaders.acceptHeader: "apllication/json"},
-      );
-      emit(TeacherAllSuccess(teachers: teachersFromJson(response.body)));
+      try {
+        emit(TeacherGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/teacher"),
+          headers: {HttpHeaders.acceptHeader: "apllication/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(TeacherAllSuccess(teachers: teachersFromJson(response.body)));
+        } else {
+          emit(TeacherFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(TeacherFailure(message: e.toString()));
+      }
     });
 
     on<GetDetailTeacherEvent>((event, emit) async {
-      emit(TeacherGetLoading());
-      final response = await http.get(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/teacher/${event.teacherId}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      emit(TeacherDetailSuccess(teacher: teacherFromJson(response.body)));
+      try {
+        emit(TeacherGetLoading());
+        final response = await http.get(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/teacher/${event.teacherId}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(TeacherDetailSuccess(teacher: teacherFromJson(response.body)));
+        } else {
+          emit(TeacherFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(TeacherFailure(message: e.toString()));
+      }
     });
 
     on<AddTeacherEvent>((event, emit) async {
@@ -52,7 +69,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
           emit(TeacherValidationError(message: message));
         }
       } catch (e) {
-        emit(TeacherFailure());
+        emit(TeacherFailure(message: e.toString()));
       }
     });
 
@@ -80,21 +97,25 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
           emit(TeacherValidationError(message: message));
         }
       } catch (e) {
-        emit(TeacherFailure());
+        emit(TeacherFailure(message: e.toString()));
       }
     });
 
     on<DeleteTeacherEvent>((event, emit) async {
-      emit(TeacherLoading());
-      final response = await http.delete(
-        Uri.parse(
-            "https://mobile.attendance.sman17gowa.com/api/admin/teacher/${event.id}"),
-        headers: {HttpHeaders.acceptHeader: "application/json"},
-      );
-      if (response.statusCode == 200) {
-        emit(TeacherDeleteSuccess());
-      } else {
-        emit(TeacherFailure());
+      try {
+        emit(TeacherLoading());
+        final response = await http.delete(
+          Uri.parse(
+              "https://mobile.attendance.sman17gowa.com/api/admin/teacher/${event.id}"),
+          headers: {HttpHeaders.acceptHeader: "application/json"},
+        );
+        if (response.statusCode == 200) {
+          emit(TeacherDeleteSuccess());
+        } else {
+          emit(TeacherFailure(message: jsonDecode(response.body)["message"]));
+        }
+      } catch (e) {
+        emit(TeacherFailure(message: e.toString()));
       }
     });
   }
