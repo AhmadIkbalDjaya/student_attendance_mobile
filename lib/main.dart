@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => LoginBloc(),
+          create: (context) => LoginBloc()..add(CheckSignInStatus()),
         ),
         BlocProvider(
           create: (context) => TeacherTabBloc(),
@@ -68,10 +68,23 @@ class MyApp extends StatelessWidget {
           create: (context) => CourseRecapBloc(),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: "/",
-        onGenerateRoute: MyRoute().onRoute,
+      child: BlocBuilder<LoginBloc, LoginState>(
+        builder: (context, state) {
+          String initialRoute = "/";
+          if (state is UserSignIn) {
+            if (state.login.role == "admin") {
+              initialRoute = "/admin";
+            } else if (state.login.role == "teacher") {
+              initialRoute = "/teacher";
+              context.read<TeacherCourseBloc>().add(GetTeacherCourseEvent());
+            }
+          }
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: initialRoute,
+            onGenerateRoute: MyRoute().onRoute,
+          );
+        },
       ),
     );
   }

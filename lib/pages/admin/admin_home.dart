@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/login/login_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: MyAppBar(),
-      drawer: MyDrawer(),
-      body: Padding(
+    return Scaffold(
+      floatingActionButton: BlocConsumer<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state is UserSignOut) {
+            Navigator.pushNamed(context, "/");
+          }
+        },
+        builder: (context, state) {
+          return IconButton(
+            onPressed: () {
+              context.read<LoginBloc>().add(SignOut());
+            },
+            icon: const Icon(Icons.logout),
+          );
+        },
+      ),
+      appBar: const MyAppBar(),
+      drawer: const MyDrawer(),
+      body: const Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 50,
           vertical: 75,

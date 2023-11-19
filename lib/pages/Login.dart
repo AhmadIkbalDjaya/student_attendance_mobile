@@ -156,7 +156,7 @@ class LoginPage extends StatelessWidget {
                     type: "danger",
                   );
                 }
-                if (state is LoginSuccess) {
+                if (state is UserSignIn) {
                   if (state.login.role == "admin") {
                     Navigator.pushReplacementNamed(context, "/admin");
                   } else {
@@ -178,7 +178,7 @@ class LoginPage extends StatelessWidget {
                   onPressed: () {
                     state is LoginLoading
                         ? null
-                        : loginBloc.add(TryLoginEvent(
+                        : loginBloc.add(SignIn(
                             username: usernameController.text,
                             password: passwordController.text,
                           ));

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/login/login_bloc.dart';
 
 class ProfilPage extends StatelessWidget {
   const ProfilPage({super.key});
@@ -126,25 +128,32 @@ class ProfilPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(context, "/");
+          BlocListener<LoginBloc, LoginState>(
+            listener: (context, state) {
+              if (state is UserSignOut) {
+                Navigator.pushNamed(context, "/");
+              }
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF696CFF),
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.logout, size: 24),
-                SizedBox(width: 5),
-                Text(
-                  "Keluar",
-                  style: TextStyle(
-                    fontSize: 20,
+            child: ElevatedButton(
+              onPressed: () {
+                context.read<LoginBloc>().add(SignOut());
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF696CFF),
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.logout, size: 24),
+                  SizedBox(width: 5),
+                  Text(
+                    "Keluar",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

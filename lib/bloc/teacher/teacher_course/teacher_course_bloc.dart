@@ -15,11 +15,11 @@ class TeacherCourseBloc extends Bloc<TeacherCourseEvent, TeacherCourseState> {
         emit(TeacherCourseGetLoading());
         final response = await http.get(
           Uri.parse(
-              "https://mobile.attendance.sman17gowa.com/api/teacherCourses"),
+              "https://mobile.attendance.sman17gowa.com/api/teacher/teacherCourses"),
           headers: {
             HttpHeaders.acceptHeader: "application/json",
             HttpHeaders.authorizationHeader:
-                "Bearer 19|dWPOhkhMBok01DSxAXzsnA94pMUA740pYQT9SnSb330f1de8",
+                "Bearer 45|1UyxF3KLkXDsmdHaqMlX1cMVBZGxHtfF2rDnoLHEe54f7783",
           },
         );
         if (response.statusCode == 200) {

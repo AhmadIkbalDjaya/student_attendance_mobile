@@ -39,6 +39,9 @@ class ClaassPage extends StatelessWidget {
               ),
               child: BlocBuilder<TeacherCourseBloc, TeacherCourseState>(
                 builder: (conteximpot, state) {
+                  if (state is TeacherCourseFailure) {
+                    Text(state.message);
+                  }
                   if (state is TeacherCourseGetLoading) {
                     return const CenterLoading();
                   }

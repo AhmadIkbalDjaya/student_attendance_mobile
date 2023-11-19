@@ -3,12 +3,15 @@ part of 'login_bloc.dart';
 // @immutable
 sealed class LoginEvent {}
 
-class TryLoginEvent extends LoginEvent {
+class SignIn extends LoginEvent {
   String? username;
   String? password;
-  TryLoginEvent({this.username, this.password}){
+  SignIn({this.username, this.password}) {
     username ??= "";
     password ??= "";
   }
-
 }
+
+class SignOut extends LoginEvent {}
+
+class CheckSignInStatus extends LoginEvent {}
