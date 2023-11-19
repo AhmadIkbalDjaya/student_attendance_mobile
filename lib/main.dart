@@ -4,6 +4,7 @@ import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
 import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
 import 'package:student_attendance/bloc/admin/teacher/teacher_bloc.dart';
+import 'package:student_attendance/bloc/login/login_bloc.dart';
 import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/course_recap/course_recap_bloc.dart';
 import 'package:student_attendance/bloc/teacher/create_attendance/create_attendance_bloc.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => LoginBloc(),
+        ),
         BlocProvider(
           create: (context) => TeacherTabBloc(),
         ),
@@ -66,7 +70,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: "/admin",
+        initialRoute: "/",
         onGenerateRoute: MyRoute().onRoute,
       ),
     );

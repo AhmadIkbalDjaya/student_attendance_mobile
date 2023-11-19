@@ -42,7 +42,7 @@ class MyRoute {
     switch (settings.name) {
       case "/":
         return MaterialPageRoute(
-          builder: (context) => const LoginPage(),
+          builder: (context) => LoginPage(),
         );
       case "/splash_screen":
         return MaterialPageRoute(
