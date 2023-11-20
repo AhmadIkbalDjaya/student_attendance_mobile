@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/teacher/profil/account_setting/account_setting_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/show_password_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 
@@ -9,10 +11,14 @@ class ChangePasswordPage extends StatelessWidget {
   final ShowPassCubit showOldPass = ShowPassCubit();
   final ShowPassCubit showNewPass = ShowPassCubit();
   final ShowPassCubit showConfirmNewPass = ShowPassCubit();
+  final oldPassController = TextEditingController();
+  final newPassController = TextEditingController();
+  final confirmNewPassController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     TeacherTabBloc teacherTab = context.read<TeacherTabBloc>();
+    AccountSettingBloc accountSettingBloc = context.read<AccountSettingBloc>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -52,6 +58,7 @@ class ChangePasswordPage extends StatelessWidget {
                     bloc: showOldPass,
                     builder: (context, state) {
                       return TextField(
+                        controller: oldPassController,
                         textInputAction: TextInputAction.next,
                         obscureText: state,
                         decoration: InputDecoration(
@@ -89,6 +96,7 @@ class ChangePasswordPage extends StatelessWidget {
                     bloc: showNewPass,
                     builder: (context, state) {
                       return TextField(
+                        controller: newPassController,
                         textInputAction: TextInputAction.next,
                         obscureText: state,
                         decoration: InputDecoration(
@@ -126,6 +134,7 @@ class ChangePasswordPage extends StatelessWidget {
                     bloc: showConfirmNewPass,
                     builder: (context, state) {
                       return TextField(
+                        controller: confirmNewPassController,
                         textInputAction: TextInputAction.next,
                         obscureText: state,
                         decoration: InputDecoration(
@@ -161,12 +170,57 @@ class ChangePasswordPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF696CFF),
-              ),
-              child: const Text("Simpan"),
+            child: BlocConsumer<AccountSettingBloc, AccountSettingState>(
+              listener: (context, state) {
+                if (state is UpdateSuccess) {
+                  showCostumSnackBar(
+                    context: context,
+                    message: "Password Berhasil Diubah",
+                    type: "success",
+                  );
+                  Navigator.pushNamed(context, "/teacher");
+                }
+                if (state is ValidationError) {
+                  showCostumSnackBar(
+                    context: context,
+                    message: state.message,
+                    type: "danger",
+                  );
+                }
+                if (state is Failure) {
+                  showCostumSnackBar(
+                    context: context,
+                    message: state.message,
+                    type: "danger",
+                  );
+                }
+              },
+              builder: (context, state) {
+                return ElevatedButton(
+                  onPressed: () {
+                    state is Loading
+                        ? null
+                        : accountSettingBloc.add(UpdatePassword(
+                            oldPassword: oldPassController.text,
+                            newPassword: newPassController.text,
+                            confirmNewPassword: confirmNewPassController.text,
+                          ));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF696CFF),
+                  ),
+                  child: state is Loading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text("Simpan"),
+                );
+              },
             ),
           ),
         ],

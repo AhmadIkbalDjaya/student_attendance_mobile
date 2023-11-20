@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/values/auth.dart';
 import 'package:student_attendance/bloc/login/login_bloc.dart';
 
 class ProfilPage extends StatelessWidget {
@@ -11,23 +12,23 @@ class ProfilPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       child: ListView(
         children: [
-          const Column(
+          Column(
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 45,
                 backgroundColor: Color(0xFFD9D9D9),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                "Ahmad Ikbal Djaya",
-                style: TextStyle(
+                "${Auth.name}",
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
                 ),
               ),
               Text(
-                "60200120073",
-                style: TextStyle(fontWeight: FontWeight.w500),
+                "${Auth.username}",
+                style: const TextStyle(fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -38,13 +39,19 @@ class ProfilPage extends StatelessWidget {
               color: Color(0xFFD9D9D9),
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),
-            child: const Column(
+            child: Column(
               children: [
-                ProfilList(icon: Icons.mail, text: "ikbaldjaya@gmail.com"),
-                SizedBox(height: 10),
-                ProfilList(icon: Icons.phone, text: "081241250245"),
-                SizedBox(height: 10),
-                ProfilList(icon: Icons.male, text: "Laki-Laki"),
+                ProfilList(icon: Icons.mail, text: "${Auth.email}"),
+                const SizedBox(height: 10),
+                ProfilList(
+                  icon: Icons.phone,
+                  text: Auth.phone != "" ? Auth.phone.toString() : "-",
+                ),
+                const SizedBox(height: 10),
+                ProfilList(
+                  icon: Auth.gender == "male" ? Icons.male : Icons.female,
+                  text: Auth.gender == "male" ? "Laki-laki" : "Perempuan",
+                ),
               ],
             ),
           ),

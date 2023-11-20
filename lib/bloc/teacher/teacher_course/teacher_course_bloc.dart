@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:student_attendance/values/auth.dart';
 import 'package:student_attendance/models/teacher/teacher_course.dart';
 import 'package:student_attendance/values/constant.dart' as constant;
 
@@ -18,8 +19,7 @@ class TeacherCourseBloc extends Bloc<TeacherCourseEvent, TeacherCourseState> {
           Uri.parse("${constant.apiUrl}/teacher/teacherCourses"),
           headers: {
             HttpHeaders.acceptHeader: "application/json",
-            HttpHeaders.authorizationHeader:
-                "Bearer 45|1UyxF3KLkXDsmdHaqMlX1cMVBZGxHtfF2rDnoLHEe54f7783",
+            HttpHeaders.authorizationHeader: "Bearer ${Auth.token}",
           },
         );
         if (response.statusCode == 200) {

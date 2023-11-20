@@ -262,7 +262,7 @@ class MyRoute {
         );
       case "/profil/account":
         return MaterialPageRoute(
-          builder: (context) => const AccountPage(),
+          builder: (context) => AccountPage(),
         );
       case "/profil/changePass":
         return MaterialPageRoute(

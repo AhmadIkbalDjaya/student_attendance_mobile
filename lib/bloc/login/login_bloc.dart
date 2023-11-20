@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:student_attendance/values/auth.dart';
 import 'package:student_attendance/models/login.dart';
 import 'package:student_attendance/values/constant.dart' as constant;
 
@@ -36,13 +37,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             pref.setString("name", login.user.name ?? "");
             pref.setString("phone", login.user.phone ?? "");
             pref.setString("gender", login.user.gender ?? "");
+            Auth.setAuth(
+              token: login.token,
+              role: login.role,
+              id: login.user.id,
+              username: login.user.username,
+              email: login.user.email,
+              name: login.user.name,
+              phone: login.user.phone,
+              gender: login.user.gender,
+            );
           } else {
             emit(LoginFailure(message: jsonDecode(response.body)["message"]));
             emit(UserSignOut());
+            Auth.resetAuth();
           }
         } catch (e) {
           emit(LoginFailure(message: e.toString()));
           emit(UserSignOut());
+          Auth.resetAuth();
         }
       }
     });
@@ -68,6 +81,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             pref.remove("phone");
             pref.remove("gender");
             emit(UserSignOut());
+            Auth.resetAuth();
           } else {
             Login? savedLogin = await getLoginFromSharedPreferences();
             emit(LoginFailure(message: jsonDecode(response.body)["message"]));
@@ -89,8 +103,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       Login? savedLogin = await getLoginFromSharedPreferences();
       if (savedLogin != null) {
         emit(UserSignIn(login: savedLogin));
+        Auth.setAuth(
+          token: savedLogin.token,
+          role: savedLogin.role,
+          id: savedLogin.user.id,
+          username: savedLogin.user.username,
+          email: savedLogin.user.email,
+          name: savedLogin.user.name,
+          phone: savedLogin.user.phone,
+          gender: savedLogin.user.gender,
+        );
       } else {
         emit(UserSignOut());
+        Auth.resetAuth();
       }
     });
   }
