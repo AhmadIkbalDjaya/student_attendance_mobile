@@ -9,17 +9,23 @@ class TeacherPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TeacherTabBloc teacherTab = context.read<TeacherTabBloc>();
-    return Scaffold(
-      body: BlocBuilder<TeacherTabBloc, int>(
-        bloc: teacherTab,
-        builder: (context, state) {
-          return IndexedStack(
-            index: state,
-            children: teacherTab.pages,
-          );
-        },
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        body: BlocBuilder<TeacherTabBloc, int>(
+          bloc: teacherTab,
+          builder: (context, state) {
+            return IndexedStack(
+              index: state,
+              children: teacherTab.pages,
+            );
+          },
+        ),
+        bottomNavigationBar:
+            MyBottomNavBar(teacherTab: teacherTab, atHome: true),
       ),
-      bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab, atHome: true),
     );
   }
 }

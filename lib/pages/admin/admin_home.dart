@@ -9,47 +9,52 @@ class AdminHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: BlocConsumer<LoginBloc, LoginState>(
-        listener: (context, state) {
-          if (state is UserSignOut) {
-            Navigator.pushNamed(context, "/");
-          }
-        },
-        builder: (context, state) {
-          return IconButton(
-            onPressed: () {
-              context.read<LoginBloc>().add(SignOut());
-            },
-            icon: const Icon(Icons.logout),
-          );
-        },
-      ),
-      appBar: const MyAppBar(),
-      drawer: const MyDrawer(),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 50,
-          vertical: 75,
+    return WillPopScope(
+      onWillPop: () async {
+        return false;
+      },
+      child: Scaffold(
+        floatingActionButton: BlocConsumer<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is UserSignOut) {
+              Navigator.pushNamed(context, "/");
+            }
+          },
+          builder: (context, state) {
+            return IconButton(
+              onPressed: () {
+                context.read<LoginBloc>().add(SignOut());
+              },
+              icon: const Icon(Icons.logout),
+            );
+          },
         ),
-        child: Column(
-          children: [
-            CountBox(
-              text: "Total Kelas",
-              count: "100",
-              icon: Icons.class_outlined,
-            ),
-            CountBox(
-              text: "Total Guru",
-              count: "80",
-              icon: Icons.co_present_outlined,
-            ),
-            CountBox(
-              text: "Total Siswa",
-              count: "87",
-              icon: Icons.person,
-            ),
-          ],
+        appBar: const MyAppBar(),
+        drawer: const MyDrawer(),
+        body: const Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 50,
+            vertical: 75,
+          ),
+          child: Column(
+            children: [
+              CountBox(
+                text: "Total Kelas",
+                count: "100",
+                icon: Icons.class_outlined,
+              ),
+              CountBox(
+                text: "Total Guru",
+                count: "80",
+                icon: Icons.co_present_outlined,
+              ),
+              CountBox(
+                text: "Total Siswa",
+                count: "87",
+                icon: Icons.person,
+              ),
+            ],
+          ),
         ),
       ),
     );

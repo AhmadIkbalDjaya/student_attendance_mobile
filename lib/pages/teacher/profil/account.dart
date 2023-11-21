@@ -42,9 +42,13 @@ class AccountPage extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          CircleAvatar(
-            radius: 50,
-            backgroundColor: Colors.grey[300],
+          const Column(
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: AssetImage("assets/images/profil.jpg"),
+              ),
+            ],
           ),
           Container(
             margin: const EdgeInsets.only(
