@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/admin/admin_home/admin_home_bloc.dart';
 import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
 import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AdminDrawerBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AdminHomeBloc(),
         ),
         BlocProvider(
           create: (context) => StudentBloc(),

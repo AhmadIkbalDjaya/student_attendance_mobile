@@ -1,59 +1,60 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/bloc/admin/admin_home/admin_home_bloc.dart';
 import 'package:student_attendance/bloc/login/login_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/components/center_loading.dart';
 
 class AdminHomePage extends StatelessWidget {
   const AdminHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    AdminHomeBloc adminHomeBloc = context.read<AdminHomeBloc>();
+    adminHomeBloc.add(GetAdminHomeEvent());
     return WillPopScope(
       onWillPop: () async {
         return false;
       },
       child: Scaffold(
-        floatingActionButton: BlocConsumer<LoginBloc, LoginState>(
-          listener: (context, state) {
-            if (state is UserSignOut) {
-              Navigator.pushNamed(context, "/");
-            }
-          },
-          builder: (context, state) {
-            return IconButton(
-              onPressed: () {
-                context.read<LoginBloc>().add(SignOut());
-              },
-              icon: const Icon(Icons.logout),
-            );
-          },
-        ),
         appBar: const MyAppBar(),
         drawer: const MyDrawer(),
-        body: const Padding(
-          padding: EdgeInsets.symmetric(
+        body: Padding(
+          padding: const EdgeInsets.symmetric(
             horizontal: 50,
-            vertical: 75,
+            vertical: 30,
           ),
-          child: Column(
-            children: [
-              CountBox(
-                text: "Total Kelas",
-                count: "100",
-                icon: Icons.class_outlined,
-              ),
-              CountBox(
-                text: "Total Guru",
-                count: "80",
-                icon: Icons.co_present_outlined,
-              ),
-              CountBox(
-                text: "Total Siswa",
-                count: "87",
-                icon: Icons.person,
-              ),
-            ],
+          child: BlocBuilder<AdminHomeBloc, AdminHomeState>(
+            builder: (context, state) {
+              if (state is AdminHomeSuccess) {
+                return ListView(
+                  children: [
+                    CountBox(
+                      text: "Total Kelas",
+                      count: state.adminHome.claassCount.toString(),
+                      icon: Icons.class_outlined,
+                    ),
+                    CountBox(
+                      text: "Total Mapel",
+                      count: state.adminHome.courseCount.toString(),
+                      icon: Icons.calculate_sharp,
+                    ),
+                    CountBox(
+                      text: "Total Guru",
+                      count: state.adminHome.teacherCount.toString(),
+                      icon: Icons.co_present_outlined,
+                    ),
+                    CountBox(
+                      text: "Total Siswa",
+                      count: state.adminHome.studentCount.toString(),
+                      icon: Icons.person,
+                    ),
+                  ],
+                );
+              }
+              return CenterLoading();
+            },
           ),
         ),
       ),
