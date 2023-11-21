@@ -13,5 +13,3 @@ class SignIn extends LoginEvent {
 }
 
 class SignOut extends LoginEvent {}
-
-class CheckSignInStatus extends LoginEvent {}

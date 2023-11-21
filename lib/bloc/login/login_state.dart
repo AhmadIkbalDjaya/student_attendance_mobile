@@ -12,9 +12,9 @@ class LoginFailure extends LoginState {
   LoginFailure({this.message = "error"});
 }
 
-class UserSignIn extends LoginState {
-  final Login login;
-  UserSignIn({required this.login});
+class LoginSuccess extends LoginState {
+  Login login;
+  LoginSuccess({required this.login});
 }
 
-class UserSignOut extends LoginState {}
+class LogoutSuccess extends LoginState {}

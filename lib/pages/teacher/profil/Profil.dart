@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/bloc/auth/auth_bloc.dart';
 import 'package:student_attendance/values/auth.dart';
 import 'package:student_attendance/bloc/login/login_bloc.dart';
 
@@ -137,7 +138,8 @@ class ProfilPage extends StatelessWidget {
           const SizedBox(height: 10),
           BlocConsumer<LoginBloc, LoginState>(
             listener: (context, state) {
-              if (state is UserSignOut) {
+              if (state is LogoutSuccess) {
+                context.read<AuthBloc>().add(SetSignOut());
                 Navigator.pushNamed(context, "/");
               }
             },
