@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/bloc/teacher/course_recap/course_recap_bloc.dart';
+import 'package:student_attendance/bloc/course_recap/course_recap_bloc.dart';
 import 'package:student_attendance/components/center_loading.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
@@ -31,17 +32,23 @@ class CourseRecapPage extends StatelessWidget {
                   child: Column(
                     children: [
                       const Text(
-                        "Rakapan Siswa",
+                        "Rekapan Siswa",
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      BlocBuilder<CourseRecapBloc, CourseRecapState>(
-                        builder: (context, state) {
-                          if (state is CourseRecapGetLoading) {
-                            return const CenterLoading();
+                      BlocConsumer<CourseRecapBloc, CourseRecapState>(
+                        listener: (context, state) {
+                          if (state is CourseRecapFailure) {
+                            showCostumSnackBar(
+                              context: context,
+                              message: state.message,
+                              type: "danger",
+                            );
                           }
+                        },
+                        builder: (context, state) {
                           if (state is CourseRecapSuccess) {
                             Course course = state.courseRecap.course;
                             return Column(
@@ -89,7 +96,7 @@ class CourseRecapPage extends StatelessWidget {
                               ],
                             );
                           }
-                          return Container();
+                          return const CenterLoading();
                         },
                       ),
                     ],

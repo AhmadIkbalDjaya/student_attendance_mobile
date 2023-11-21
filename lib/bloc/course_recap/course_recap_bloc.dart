@@ -15,7 +15,7 @@ class CourseRecapBloc extends Bloc<CourseRecapEvent, CourseRecapState> {
       try {
         emit(CourseRecapGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/teacher/recap/${event.courseId}"),
+          Uri.parse("${constant.apiUrl}/recap/${event.courseId}"),
           headers: {
             HttpHeaders.acceptHeader: "application/json",
           },

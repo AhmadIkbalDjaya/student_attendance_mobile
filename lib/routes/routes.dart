@@ -110,10 +110,16 @@ class MyRoute {
           builder: (context) => const AdminRecapPage(),
         );
       case "/admin/recap/course":
-        return MaterialPageRoute(
-          builder: (context) => const AdminRecapCoursePage(),
-        );
-
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final courseId = arguments['courseId'];
+          return MaterialPageRoute(
+            builder: (context) => AdminRecapCoursePage(courseId: courseId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/semester":
         return MaterialPageRoute(
           builder: (context) => AdminSemesterPage(),
