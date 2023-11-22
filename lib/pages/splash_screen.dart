@@ -15,31 +15,6 @@ class _SplashScreenState extends State<SplashScreen>
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(
       const Duration(seconds: 1),
-      // () {
-      //   LoginBloc loginBloc = context.read<LoginBloc>();
-      //   print(loginBloc.state);
-      //   if (loginBloc.state is UserSignIn) {
-      //     if (Auth.role == "admin") {
-      //       Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //         builder: (context) => const AdminHomePage(),
-      //       ));
-      //       // Navigator.of(context).pushReplacementNamed("/admin");
-      //       // Navigator.pushReplacementNamed(context, "/admin");
-      //     } else if (Auth.role == "teacher") {
-      //       Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //         builder: (context) => const TeacherPage(),
-      //       ));
-      //       // Navigator.of(context).pushReplacementNamed("/teacher");
-      //       // Navigator.pushReplacementNamed(context, "/teacher");
-      //     }
-      //   } else {
-      //     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //       builder: (context) => LoginPage(),
-      //     ));
-      //     // Navigator.pushReplacementNamed(context, "/");
-      //   }
-      //   // Navigator.of(context).pushReplacementNamed("/admin");
-      // },
     );
   }
 

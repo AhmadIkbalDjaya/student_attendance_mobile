@@ -96,6 +96,9 @@ class MyApp extends StatelessWidget {
                 if (state.login.role == "admin") {
                   return const AdminHomePage();
                 } else {
+                  context
+                      .read<TeacherCourseBloc>()
+                      .add(GetTeacherCourseEvent());
                   return const TeacherPage();
                 }
               } else if (state is UserSignOut) {
