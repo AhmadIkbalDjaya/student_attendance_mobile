@@ -14,6 +14,7 @@ import 'package:student_attendance/bloc/teacher/create_attendance/create_attenda
 import 'package:student_attendance/bloc/teacher/profil/account_setting/account_setting_bloc.dart';
 import 'package:student_attendance/bloc/teacher/student_attendance/student_attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/teacher_course/teacher_course_bloc.dart';
+import 'package:student_attendance/bloc/teacher/teacher_home/teacher_home_bloc.dart';
 import 'package:student_attendance/bloc/teacher/update_student_attendance/update_student_attendance_bloc.dart';
 import 'package:student_attendance/cubit/admin_drawer_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
@@ -64,6 +65,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => AdminRecapBloc(),
+          ),
+          BlocProvider(
+            create: (context) => TeacherHomeBloc(),
           ),
           BlocProvider(
             create: (context) => TeacherCourseBloc(),
