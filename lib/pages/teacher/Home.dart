@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/teacher/teacher_home/teacher_home_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/teacher/teacher_home.dart';
+import 'package:student_attendance/presentation/costum_icons_icons.dart';
 import 'package:student_attendance/values/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -127,9 +128,9 @@ class HomePage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Icon(
-                                  Icons.menu_book_outlined,
+                                  CostumIcons.book,
                                   color: Colors.white,
-                                  size: 45,
+                                  size: 50,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 10),
@@ -174,11 +175,22 @@ class HomePage extends StatelessWidget {
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 30,
                       children: [
-                        ItemCountBox(text: "${teacherHome.claassCount} Kelas"),
-                        ItemCountBox(text: "${teacherHome.courseCount} Mapel"),
-                        ItemCountBox(text: "${teacherHome.studentCount} Siswa"),
                         ItemCountBox(
-                            text: "${teacherHome.attendanceCount} Pertemuan"),
+                          text: "${teacherHome.claassCount} Kelas",
+                          icon: CostumIcons.claass,
+                        ),
+                        ItemCountBox(
+                          text: "${teacherHome.courseCount} Mapel",
+                          icon: CostumIcons.course,
+                        ),
+                        ItemCountBox(
+                          text: "${teacherHome.studentCount} Siswa",
+                          icon: CostumIcons.student,
+                        ),
+                        ItemCountBox(
+                          text: "${teacherHome.attendanceCount} Pertemuan",
+                          icon: Icons.book,
+                        ),
                       ],
                     ),
                   );
@@ -197,8 +209,10 @@ class ItemCountBox extends StatelessWidget {
   const ItemCountBox({
     super.key,
     required this.text,
+    required this.icon,
   });
   final String text;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +224,7 @@ class ItemCountBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: const [
           BoxShadow(
-            color: Color.fromARGB(120, 0, 0, 0),
+            color: Color.fromARGB(50, 0, 0, 0),
             spreadRadius: 1,
             blurRadius: 5,
             offset: Offset(0, 3),
@@ -236,8 +250,8 @@ class ItemCountBox extends StatelessWidget {
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: const Icon(
-              Icons.menu_book_rounded,
+            child: Icon(
+              icon,
               color: Colors.white,
               size: 40,
             ),
