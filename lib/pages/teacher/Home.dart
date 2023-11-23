@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
+import 'package:student_attendance/bloc/auth/auth_bloc.dart';
+import 'package:student_attendance/bloc/login/login_bloc.dart';
 import 'package:student_attendance/bloc/teacher/teacher_home/teacher_home_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
-import 'package:student_attendance/models/teacher/teacher_home.dart';
 import 'package:student_attendance/presentation/costum_icons_icons.dart';
 import 'package:student_attendance/values/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,12 +20,26 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.logout,
-              color: Colors.grey,
-            ),
+          BlocConsumer<LoginBloc, LoginState>(
+            listener: (context, state) {
+              if (state is LogoutSuccess) {
+                context.read<AuthBloc>().add(SetSignOut());
+                Navigator.pushNamed(context, "/");
+              }
+            },
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () {
+                  state is LoginLoading
+                      ? null
+                      : context.read<LoginBloc>().add(SignOut());
+                },
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.grey,
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -70,86 +86,94 @@ class HomePage extends StatelessWidget {
             const SizedBox(height: 30),
             BlocBuilder<TeacherHomeBloc, TeacherHomeState>(
               builder: (context, state) {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
-                  height: 160,
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF696CFF),
-                        Color(0xFFACAEFE),
-                      ],
-                      begin: Alignment(0, 0),
-                      end: Alignment.bottomLeft,
+                return Skeletonizer(
+                  enabled: state is TeacherHomeLoading
+                      ? true
+                      : state is TeacherHomeFailure
+                          ? true
+                          : false,
+                  // effect: PaintingEffect,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 15),
+                    height: 160,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      gradient: LinearGradient(
+                        colors: [
+                          Color(0xFF696CFF),
+                          Color(0xFFACAEFE),
+                        ],
+                        begin: Alignment(0, 0),
+                        end: Alignment.bottomLeft,
+                      ),
                     ),
-                  ),
-                  child: BlocBuilder<TeacherHomeBloc, TeacherHomeState>(
-                    builder: (context, state) {
-                      if (state is TeacherHomeSuccess) {
-                        TeacherHome teacherHome = state.teacherHome;
-                        return Row(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Jumlah Pertemuan",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    text:
-                                        "${teacherHome.attendanceCount - teacherHome.attendanceNullCount}",
-                                    style: const TextStyle(
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                    children: [
-                                      TextSpan(
-                                        text:
-                                            " / ${teacherHome.attendanceCount}",
-                                        style: const TextStyle(fontSize: 30),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Icon(
-                                  CostumIcons.book,
+                            const Skeleton.keep(
+                              child: Text(
+                                "Jumlah Pertemuan",
+                                style: TextStyle(
                                   color: Colors.white,
-                                  size: 50,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: Text(
-                                    "${teacherHome.attendanceNullCount} Pertemuan Belum Terisi",
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                              ),
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: state is TeacherHomeSuccess
+                                    ? "${state.teacherHome.attendanceCount - state.teacherHome.attendanceNullCount}"
+                                    : "x",
+                                style: const TextStyle(
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: state is TeacherHomeSuccess
+                                        ? " / ${state.teacherHome.attendanceCount}"
+                                        : " / x",
+                                    style: const TextStyle(fontSize: 30),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
-                        );
-                      }
-                      return Container();
-                    },
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Skeleton.keep(
+                              child: Icon(
+                                CostumIcons.book,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Text(
+                                state is TeacherHomeSuccess
+                                    ? "${state.teacherHome.attendanceNullCount} Pertemuan Belum Terisi"
+                                    : "x Pertemuan Belum Terisi",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
@@ -166,9 +190,13 @@ class HomePage extends StatelessWidget {
                 }
               },
               builder: (context, state) {
-                if (state is TeacherHomeSuccess) {
-                  TeacherHome teacherHome = state.teacherHome;
-                  return Expanded(
+                return Expanded(
+                  child: Skeletonizer(
+                    enabled: state is TeacherHomeLoading
+                        ? true
+                        : state is TeacherHomeFailure
+                            ? true
+                            : false,
                     child: GridView.count(
                       childAspectRatio: (180 / 130),
                       crossAxisCount: 2,
@@ -176,26 +204,33 @@ class HomePage extends StatelessWidget {
                       mainAxisSpacing: 30,
                       children: [
                         ItemCountBox(
-                          text: "${teacherHome.claassCount} Kelas",
+                          text: state is TeacherHomeSuccess
+                              ? "${state.teacherHome.claassCount} Kelas"
+                              : "x Kelas",
                           icon: CostumIcons.claass,
                         ),
                         ItemCountBox(
-                          text: "${teacherHome.courseCount} Mapel",
+                          text: state is TeacherHomeSuccess
+                              ? "${state.teacherHome.courseCount} Mapel"
+                              : "x Mapel",
                           icon: CostumIcons.course,
                         ),
                         ItemCountBox(
-                          text: "${teacherHome.studentCount} Siswa",
+                          text: state is TeacherHomeSuccess
+                              ? "${state.teacherHome.studentCount} Siswa"
+                              : "x Siswa",
                           icon: CostumIcons.student,
                         ),
                         ItemCountBox(
-                          text: "${teacherHome.attendanceCount} Pertemuan",
+                          text: state is TeacherHomeSuccess
+                              ? "${state.teacherHome.attendanceCount} Pertemuan"
+                              : "x Pertemuan",
                           icon: Icons.book,
                         ),
                       ],
                     ),
-                  );
-                }
-                return Container();
+                  ),
+                );
               },
             )
           ],
@@ -250,10 +285,12 @@ class ItemCountBox extends StatelessWidget {
                 end: Alignment.bottomCenter,
               ),
             ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 40,
+            child: Skeleton.keep(
+              child: Icon(
+                icon,
+                color: Colors.white,
+                size: 40,
+              ),
             ),
           ),
           const SizedBox(height: 5),

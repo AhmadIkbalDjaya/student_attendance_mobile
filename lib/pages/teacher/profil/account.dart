@@ -172,7 +172,7 @@ class AccountPage extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(vertical: 15),
                   height: 40,
                   child: DropdownButtonFormField(
-                    value: genderValue.state,
+                    value: genderValue.state != "" ? genderValue.state : null,
                     items: const [
                       DropdownMenuItem(
                         value: "male",

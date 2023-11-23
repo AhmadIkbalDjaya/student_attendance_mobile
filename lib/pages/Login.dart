@@ -17,11 +17,16 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 50, right: 50),
+        padding: const EdgeInsets.only(
+          top: 25,
+          bottom: 25,
+          left: 50,
+          right: 50,
+        ),
         child: ListView(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height - 50,
+              height: MediaQuery.of(context).size.height - 120,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -175,6 +180,7 @@ class LoginPage extends StatelessWidget {
                     builder: (context, state) {
                       return OutlinedButton(
                         style: OutlinedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
