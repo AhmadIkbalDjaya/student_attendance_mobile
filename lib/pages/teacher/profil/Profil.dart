@@ -10,26 +10,34 @@ class ProfilPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: const EdgeInsets.only(top: 35, right: 20, left: 20),
       child: ListView(
         children: [
           Column(
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 45,
-                backgroundImage: AssetImage("assets/images/profil.jpg"),
+                backgroundImage: AssetImage(
+                  Auth.gender == "male"
+                      ? "assets/images/male_profil.png"
+                      : "assets/images/female_profil.png",
+                ),
               ),
               const SizedBox(height: 10),
               Text(
                 "${Auth.name}",
                 style: const TextStyle(
+                  color: Color(0xFF696CFF),
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 22,
                 ),
               ),
               Text(
                 "${Auth.username}",
-                style: const TextStyle(fontWeight: FontWeight.w500),
+                style: const TextStyle(
+                  color: Color(0xFF696CFF),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ],
           ),
@@ -38,6 +46,14 @@ class ProfilPage extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(
               color: Color(0xFFD9D9D9),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF696CFF),
+                  Color(0xFFACAEFE),
+                ],
+                begin: Alignment(0.2, 0),
+                end: Alignment.bottomRight,
+              ),
               borderRadius: BorderRadius.all(Radius.circular(5)),
             ),
             child: Column(
@@ -66,14 +82,23 @@ class ProfilPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
+                    color: Color(0xFF696CFF),
                   ),
                 ),
               ),
               Container(
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD9D9D9),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromARGB(25, 0, 0, 0),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
@@ -105,6 +130,7 @@ class ProfilPage extends StatelessWidget {
                 child: const Text(
                   "Paduan & Tentang Kami",
                   style: TextStyle(
+                    color: Color(0xFF696CFF),
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -113,8 +139,16 @@ class ProfilPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD9D9D9),
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(5),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromARGB(25, 0, 0, 0),
+                      spreadRadius: 1,
+                      blurRadius: 1,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
@@ -153,28 +187,19 @@ class ProfilPage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF696CFF),
                 ),
-                child: state is LoginLoading
-                    ? const SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.logout, size: 24),
-                          SizedBox(width: 5),
-                          Text(
-                            "Keluar",
-                            style: TextStyle(
-                              fontSize: 20,
-                            ),
-                          ),
-                        ],
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.logout, size: 24),
+                    const SizedBox(width: 5),
+                    Text(
+                      state is! LoginLoading ? "Keluar" : "Keluar ...",
+                      style: const TextStyle(
+                        fontSize: 20,
                       ),
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -193,11 +218,17 @@ class ProfilList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon),
+        Icon(
+          icon,
+          color: Colors.white,
+        ),
         const SizedBox(width: 20),
         Text(
           text,
-          style: const TextStyle(fontSize: 18),
+          style: const TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+          ),
         ),
       ],
     );
@@ -226,7 +257,10 @@ class ProfilMenu extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 6),
         decoration: const BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: 2, color: Colors.grey),
+            bottom: BorderSide(
+              width: 2,
+              color: Color(0xFFACAEFE),
+            ),
           ),
         ),
         child: Row(
@@ -234,11 +268,16 @@ class ProfilMenu extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(icon, size: 28),
+                Icon(
+                  icon,
+                  size: 28,
+                  color: const Color(0xFF696CFF),
+                ),
                 const SizedBox(width: 20),
                 Text(
                   text,
                   style: const TextStyle(
+                    color: Color(0xFF696CFF),
                     fontSize: 20,
                     fontWeight: FontWeight.w500,
                   ),
@@ -248,6 +287,7 @@ class ProfilMenu extends StatelessWidget {
             const Icon(
               Icons.navigate_next,
               size: 35,
+              color: Color(0xFF696CFF),
             ),
           ],
         ),

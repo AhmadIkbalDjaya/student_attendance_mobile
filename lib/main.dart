@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/admin_home/admin_home_bloc.dart';
 import 'package:student_attendance/bloc/admin/admin_recap/admin_recap_bloc.dart';
@@ -25,7 +26,13 @@ import 'package:student_attendance/pages/splash_screen.dart';
 import 'package:student_attendance/pages/teacher/teacher.dart';
 import 'package:student_attendance/routes/routes.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+  );
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -92,6 +99,9 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+          theme: ThemeData(
+            scaffoldBackgroundColor: const Color(0xFFf5f6f8),
+          ),
           debugShowCheckedModeBanner: false,
           // initialRoute: initialRoute,
           home: BlocBuilder<AuthBloc, AuthState>(

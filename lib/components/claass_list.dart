@@ -21,8 +21,16 @@ class ClaassList extends StatelessWidget {
     }
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromARGB(25, 0, 0, 0),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
       margin: const EdgeInsets.symmetric(vertical: 25),
       child: Column(
@@ -31,7 +39,8 @@ class ClaassList extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
+              // color: Color(0xFFACAEFE),
+              color: Color(0xFF696CFF),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
@@ -41,6 +50,7 @@ class ClaassList extends StatelessWidget {
               teacherCourse.major,
               textAlign: TextAlign.center,
               style: const TextStyle(
+                color: Colors.white,
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),

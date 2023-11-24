@@ -40,178 +40,177 @@ class AccountPage extends StatelessWidget {
         ),
         centerTitle: false,
       ),
-      body: ListView(
-        children: [
-          const Column(
-            children: [
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage("assets/images/profil.jpg"),
-              ),
-            ],
-          ),
-          Container(
-            margin: const EdgeInsets.only(
-              left: 25,
-              right: 25,
-              top: 15,
-              bottom: 10,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: Column(
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
+        child: ListView(
+          children: [
+            Column(
               children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  height: 40,
-                  child: TextField(
-                    controller: nameController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Nama",
-                      floatingLabelStyle: TextStyle(
-                        color: Color(0xFF696CFF),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 10,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFF696CFF),
-                          width: 1,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  height: 40,
-                  child: TextField(
-                    controller: usernameController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "NIP",
-                      floatingLabelStyle: TextStyle(
-                        color: Color(0xFF696CFF),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 10,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFF696CFF),
-                          width: 1,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  height: 40,
-                  child: TextField(
-                    controller: emailController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Email",
-                      floatingLabelStyle: TextStyle(
-                        color: Color(0xFF696CFF),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 10,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFF696CFF),
-                          width: 1,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  height: 40,
-                  child: TextField(
-                    controller: phoneController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                      labelText: "Nomor Telepon",
-                      floatingLabelStyle: TextStyle(
-                        color: Color(0xFF696CFF),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 10,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFF696CFF),
-                          width: 1,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  height: 40,
-                  child: DropdownButtonFormField(
-                    value: genderValue.state != "" ? genderValue.state : null,
-                    items: const [
-                      DropdownMenuItem(
-                        value: "male",
-                        child: Text("Laki-Laki"),
-                      ),
-                      DropdownMenuItem(
-                        value: "female",
-                        child: Text("Perempuan"),
-                      ),
-                    ],
-                    onChanged: (value) {
-                      genderValue.changeValue(value.toString());
-                    },
-                    decoration: const InputDecoration(
-                      labelText: "Jenis Kelamin",
-                      floatingLabelStyle: TextStyle(
-                        color: Color(0xFF696CFF),
-                      ),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 0,
-                        horizontal: 10,
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Color(0xFF696CFF),
-                          width: 1,
-                          style: BorderStyle.solid,
-                        ),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage(
+                    Auth.gender == "male"
+                        ? "assets/images/male_profil.png"
+                        : "assets/images/female_profil.png",
                   ),
                 ),
               ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: BlocConsumer<AccountSettingBloc, AccountSettingState>(
+            Container(
+              margin: const EdgeInsets.only(top: 25, bottom: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    height: 40,
+                    child: TextField(
+                      controller: nameController,
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                        labelText: "Nama",
+                        floatingLabelStyle: TextStyle(
+                          color: Color(0xFF696CFF),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 10,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    height: 40,
+                    child: TextField(
+                      controller: usernameController,
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                        labelText: "NIP",
+                        floatingLabelStyle: TextStyle(
+                          color: Color(0xFF696CFF),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 10,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    height: 40,
+                    child: TextField(
+                      controller: emailController,
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                        floatingLabelStyle: TextStyle(
+                          color: Color(0xFF696CFF),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 10,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    height: 40,
+                    child: TextField(
+                      controller: phoneController,
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                        labelText: "Nomor Telepon",
+                        floatingLabelStyle: TextStyle(
+                          color: Color(0xFF696CFF),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 10,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    height: 40,
+                    child: DropdownButtonFormField(
+                      value: genderValue.state != "" ? genderValue.state : null,
+                      items: const [
+                        DropdownMenuItem(
+                          value: "male",
+                          child: Text("Laki-Laki"),
+                        ),
+                        DropdownMenuItem(
+                          value: "female",
+                          child: Text("Perempuan"),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        genderValue.changeValue(value.toString());
+                      },
+                      decoration: const InputDecoration(
+                        labelText: "Jenis Kelamin",
+                        floatingLabelStyle: TextStyle(
+                          color: Color(0xFF696CFF),
+                        ),
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal: 10,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            BlocConsumer<AccountSettingBloc, AccountSettingState>(
               listener: (context, state) {
                 if (state is UpdateSuccess) {
                   showCostumSnackBar(
@@ -265,8 +264,8 @@ class AccountPage extends StatelessWidget {
                 );
               },
             ),
-          ),
-        ],
+          ],
+        ),
       ),
       bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
     );

@@ -14,20 +14,35 @@ class RecapClaassListPage extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 25),
+            padding: const EdgeInsets.only(top: 35, bottom: 15),
             decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF696CFF),
+                  Color(0xFFACAEFE),
+                ],
+                begin: Alignment(0, 0.3),
+                end: Alignment.bottomCenter,
+                // end: Alignment(0, -1),
+                // begin: Alignment.bottomCenter,
+              ),
             ),
             child: const Column(
               children: [
                 Text(
                   "REKAP",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text("Pilih salah satu kelas di dan lihat rekap absensi"),
+                Text(
+                  "Pilih salah satu kelas di dan lihat rekap absensi",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               ],
             ),
           ),
@@ -48,8 +63,9 @@ class RecapClaassListPage extends StatelessWidget {
                         state.teacherCourses.length,
                         (index) {
                           return ClaassList(
-                              nextpage: "recap",
-                              teacherCourse: state.teacherCourses[index]);
+                            nextpage: "recap",
+                            teacherCourse: state.teacherCourses[index],
+                          );
                         },
                       ),
                     );
