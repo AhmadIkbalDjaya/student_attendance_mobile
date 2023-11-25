@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/teacher_course/teacher_course_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/claass_list.dart';
+import 'package:student_attendance/models/teacher/teacher_course.dart';
 
 class RecapClaassListPage extends StatelessWidget {
   const RecapClaassListPage({super.key});
@@ -23,8 +24,6 @@ class RecapClaassListPage extends StatelessWidget {
                 ],
                 begin: Alignment(0, 0.3),
                 end: Alignment.bottomCenter,
-                // end: Alignment(0, -1),
-                // begin: Alignment.bottomCenter,
               ),
             ),
             child: const Column(
@@ -40,6 +39,7 @@ class RecapClaassListPage extends StatelessWidget {
                 Text(
                   "Pilih salah satu kelas di dan lihat rekap absensi",
                   style: TextStyle(
+                    fontWeight: FontWeight.w500,
                     color: Colors.white,
                   ),
                 ),
@@ -54,23 +54,26 @@ class RecapClaassListPage extends StatelessWidget {
               ),
               child: BlocBuilder<TeacherCourseBloc, TeacherCourseState>(
                 builder: (context, state) {
-                  if (state is TeacherCourseGetLoading) {
-                    return const CenterLoading();
-                  }
                   if (state is TeacherCourseGetSuccess) {
                     return ListView(
                       children: List<ClaassList>.generate(
-                        state.teacherCourses.length,
-                        (index) {
-                          return ClaassList(
-                            nextpage: "recap",
-                            teacherCourse: state.teacherCourses[index],
-                          );
-                        },
-                      ),
+                          state.teacherCourses.length, (index) {
+                        return ClaassList(
+                          nextpage: "recap",
+                          teacherCourse: state.teacherCourses[index],
+                        );
+                      }),
                     );
                   }
-                  return Container();
+                  return Skeletonizer(
+                    enabled: state is! TeacherCourseGetSuccess,
+                    child: ListView(
+                      children: [
+                        ClaassList(teacherCourse: dummyTeacherCourse),
+                        ClaassList(teacherCourse: dummyTeacherCourse),
+                      ],
+                    ),
+                  );
                 },
               ),
             ),

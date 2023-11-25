@@ -92,3 +92,61 @@ class Course {
         "course_name": courseName,
       };
 }
+
+TeacherCourse dummyTeacherCourse = TeacherCourse(
+  major: "IPA",
+  levels: [
+    Level(
+      level: "10",
+      claasses: [
+        Claass(
+          claassName: "10 IPA 1",
+          courses: [
+            Course(id: 1, courseName: "Introduction to Physics"),
+            Course(id: 2, courseName: "Newtonian Mechanics"),
+          ],
+        ),
+        Claass(
+          claassName: "10 IPA 2",
+          courses: [
+            Course(id: 1, courseName: "Introduction to Physics"),
+            Course(id: 2, courseName: "Newtonian Mechanics"),
+          ],
+        ),
+        Claass(
+          claassName: "10 IPA 3",
+          courses: [
+            Course(id: 1, courseName: "Introduction to Physics"),
+            Course(id: 2, courseName: "Newtonian Mechanics"),
+          ],
+        ),
+      ],
+    ),
+    Level(
+      level: "11",
+      claasses: [
+        Claass(
+          claassName: "11 IPA 1",
+          courses: [
+            Course(id: 1, courseName: "Introduction to Physics"),
+            Course(id: 2, courseName: "Newtonian Mechanics"),
+          ],
+        ),
+        Claass(
+          claassName: "11 IPA 2",
+          courses: [
+            Course(id: 1, courseName: "Introduction to Physics"),
+            Course(id: 2, courseName: "Newtonian Mechanics"),
+          ],
+        ),
+        Claass(
+          claassName: "11 IPA 3",
+          courses: [
+            Course(id: 1, courseName: "Introduction to Physics"),
+            Course(id: 2, courseName: "Newtonian Mechanics"),
+          ],
+        ),
+      ],
+    ),
+  ],
+);

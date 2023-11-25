@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/teacher_course/teacher_course_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/claass_list.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:student_attendance/models/teacher/teacher_course.dart';
 
 class ClaassPage extends StatelessWidget {
   const ClaassPage({super.key});
@@ -23,8 +24,6 @@ class ClaassPage extends StatelessWidget {
                 ],
                 begin: Alignment(0, 0.3),
                 end: Alignment.bottomCenter,
-                // end: Alignment(0, -1),
-                // begin: Alignment.bottomCenter,
               ),
             ),
             child: const Column(
@@ -55,9 +54,6 @@ class ClaassPage extends StatelessWidget {
               ),
               child: BlocBuilder<TeacherCourseBloc, TeacherCourseState>(
                 builder: (conteximpot, state) {
-                  if (state is TeacherCourseGetLoading) {
-                    return const CenterLoading();
-                  }
                   if (state is TeacherCourseGetSuccess) {
                     return ListView(
                       children: List<ClaassList>.generate(
@@ -68,7 +64,15 @@ class ClaassPage extends StatelessWidget {
                       }),
                     );
                   }
-                  return Container();
+                  return Skeletonizer(
+                    enabled: state is! TeacherCourseGetSuccess,
+                    child: ListView(
+                      children: [
+                        ClaassList(teacherCourse: dummyTeacherCourse),
+                        ClaassList(teacherCourse: dummyTeacherCourse),
+                      ],
+                    ),
+                  );
                 },
               ),
             ),

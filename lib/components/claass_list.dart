@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/models/teacher/teacher_course.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -39,20 +40,30 @@ class ClaassList extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(
-              // color: Color(0xFFACAEFE),
               color: Color(0xFF696CFF),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
               ),
             ),
-            child: Text(
-              teacherCourse.major,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+            child: Skeleton.replace(
+              replacement: Text(
+                "${teacherCourse.major} ${teacherCourse.major}",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              child: Text(
+                teacherCourse.major,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -76,10 +87,12 @@ class ClaassList extends StatelessWidget {
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Kelas :",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                      const Skeleton.keep(
+                        child: Text(
+                          "Kelas :",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       Column(
@@ -90,11 +103,20 @@ class ClaassList extends StatelessWidget {
                             if (level.claasses.isNotEmpty) {
                               return Row(
                                 children: [
-                                  Text(
-                                    level.level,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
+                                  Skeleton.replace(
+                                    replacement: Text(
+                                      "${level.level} ${level.level}",
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      level.level,
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 25),
@@ -111,21 +133,23 @@ class ClaassList extends StatelessWidget {
                                               return Padding(
                                                 padding: const EdgeInsets.only(
                                                     right: 10),
-                                                child: ElevatedButton(
-                                                  onPressed: () {
-                                                    showCourses.handleClick(
-                                                        claassName:
-                                                            claass.claassName,
-                                                        courses:
-                                                            claass.courses);
-                                                  },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                          backgroundColor:
-                                                              const Color(
-                                                                  0xFF696CFF)),
-                                                  child:
-                                                      Text(claass.claassName),
+                                                child: Skeleton.shade(
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      showCourses.handleClick(
+                                                          claassName:
+                                                              claass.claassName,
+                                                          courses:
+                                                              claass.courses);
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            backgroundColor:
+                                                                const Color(
+                                                                    0xFF696CFF)),
+                                                    child:
+                                                        Text(claass.claassName),
+                                                  ),
                                                 ),
                                               );
                                             }
@@ -153,14 +177,20 @@ class ClaassList extends StatelessWidget {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   width: 2,
-                                  color: Colors.grey,
+                                  color: const Color(0xFFACAEFE),
                                 ),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(state["claassName"]),
+                                  Text(
+                                    state["claassName"],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                   Column(
                                     children: List<Widget>.generate(
                                       state["courses"].length,

@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
         child: ListView(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height - 120,
+              height: MediaQuery.of(context).size.height - 95,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
