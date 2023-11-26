@@ -102,3 +102,59 @@ class StudentsRecap {
         "a_count": aCount,
       };
 }
+
+CourseRecap dummyCourseRecap = CourseRecap(
+  course: Course(
+      id: 1,
+      claass: "10 IPA 1",
+      courseName: "Bahasa Indonesia",
+      semester: "(Ganjil) 2020/2021",
+      attendanceCount: 16),
+  studentsRecap: [
+    StudentsRecap(
+      name: "Nama Siswa 1",
+      nis: "12345678",
+      gender: "male",
+      hCount: 5,
+      sCount: 5,
+      iCount: 5,
+      aCount: 5,
+    ),
+    StudentsRecap(
+      name: "Nama Siswa 1",
+      nis: "12345678",
+      gender: "male",
+      hCount: 5,
+      sCount: 5,
+      iCount: 5,
+      aCount: 5,
+    ),
+    StudentsRecap(
+      name: "Nama Siswa 1",
+      nis: "12345678",
+      gender: "male",
+      hCount: 5,
+      sCount: 5,
+      iCount: 5,
+      aCount: 5,
+    ),
+    StudentsRecap(
+      name: "Nama Siswa 1",
+      nis: "12345678",
+      gender: "male",
+      hCount: 5,
+      sCount: 5,
+      iCount: 5,
+      aCount: 5,
+    ),
+    StudentsRecap(
+      name: "Nama Siswa 1",
+      nis: "12345678",
+      gender: "male",
+      hCount: 5,
+      sCount: 5,
+      iCount: 5,
+      aCount: 5,
+    ),
+  ],
+);

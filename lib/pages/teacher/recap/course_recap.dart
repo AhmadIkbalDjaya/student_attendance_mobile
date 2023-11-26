@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/course_recap/course_recap_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,8 +21,17 @@ class CourseRecapPage extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 0),
-            color: const Color(0xFFD9D9D9),
+            padding: const EdgeInsets.only(top: 35),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF696CFF),
+                  Color(0xFFACAEFE),
+                ],
+                begin: Alignment(0, 0.3),
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: Stack(
               alignment: Alignment.center,
               children: [
@@ -34,6 +43,7 @@ class CourseRecapPage extends StatelessWidget {
                       const Text(
                         "Rekapan Siswa",
                         style: TextStyle(
+                          color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
@@ -49,14 +59,16 @@ class CourseRecapPage extends StatelessWidget {
                           }
                         },
                         builder: (context, state) {
-                          if (state is CourseRecapSuccess) {
-                            Course course = state.courseRecap.course;
-                            return Column(
+                          return Skeletonizer(
+                            enabled: state is! CourseRecapSuccess,
+                            child: Column(
                               children: [
                                 Text(
-                                  "${course.courseName} ${course.claass}",
-                                  // "Bahasa Indonesia XII IPA 1",
+                                  state is CourseRecapSuccess
+                                      ? "${state.courseRecap.course.courseName} ${state.courseRecap.course.claass}"
+                                      : "Bahasa Indonesia XII IPA 1",
                                   style: const TextStyle(
+                                    color: Colors.white,
                                     fontSize: 18,
                                   ),
                                 ),
@@ -67,11 +79,20 @@ class CourseRecapPage extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(Icons.leaderboard_rounded),
+                                        const Skeleton.shade(
+                                          child: Icon(
+                                            Icons.leaderboard_rounded,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                         const SizedBox(width: 10),
                                         Text(
-                                          course.semester,
+                                          state is CourseRecapSuccess
+                                              ? state
+                                                  .courseRecap.course.semester
+                                              : "(Genap) 2020/2021",
                                           style: const TextStyle(
+                                            color: Colors.white,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -81,22 +102,29 @@ class CourseRecapPage extends StatelessWidget {
                                     Row(
                                       children: [
                                         Text(
-                                          "${course.attendanceCount} Pertemuan",
+                                          state is CourseRecapSuccess
+                                              ? "${state.courseRecap.course.attendanceCount} Pertemuan"
+                                              : "16 Pertamuan",
                                           style: const TextStyle(
+                                            color: Colors.white,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                         const SizedBox(width: 10),
-                                        const Icon(Icons.meeting_room),
+                                        const Skeleton.shade(
+                                          child: Icon(
+                                            Icons.meeting_room,
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ],
                                 ),
                               ],
-                            );
-                          }
-                          return const CenterLoading();
+                            ),
+                          );
                         },
                       ),
                     ],
@@ -105,61 +133,58 @@ class CourseRecapPage extends StatelessWidget {
                 const Positioned(
                   top: 0,
                   left: 0,
-                  child: BackButton(),
+                  child: BackButton(
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: BlocBuilder<CourseRecapBloc, CourseRecapState>(
                 builder: (context, state) {
-                  if (state is CourseRecapGetLoading) {
-                    return const CenterLoading();
-                  }
-                  if (state is CourseRecapSuccess) {
-                    return ListView(
+                  return Skeletonizer(
+                    enabled: state is! CourseRecapSuccess,
+                    child: ListView(
                       children: [
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
+                            horizontalMargin: 10,
+                            columnSpacing: 25,
+                            dataRowMinHeight: 42,
+                            dataRowMaxHeight: 42,
+                            headingRowHeight: 42,
+                            headingTextStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
                             border: TableBorder.all(
                               width: 2,
-                              color: Colors.grey,
+                              color: const Color(0xFFACAEFE),
                               borderRadius: BorderRadius.circular(3),
                             ),
                             columns: const [
                               DataColumn(
                                 label: Text(
                                   "No",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "Nama",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "NIS",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "L/P",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
@@ -176,14 +201,23 @@ class CourseRecapPage extends StatelessWidget {
                               ),
                             ],
                             rows: List<DataRow>.generate(
-                              state.courseRecap.studentsRecap.length,
+                              state is CourseRecapSuccess
+                                  ? state.courseRecap.studentsRecap.length
+                                  : dummyCourseRecap.studentsRecap.length,
                               (index) {
                                 StudentsRecap studentsRecap =
-                                    state.courseRecap.studentsRecap[index];
+                                    state is CourseRecapSuccess
+                                        ? state.courseRecap.studentsRecap[index]
+                                        : dummyCourseRecap.studentsRecap[index];
                                 return DataRow(
                                   cells: [
                                     DataCell(
-                                      Text("${index + 1}"),
+                                      Center(
+                                        child: Text(
+                                          "${index + 1}",
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
                                     ),
                                     DataCell(
                                       Text(studentsRecap.name),
@@ -192,10 +226,12 @@ class CourseRecapPage extends StatelessWidget {
                                       Text(studentsRecap.nis),
                                     ),
                                     DataCell(
-                                      Text(
-                                        studentsRecap.gender == "male"
-                                            ? "L"
-                                            : "P",
+                                      Center(
+                                        child: Text(
+                                          studentsRecap.gender == "male"
+                                              ? "L"
+                                              : "P",
+                                        ),
                                       ),
                                     ),
                                     DataCell(
@@ -216,23 +252,24 @@ class CourseRecapPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF696CFF),
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.print),
-                              Text("Print"),
-                            ],
+                        Skeleton.ignore(
+                          child: ElevatedButton(
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF696CFF),
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.print),
+                                Text("Print"),
+                              ],
+                            ),
                           ),
                         ),
                       ],
-                    );
-                  }
-                  return Container();
+                    ),
+                  );
                 },
               ),
             ),

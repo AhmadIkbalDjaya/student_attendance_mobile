@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           theme: ThemeData(
-            scaffoldBackgroundColor: const Color(0xFFf5f6f8),
+            scaffoldBackgroundColor: const Color(0xFFF9F9F9),
           ),
           debugShowCheckedModeBanner: false,
           // initialRoute: initialRoute,
