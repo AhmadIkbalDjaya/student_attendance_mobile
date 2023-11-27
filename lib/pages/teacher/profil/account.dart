@@ -60,8 +60,16 @@ class AccountPage extends StatelessWidget {
               margin: const EdgeInsets.only(top: 25, bottom: 10),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(5),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(25, 0, 0, 0),
+                    spreadRadius: 1,
+                    blurRadius: 1,
+                    offset: Offset(0, 3),
+                  ),
+                ],
               ),
               child: Column(
                 children: [
@@ -80,11 +88,14 @@ class AccountPage extends StatelessWidget {
                           vertical: 0,
                           horizontal: 10,
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                          ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFF696CFF),
-                            width: 1,
-                            style: BorderStyle.solid,
                           ),
                         ),
                         border: OutlineInputBorder(),
@@ -106,11 +117,14 @@ class AccountPage extends StatelessWidget {
                           vertical: 0,
                           horizontal: 10,
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                          ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFF696CFF),
-                            width: 1,
-                            style: BorderStyle.solid,
                           ),
                         ),
                         border: OutlineInputBorder(),
@@ -132,11 +146,14 @@ class AccountPage extends StatelessWidget {
                           vertical: 0,
                           horizontal: 10,
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                          ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFF696CFF),
-                            width: 1,
-                            style: BorderStyle.solid,
                           ),
                         ),
                         border: OutlineInputBorder(),
@@ -158,11 +175,14 @@ class AccountPage extends StatelessWidget {
                           vertical: 0,
                           horizontal: 10,
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                          ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFF696CFF),
-                            width: 1,
-                            style: BorderStyle.solid,
                           ),
                         ),
                         border: OutlineInputBorder(),
@@ -196,11 +216,14 @@ class AccountPage extends StatelessWidget {
                           vertical: 0,
                           horizontal: 10,
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF696CFF),
+                          ),
+                        ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Color(0xFF696CFF),
-                            width: 1,
-                            style: BorderStyle.solid,
                           ),
                         ),
                         border: OutlineInputBorder(),

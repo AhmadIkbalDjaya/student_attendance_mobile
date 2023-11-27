@@ -46,8 +46,16 @@ class ChangePasswordPage extends StatelessWidget {
             ),
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: Colors.white,
               borderRadius: BorderRadius.circular(5),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(25, 0, 0, 0),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0, 3),
+                ),
+              ],
             ),
             child: Column(
               children: [
@@ -66,6 +74,7 @@ class ChangePasswordPage extends StatelessWidget {
                             onTap: () => showOldPass.handleClick(),
                             child: Icon(
                               state ? Icons.visibility_off : Icons.visibility,
+                              color: const Color(0xFF696CFF),
                             ),
                           ),
                           labelText: "Password Saat Ini",
@@ -76,11 +85,14 @@ class ChangePasswordPage extends StatelessWidget {
                             vertical: 0,
                             horizontal: 10,
                           ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF696CFF),
+                            ),
+                          ),
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0xFF696CFF),
-                              width: 1,
-                              style: BorderStyle.solid,
                             ),
                           ),
                           border: const OutlineInputBorder(),
@@ -104,6 +116,7 @@ class ChangePasswordPage extends StatelessWidget {
                             onTap: () => showNewPass.handleClick(),
                             child: Icon(
                               state ? Icons.visibility_off : Icons.visibility,
+                              color: const Color(0xFF696CFF),
                             ),
                           ),
                           labelText: "Password Baru",
@@ -114,11 +127,14 @@ class ChangePasswordPage extends StatelessWidget {
                             vertical: 0,
                             horizontal: 10,
                           ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF696CFF),
+                            ),
+                          ),
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0xFF696CFF),
-                              width: 1,
-                              style: BorderStyle.solid,
                             ),
                           ),
                           border: const OutlineInputBorder(),
@@ -142,6 +158,7 @@ class ChangePasswordPage extends StatelessWidget {
                             onTap: () => showConfirmNewPass.handleClick(),
                             child: Icon(
                               state ? Icons.visibility_off : Icons.visibility,
+                              color: const Color(0xFF696CFF),
                             ),
                           ),
                           labelText: "Konfirmasi Password Baru",
@@ -152,11 +169,14 @@ class ChangePasswordPage extends StatelessWidget {
                             vertical: 0,
                             horizontal: 10,
                           ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFF696CFF),
+                            ),
+                          ),
                           focusedBorder: const OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Color(0xFF696CFF),
-                              width: 1,
-                              style: BorderStyle.solid,
                             ),
                           ),
                           border: const OutlineInputBorder(),
