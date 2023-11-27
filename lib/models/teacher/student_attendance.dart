@@ -102,3 +102,43 @@ class StudentAttendanceElement {
         "status_id": statusId,
       };
 }
+
+StudentAttendance dummyStudentAttendance = StudentAttendance(
+  attendance: Attendance(
+      id: 1,
+      title: "Pertemuan 1",
+      claass: "10 IPA 1",
+      course: "Bahasa Indonesia",
+      datetime: "28 November 2023 - 00:00",
+      studentCount: 30),
+  studentAttendances: [
+    StudentAttendanceElement(
+      id: 2,
+      studentName: "Nama murid 2",
+      nis: "123456",
+      gender: "male",
+      statusId: "5",
+    ),
+    StudentAttendanceElement(
+      id: 3,
+      studentName: "Nama murid 3",
+      nis: "123456",
+      gender: "male",
+      statusId: "5",
+    ),
+    StudentAttendanceElement(
+      id: 4,
+      studentName: "Nama murid 4",
+      nis: "123456",
+      gender: "male",
+      statusId: "5",
+    ),
+    StudentAttendanceElement(
+      id: 5,
+      studentName: "Nama murid 5",
+      nis: "123456",
+      gender: "male",
+      statusId: "5",
+    ),
+  ],
+);

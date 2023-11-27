@@ -83,3 +83,28 @@ class Course {
         "semester": semester,
       };
 }
+
+CourseAttendance dummyCourseAttendance = CourseAttendance(
+  course: Course(
+      id: 1,
+      name: "Bahasa Indonesia",
+      claass: "10 IPA 1",
+      semester: "(Genap) 2020 /2021"),
+  attendances: [
+    Attendance(
+      id: 1,
+      title: "Pertemuan 1",
+      isFilled: "0",
+    ),
+    Attendance(
+      id: 2,
+      title: "Pertemuan 2",
+      isFilled: "0",
+    ),
+    Attendance(
+      id: 3,
+      title: "Pertemuan 3",
+      isFilled: "0",
+    ),
+  ],
+);

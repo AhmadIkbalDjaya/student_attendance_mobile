@@ -22,11 +22,17 @@ class CreateAttendancePage extends StatelessWidget {
       body: Column(
         children: [
           Container(
+            padding: const EdgeInsets.only(top: 35, bottom: 15),
             decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF696CFF),
+                  Color(0xFFACAEFE),
+                ],
+                begin: Alignment(0, 0.3),
+                end: Alignment.bottomCenter,
+              ),
             ),
-            padding:
-                const EdgeInsets.only(top: 0, bottom: 15, right: 10, left: 10),
             width: double.infinity,
             child: const Stack(
               alignment: Alignment.center,
@@ -38,26 +44,35 @@ class CreateAttendancePage extends StatelessWidget {
                       Text(
                         "Tambah Absensi",
                         style: TextStyle(
-                          fontSize: 25,
+                          color: Colors.white,
+                          fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       SizedBox(height: 10),
-                      Text("Tambah Absensi pada colom dibawah"),
+                      Text(
+                        "Tambah Absensi pada colom dibawah",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ],
                   ),
                 ),
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: BackButton(),
+                  child: BackButton(
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 10),
               child: ListView(
                 children: [
                   Container(
@@ -66,20 +81,43 @@ class CreateAttendancePage extends StatelessWidget {
                       horizontal: 15,
                     ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: const Color(0xFFD9D9D9),
+                      borderRadius: BorderRadius.circular(5),
+                      color: Colors.white,
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color.fromARGB(25, 0, 0, 0),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
                     ),
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 50,
+                          height: 40,
                           child: TextField(
                             controller: titleController,
                             decoration: const InputDecoration(
-                              label: Text("Judul Absensi"),
+                              label: Text(
+                                "Judul Absensi",
+                                style: TextStyle(
+                                  color: Color(0xFF696CFF),
+                                ),
+                              ),
                               border: OutlineInputBorder(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
+                                    BorderRadius.all(Radius.circular(5)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF696CFF),
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF696CFF),
+                                ),
                               ),
                             ),
                             textInputAction: TextInputAction.next,
@@ -87,7 +125,7 @@ class CreateAttendancePage extends StatelessWidget {
                         ),
                         const SizedBox(height: 35),
                         SizedBox(
-                          height: 50,
+                          height: 40,
                           child: BlocBuilder<DatePickerCubit, DateTime?>(
                             bloc: datePickerCubit,
                             builder: (context, state) {
@@ -105,11 +143,22 @@ class CreateAttendancePage extends StatelessWidget {
                                 ),
                                 readOnly: true,
                                 decoration: const InputDecoration(
-                                  label: Text("Tanggal Absensi"),
+                                  label: Text(
+                                    "Tanggal Absensi",
+                                    style: TextStyle(
+                                      color: Color(0xFF696CFF),
+                                    ),
+                                  ),
                                   filled: true,
-                                  prefixIcon: Icon(Icons.date_range),
+                                  suffixIcon: Icon(
+                                    Icons.date_range,
+                                    color: Color(0xFF696CFF),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide.none),
+                                    borderSide: BorderSide(
+                                      color: Color(0xFF696CFF),
+                                    ),
+                                  ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: Color(0xFF696CFF),
@@ -117,7 +166,7 @@ class CreateAttendancePage extends StatelessWidget {
                                   ),
                                   border: OutlineInputBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
+                                        BorderRadius.all(Radius.circular(5)),
                                   ),
                                 ),
                                 textInputAction: TextInputAction.done,

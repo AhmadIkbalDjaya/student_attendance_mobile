@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/student_attendance/student_attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/update_student_attendance/update_student_attendance_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/radio_cubit.dart';
@@ -11,8 +11,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/models/teacher/student_attendance.dart';
 
 class StudentAttendancePage extends StatelessWidget {
-  StudentAttendancePage({super.key, required this.attendanceId});
+  StudentAttendancePage(
+      {super.key, required this.attendanceId, required this.courseId});
   final int attendanceId;
+  final int courseId;
   final RadioCubit idsValue = RadioCubit();
   final RadioCubit statusesValue = RadioCubit();
 
@@ -29,20 +31,28 @@ class StudentAttendancePage extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            padding: const EdgeInsets.symmetric(vertical: 0),
-            color: const Color(0xFFD9D9D9),
+            padding: const EdgeInsets.only(top: 35),
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF696CFF),
+                  Color(0xFFACAEFE),
+                ],
+                begin: Alignment(0, 0.3),
+                end: Alignment.bottomCenter,
+              ),
+            ),
             child: Stack(
               alignment: Alignment.center,
               children: [
                 BlocBuilder<StudentAttendanceBloc, StudentAttendanceState>(
                   builder: (context, state) {
-                    if (state is StudentAttendanceGetLoading) {
-                      return const CenterLoading();
-                    }
-                    if (state is StudentAttendanceGetSuccess) {
-                      Attendance attendance =
-                          state.studentAttendance.attendance;
-                      return Padding(
+                    Attendance attendance = state is StudentAttendanceGetSuccess
+                        ? state.studentAttendance.attendance
+                        : dummyStudentAttendance.attendance;
+                    return Skeletonizer(
+                      enabled: state is! StudentAttendanceGetSuccess,
+                      child: Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 15),
                         child: Column(
@@ -50,6 +60,7 @@ class StudentAttendancePage extends StatelessWidget {
                             Text(
                               attendance.title,
                               style: const TextStyle(
+                                color: Colors.white,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -57,6 +68,7 @@ class StudentAttendancePage extends StatelessWidget {
                             Text(
                               "${attendance.course} ${attendance.claass}",
                               style: const TextStyle(
+                                color: Colors.white,
                                 fontSize: 18,
                               ),
                             ),
@@ -66,11 +78,17 @@ class StudentAttendancePage extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    const Icon(Icons.people),
+                                    const Skeleton.keep(
+                                      child: Icon(
+                                        Icons.people,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                     const SizedBox(width: 10),
                                     Text(
                                       "${attendance.studentCount} Peserta",
                                       style: const TextStyle(
+                                        color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
@@ -82,113 +100,127 @@ class StudentAttendancePage extends StatelessWidget {
                                     Text(
                                       attendance.datetime,
                                       style: const TextStyle(
+                                        color: Colors.white,
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    const Icon(Icons.date_range),
+                                    const Skeleton.keep(
+                                      child: Icon(
+                                        Icons.date_range,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ],
                             ),
                             const SizedBox(height: 8),
-                            SizedBox(
-                              width: double.infinity,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    "Keterangan",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                            Skeleton.keep(
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      "Keterangan",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RichText(
-                                        text: const TextSpan(
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          children: [
-                                            TextSpan(
-                                              text: "H",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        RichText(
+                                          text: const TextSpan(
+                                            style: TextStyle(
+                                              color: Colors.white,
                                             ),
-                                            TextSpan(text: " : "),
-                                            TextSpan(text: "Hadir"),
-                                          ],
-                                        ),
-                                      ),
-                                      RichText(
-                                        text: const TextSpan(
-                                          style: TextStyle(
-                                            color: Colors.black,
+                                            children: [
+                                              TextSpan(
+                                                text: "H",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(text: " : "),
+                                              TextSpan(text: "Hadir"),
+                                            ],
                                           ),
-                                          children: [
-                                            TextSpan(
-                                              text: "S",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            TextSpan(text: " : "),
-                                            TextSpan(text: "Sakit"),
-                                          ],
                                         ),
-                                      ),
-                                      RichText(
-                                        text: const TextSpan(
-                                          style: TextStyle(
-                                            color: Colors.black,
+                                        RichText(
+                                          text: const TextSpan(
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: "S",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(text: " : "),
+                                              TextSpan(text: "Sakit"),
+                                            ],
                                           ),
-                                          children: [
-                                            TextSpan(
-                                              text: "I",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            TextSpan(text: " : "),
-                                            TextSpan(text: "Izin"),
-                                          ],
                                         ),
-                                      ),
-                                      RichText(
-                                        text: const TextSpan(
-                                          style: TextStyle(
-                                            color: Colors.black,
+                                        RichText(
+                                          text: const TextSpan(
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: "I",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(text: " : "),
+                                              TextSpan(text: "Izin"),
+                                            ],
                                           ),
-                                          children: [
-                                            TextSpan(
-                                              text: "A",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            TextSpan(text: " : "),
-                                            TextSpan(text: "Alfa"),
-                                          ],
                                         ),
-                                      ),
-                                    ],
-                                  )
-                                ],
+                                        RichText(
+                                          text: const TextSpan(
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                            children: [
+                                              TextSpan(
+                                                text: "A",
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(text: " : "),
+                                              TextSpan(text: "Alfa"),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      );
-                    }
-                    return Container();
+                      ),
+                    );
                   },
                 ),
                 const Positioned(
                   top: 0,
                   left: 0,
-                  child: BackButton(),
+                  child: BackButton(
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
@@ -215,81 +247,76 @@ class StudentAttendancePage extends StatelessWidget {
                   }
                 },
                 builder: (context, state) {
-                  if (state is StudentAttendanceGetLoading) {
-                    return const CenterLoading();
-                  }
-                  if (state is StudentAttendanceGetSuccess) {
-                    List<StudentAttendanceElement> studentAttendances =
-                        state.studentAttendance.studentAttendances;
-                    return ListView(
+                  List<StudentAttendanceElement> studentAttendances =
+                      state is StudentAttendanceGetSuccess
+                          ? state.studentAttendance.studentAttendances
+                          : dummyStudentAttendance.studentAttendances;
+                  return Skeletonizer(
+                    enabled: state is! StudentAttendanceGetSuccess,
+                    child: ListView(
                       children: [
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
+                            horizontalMargin: 10,
+                            columnSpacing: 25,
+                            dataRowMinHeight: 42,
+                            dataRowMaxHeight: 42,
+                            headingRowHeight: 42,
+                            headingTextStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
                             border: TableBorder.all(
                               width: 2,
-                              color: Colors.grey,
+                              color: const Color(0xFFACAEFE),
                               borderRadius: BorderRadius.circular(3),
                             ),
                             columns: const [
                               DataColumn(
                                 label: Text(
                                   "No",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "Nama",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "NIS",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
                                 label: Text(
                                   "L/P",
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                  ),
                                 ),
                               ),
                               DataColumn(
-                                label: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(width: 18),
-                                    Text(
-                                      "H",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    SizedBox(width: 40),
-                                    Text(
-                                      "S",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    SizedBox(width: 40),
-                                    Text(
-                                      "I",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    SizedBox(width: 40),
-                                    Text(
-                                      "A",
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                  ],
+                                label: Skeleton.unite(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(width: 18),
+                                      Text(
+                                        "H",
+                                      ),
+                                      SizedBox(width: 40),
+                                      Text(
+                                        "S",
+                                      ),
+                                      SizedBox(width: 40),
+                                      Text(
+                                        "I",
+                                      ),
+                                      SizedBox(width: 40),
+                                      Text(
+                                        "A",
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -301,7 +328,7 @@ class StudentAttendancePage extends StatelessWidget {
                                 return DataRow(
                                   cells: [
                                     DataCell(
-                                      Text("${index + 1}"),
+                                      Center(child: Text("${index + 1}")),
                                     ),
                                     DataCell(
                                       Text(studentAttendance.studentName),
@@ -310,73 +337,82 @@ class StudentAttendancePage extends StatelessWidget {
                                       Text(studentAttendance.nis),
                                     ),
                                     DataCell(
-                                      Text(
-                                        studentAttendance.gender == "male"
-                                            ? "L"
-                                            : "P",
+                                      Center(
+                                        child: Text(
+                                          studentAttendance.gender == "male"
+                                              ? "L"
+                                              : "P",
+                                        ),
                                       ),
                                     ),
                                     DataCell(
                                       BlocBuilder<RadioCubit, List<String>>(
                                         bloc: statusesValue,
                                         builder: (context, state) {
-                                          return Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Radio(
-                                                value: "1",
-                                                groupValue: statusesValue
-                                                        .state.isNotEmpty
-                                                    ? statusesValue.state[index]
-                                                    : null,
-                                                onChanged: (value) {
-                                                  statusesValue.setRadioValue(
-                                                    index,
-                                                    "1",
-                                                  );
-                                                },
-                                              ),
-                                              Radio(
-                                                value: "2",
-                                                groupValue: statusesValue
-                                                        .state.isNotEmpty
-                                                    ? statusesValue.state[index]
-                                                    : null,
-                                                onChanged: (value) {
-                                                  statusesValue.setRadioValue(
-                                                    index,
-                                                    "2",
-                                                  );
-                                                },
-                                              ),
-                                              Radio(
-                                                value: "3",
-                                                groupValue: statusesValue
-                                                        .state.isNotEmpty
-                                                    ? statusesValue.state[index]
-                                                    : null,
-                                                onChanged: (value) {
-                                                  statusesValue.setRadioValue(
-                                                    index,
-                                                    "3",
-                                                  );
-                                                },
-                                              ),
-                                              Radio(
-                                                value: "4",
-                                                groupValue: statusesValue
-                                                        .state.isNotEmpty
-                                                    ? statusesValue.state[index]
-                                                    : null,
-                                                onChanged: (value) {
-                                                  statusesValue.setRadioValue(
-                                                    index,
-                                                    "4",
-                                                  );
-                                                },
-                                              ),
-                                            ],
+                                          return Skeleton.ignore(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Radio(
+                                                  value: "1",
+                                                  groupValue: statusesValue
+                                                          .state.isNotEmpty
+                                                      ? statusesValue
+                                                          .state[index]
+                                                      : null,
+                                                  onChanged: (value) {
+                                                    statusesValue.setRadioValue(
+                                                      index,
+                                                      "1",
+                                                    );
+                                                  },
+                                                ),
+                                                Radio(
+                                                  value: "2",
+                                                  groupValue: statusesValue
+                                                          .state.isNotEmpty
+                                                      ? statusesValue
+                                                          .state[index]
+                                                      : null,
+                                                  onChanged: (value) {
+                                                    statusesValue.setRadioValue(
+                                                      index,
+                                                      "2",
+                                                    );
+                                                  },
+                                                ),
+                                                Radio(
+                                                  value: "3",
+                                                  groupValue: statusesValue
+                                                          .state.isNotEmpty
+                                                      ? statusesValue
+                                                          .state[index]
+                                                      : null,
+                                                  onChanged: (value) {
+                                                    statusesValue.setRadioValue(
+                                                      index,
+                                                      "3",
+                                                    );
+                                                  },
+                                                ),
+                                                Radio(
+                                                  value: "4",
+                                                  groupValue: statusesValue
+                                                          .state.isNotEmpty
+                                                      ? statusesValue
+                                                          .state[index]
+                                                      : null,
+                                                  onChanged: (value) {
+                                                    statusesValue.setRadioValue(
+                                                      index,
+                                                      "4",
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            ),
                                           );
                                         },
                                       ),
@@ -396,7 +432,12 @@ class StudentAttendancePage extends StatelessWidget {
                                 message: "Absensi Berhasil di simpan",
                                 type: "success",
                               );
-                              Navigator.pop(context);
+                              // Navigator.pop(context);
+                              Navigator.pushNamed(
+                                context,
+                                "/teacher/attendance/course",
+                                arguments: {"courseId": courseId},
+                              );
                             }
                             if (state is UpdateStudentAttendanceFailure) {
                               showCostumSnackBar(
@@ -410,27 +451,30 @@ class StudentAttendancePage extends StatelessWidget {
                             if (state is UpdateStudentAttendanceLoading) {
                               return const LoadingButton();
                             }
-                            return ElevatedButton(
-                              onPressed: () {
-                                context.read<UpdateStudentAttendanceBloc>().add(
-                                      UpdateEvent(
-                                        attendanceId: attendanceId,
-                                        ids: idsValue.state,
-                                        statusesId: statusesValue.state,
-                                      ),
-                                    );
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF696CFF),
+                            return Skeleton.ignore(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  context
+                                      .read<UpdateStudentAttendanceBloc>()
+                                      .add(
+                                        UpdateEvent(
+                                          attendanceId: attendanceId,
+                                          ids: idsValue.state,
+                                          statusesId: statusesValue.state,
+                                        ),
+                                      );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF696CFF),
+                                ),
+                                child: const Text("Simpan"),
                               ),
-                              child: const Text("Simpan"),
                             );
                           },
                         ),
                       ],
-                    );
-                  }
-                  return Container();
+                    ),
+                  );
                 },
               ),
             ),

@@ -227,9 +227,12 @@ class MyRoute {
       case "/teacher/attendance/student_attendance":
         if (arguments != null && arguments is Map<String, dynamic>) {
           final int attendanceId = arguments["attendanceId"];
+          final int courseId = arguments["courseId"];
           return MaterialPageRoute(
-            builder: (context) =>
-                StudentAttendancePage(attendanceId: attendanceId),
+            builder: (context) => StudentAttendancePage(
+              attendanceId: attendanceId,
+              courseId: courseId,
+            ),
           );
         } else {
           return MaterialPageRoute(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
 import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
@@ -15,8 +16,16 @@ class AttendanceBox extends StatelessWidget {
     AttendanceBloc attendanceBloc = context.read<AttendanceBloc>();
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromARGB(25, 0, 0, 0),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: Offset(0, 3),
+          ),
+        ],
       ),
       margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -25,7 +34,7 @@ class AttendanceBox extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(10),
             decoration: const BoxDecoration(
-              color: Color(0xFFC4C4C4),
+              color: Color(0xFF696CFF),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10),
                 topRight: Radius.circular(10),
@@ -35,6 +44,7 @@ class AttendanceBox extends StatelessWidget {
               attendance.title,
               textAlign: TextAlign.center,
               style: const TextStyle(
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
               ),
@@ -53,6 +63,7 @@ class AttendanceBox extends StatelessWidget {
                         "/teacher/attendance/student_attendance",
                         arguments: {
                           "attendanceId": attendance.id,
+                          "courseId": courseId,
                         },
                       );
                     },
@@ -72,12 +83,14 @@ class AttendanceBox extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    SizedBox(
-                      width: 5,
-                      height: 5,
-                      child: Checkbox(
-                        value: attendance.isFilled == "1" ? true : false,
-                        onChanged: (value) {},
+                    Skeleton.ignore(
+                      child: SizedBox(
+                        width: 5,
+                        height: 5,
+                        child: Checkbox(
+                          value: attendance.isFilled == "1" ? true : false,
+                          onChanged: (value) {},
+                        ),
                       ),
                     ),
                     IconButton(
@@ -141,7 +154,10 @@ class AttendanceBox extends StatelessWidget {
                           },
                         );
                       },
-                      icon: const Icon(Icons.delete),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
                     )
                   ],
                 )

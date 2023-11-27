@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/teacher/attendance_box.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:student_attendance/models/teacher/course_attendance.dart';
+import 'package:student_attendance/presentation/costum_icons_icons.dart';
 
 class CourseAttendancePage extends StatelessWidget {
   const CourseAttendancePage({super.key, required this.courseId});
@@ -21,81 +22,137 @@ class CourseAttendancePage extends StatelessWidget {
         children: [
           Container(
             decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF696CFF),
+                  Color(0xFFACAEFE),
+                ],
+                begin: Alignment(0, 0.3),
+                end: Alignment.bottomCenter,
+              ),
             ),
-            padding:
-                const EdgeInsets.only(top: 0, bottom: 10, right: 10, left: 10),
+            padding: const EdgeInsets.only(top: 35),
             width: double.infinity,
             child: Stack(
               alignment: Alignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Column(
-                    children: [
-                      const Text(
-                        "KELAS",
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      BlocBuilder<AttendanceBloc, AttendanceState>(
-                        builder: (context, state) {
-                          if (state is AttendanceGetLoading) {
-                            return const CenterLoading();
-                          }
-                          if (state is AttendanceGetSuccess) {
-                            Course course = state.courseAttendance.course;
-                            return SizedBox(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                  child: BlocBuilder<AttendanceBloc, AttendanceState>(
+                    builder: (context, state) {
+                      Course course = state is AttendanceGetSuccess
+                          ? state.courseAttendance.course
+                          : dummyCourseAttendance.course;
+                      return Skeletonizer(
+                        enabled: state is! AttendanceGetSuccess,
+                        child: Column(
+                          children: [
+                            const Skeleton.keep(
+                              child: Text(
+                                "Absensi Mapel",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              course.name,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
                               width: double.infinity,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "${course.name} (${course.claass})",
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    course.semester,
-                                    style: const TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Skeleton.keep(
+                                            child: Icon(
+                                              Icons.leaderboard_rounded,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            course.semester,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            course.claass,
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          const Skeleton.keep(
+                                            child: Icon(
+                                              CostumIcons.claass,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 10),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, "/teacher/attendance/create",
-                                          arguments: {
-                                            "courseId":
-                                                state.courseAttendance.course.id
-                                          });
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color(0xFF696CFF),
+                                  Skeleton.shade(
+                                    child: SizedBox(
+                                      width: double.infinity,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            "/teacher/attendance/create",
+                                            arguments: {"courseId": courseId},
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xFF696CFF),
+                                        ),
+                                        child: const Text("Buat Absensi"),
+                                      ),
                                     ),
-                                    child: const Text("Buat Absensi"),
                                   ),
                                 ],
                               ),
-                            );
-                          }
-                          return Container();
-                        },
-                      )
-                    ],
+                            )
+                          ],
+                        ),
+                      );
+                      // }
+                      // return Container();
+                    },
                   ),
                 ),
                 const Positioned(
                   top: 0,
                   left: 0,
-                  child: BackButton(),
+                  child: BackButton(
+                    color: Colors.white,
+                  ),
                 ),
               ],
             ),
@@ -105,21 +162,24 @@ class CourseAttendancePage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: BlocBuilder<AttendanceBloc, AttendanceState>(
                 builder: (context, state) {
-                  if (state is AttendanceGetSuccess) {
-                    return ListView(
+                  return Skeletonizer(
+                    enabled: state is! AttendanceGetSuccess,
+                    child: ListView(
                       children: List<Widget>.generate(
-                        state.courseAttendance.attendances.length,
+                        state is AttendanceGetSuccess
+                            ? state.courseAttendance.attendances.length
+                            : dummyCourseAttendance.attendances.length,
                         (index) {
                           return AttendanceBox(
                             courseId: courseId,
-                            attendance:
-                                state.courseAttendance.attendances[index],
+                            attendance: state is AttendanceGetSuccess
+                                ? state.courseAttendance.attendances[index]
+                                : dummyCourseAttendance.attendances[index],
                           );
                         },
                       ),
-                    );
-                  }
-                  return Container();
+                    ),
+                  );
                 },
               ),
             ),
