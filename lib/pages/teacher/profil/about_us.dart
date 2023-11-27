@@ -26,9 +26,46 @@ class AboutUsPage extends StatelessWidget {
         centerTitle: false,
       ),
       body: ListView(
-        children: const [],
+        children: const [
+          TileBox(),
+          TileBox(),
+          TileBox(),
+          TileBox(),
+        ],
       ),
       bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
+    );
+  }
+}
+
+class TileBox extends StatelessWidget {
+  const TileBox({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: const [
+          BoxShadow(
+            color: Color.fromARGB(25, 0, 0, 0),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: const ListTile(
+        leading: CircleAvatar(),
+        title: Text("Nama Orang"),
+        subtitle: Text("Peran"),
+        trailing: Icon(Icons.phone),
+        style: ListTileStyle.list,
+      ),
     );
   }
 }

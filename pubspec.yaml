@@ -57,6 +57,17 @@ flutter:
     - assets/images/profil.jpg
     - assets/images/female_profil.png
     - assets/images/male_profil.png
+    - assets/images/user_guide/1.png
+    - assets/images/user_guide/2.png
+    - assets/images/user_guide/3.png
+    - assets/images/user_guide/4.png
+    - assets/images/user_guide/5.png
+    - assets/images/user_guide/6.png
+    - assets/images/user_guide/7.png
+    - assets/images/user_guide/8.png
+    - assets/images/user_guide/9.png
+    - assets/images/user_guide/10.png
+    - assets/images/user_guide/11.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
