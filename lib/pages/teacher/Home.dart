@@ -65,27 +65,30 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${Auth.name}",
-                        style: const TextStyle(
-                          color: Color(0xFF696CFF),
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${Auth.name}",
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Color(0xFF696CFF),
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        "${Auth.username}",
-                        style: const TextStyle(
-                          color: Color(0xFF696CFF),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
+                        const SizedBox(height: 5),
+                        Text(
+                          "${Auth.username}",
+                          style: const TextStyle(
+                            color: Color(0xFF696CFF),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 ],
               ),
