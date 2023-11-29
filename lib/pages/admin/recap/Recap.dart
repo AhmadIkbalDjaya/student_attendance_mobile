@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/admin/admin_recap/admin_recap_bloc.dart';
 import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/admin/admin_recap.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminRecapPage extends StatelessWidget {
   const AdminRecapPage({super.key});
@@ -21,9 +22,7 @@ class AdminRecapPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
-            ),
+            decoration: CustomTheme.headerDecoration(),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 25),
             width: double.infinity,
             child: const Column(
@@ -31,6 +30,7 @@ class AdminRecapPage extends StatelessWidget {
                 Text(
                   "Rekap Absensi",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
@@ -38,7 +38,10 @@ class AdminRecapPage extends StatelessWidget {
                 SizedBox(height: 10),
                 Text(
                   "Rekap Absensi Mata Pelajaran Semester ini",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
                 ),
               ],
             ),
@@ -57,18 +60,17 @@ class AdminRecapPage extends StatelessWidget {
                   }
                 },
                 builder: (context, state) {
-                  if (state is AdminRecapSuccess) {
-                    return ListView(
+                  return Skeletonizer(
+                    enabled: state is! AdminRecapSuccess,
+                    child: ListView(
                       children: [
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             border: TableBorder.all(
                               width: 2,
-                              color: Colors.grey,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(3),
-                              ),
+                              color: const Color(0xFFACAEFE),
+                              borderRadius: BorderRadius.circular(3),
                             ),
                             columns: const [
                               DataColumn(
@@ -76,7 +78,6 @@ class AdminRecapPage extends StatelessWidget {
                                   child: Text(
                                     "No",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -85,7 +86,6 @@ class AdminRecapPage extends StatelessWidget {
                                   child: Text(
                                     "Mata Pelajaran",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -94,7 +94,6 @@ class AdminRecapPage extends StatelessWidget {
                                   child: Text(
                                     "Kelas",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -103,19 +102,23 @@ class AdminRecapPage extends StatelessWidget {
                                   child: Text(
                                     "Aksi",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
                             ],
                             rows: List<DataRow>.generate(
-                              state.adminRecap.length,
+                              state is AdminRecapSuccess
+                                  ? state.adminRecap.length
+                                  : dummyAdminRecap.length,
                               (index) {
-                                AdminRecap adminRecap = state.adminRecap[index];
+                                AdminRecap adminRecap =
+                                    state is AdminRecapSuccess
+                                        ? state.adminRecap[index]
+                                        : dummyAdminRecap[0];
                                 return DataRow(
                                   cells: [
                                     DataCell(
-                                      Text("${index + 1}"),
+                                      Center(child: Text("${index + 1}")),
                                     ),
                                     DataCell(
                                       Text(adminRecap.course),
@@ -125,6 +128,8 @@ class AdminRecapPage extends StatelessWidget {
                                     ),
                                     DataCell(
                                       Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           DetailIB(
                                             onPress: () {
@@ -145,9 +150,8 @@ class AdminRecapPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                    );
-                  }
-                  return const CenterLoading();
+                    ),
+                  );
                 },
               ),
             ),

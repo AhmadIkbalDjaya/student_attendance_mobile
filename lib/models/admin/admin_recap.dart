@@ -33,3 +33,11 @@ class AdminRecap {
         "claass": claass,
       };
 }
+
+List<AdminRecap> dummyAdminRecap = [
+  AdminRecap(id: 1, course: "Bahasa Indonesia", claass: "10 IPA 1"),
+  AdminRecap(id: 2, course: "Bahasa Indonesia", claass: "10 IPA 2"),
+  AdminRecap(id: 3, course: "Bahasa Indonesia", claass: "10 IPA 3"),
+  AdminRecap(id: 4, course: "Bahasa Indonesia", claass: "10 IPA 4"),
+  AdminRecap(id: 5, course: "Bahasa Indonesia", claass: "10 IPA 5"),
+];

@@ -39,6 +39,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                         Text(
                           "Informasi Siswa",
                           style: TextStyle(
+                            color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
@@ -46,7 +47,10 @@ class AdminDetailStudentPage extends StatelessWidget {
                         SizedBox(height: 10),
                         Text(
                           "Datail Informasi Siswa",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -55,6 +59,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                     top: 0,
                     left: 0,
                     child: BackButton(
+                      color: Colors.white,
                       onPressed: () {
                         Navigator.pop(context);
                         studentBloc.add(GetAllStudentEvent());

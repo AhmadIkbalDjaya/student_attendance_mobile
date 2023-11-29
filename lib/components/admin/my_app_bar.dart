@@ -7,6 +7,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xFF696CFF),
+      elevation: 1,
       actions: const [
         CircleAvatar(
           backgroundColor: Colors.white70,

@@ -59,3 +59,20 @@ class Course {
         "semester_id": semesterId,
       };
 }
+
+List<Course> dummyCourses = [
+  Course(
+    id: 1,
+    name: "Bahasa Indonesia",
+    claass: "10 IPA 1",
+    claassId: "1",
+    teacher: "Nama Guru",
+    teacherId: "1",
+    semester: "Ganjil 2020 / 2021",
+    semesterId: "1",
+  ),
+  Course(id: 2, name: "Bahasa Indonesia", claass: "10 IPA 2"),
+  Course(id: 3, name: "Bahasa Indonesia", claass: "10 IPA 3"),
+  Course(id: 4, name: "Bahasa Indonesia", claass: "10 IPA 4"),
+  Course(id: 5, name: "Bahasa Indonesia", claass: "10 IPA 5"),
+];

@@ -8,6 +8,7 @@ import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/admin/student.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminStudentPage extends StatelessWidget {
   const AdminStudentPage({super.key});
@@ -22,9 +23,7 @@ class AdminStudentPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
-            ),
+            decoration: CustomTheme.headerDecoration(),
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             width: double.infinity,
             child: Column(
@@ -33,6 +32,7 @@ class AdminStudentPage extends StatelessWidget {
                 const Text(
                   "Siswa",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
@@ -40,6 +40,7 @@ class AdminStudentPage extends StatelessWidget {
                 const Text(
                   "Tambah, Edit atau Hapus Siswa",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
@@ -47,14 +48,6 @@ class AdminStudentPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, "/admin/student/create");
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF696CFF),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
                   child: const Text("Tambah Siswa"),
                 ),
               ],
@@ -76,10 +69,8 @@ class AdminStudentPage extends StatelessWidget {
                           child: DataTable(
                             border: TableBorder.all(
                               width: 2,
-                              color: Colors.grey,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(3),
-                              ),
+                              color: const Color(0xFFACAEFE),
+                              borderRadius: BorderRadius.circular(3),
                             ),
                             columns: const [
                               DataColumn(
@@ -87,7 +78,6 @@ class AdminStudentPage extends StatelessWidget {
                                   child: Text(
                                     "No",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -96,7 +86,6 @@ class AdminStudentPage extends StatelessWidget {
                                   child: Text(
                                     "NIS",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -105,7 +94,6 @@ class AdminStudentPage extends StatelessWidget {
                                   child: Text(
                                     "Nama",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -114,7 +102,6 @@ class AdminStudentPage extends StatelessWidget {
                                   child: Text(
                                     "Aksi",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -126,7 +113,7 @@ class AdminStudentPage extends StatelessWidget {
                                 return DataRow(
                                   cells: [
                                     DataCell(
-                                      Text("${index + 1}"),
+                                      Center(child: Text("${index + 1}")),
                                     ),
                                     DataCell(
                                       Text(student.nis),

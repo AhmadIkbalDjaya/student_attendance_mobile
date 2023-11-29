@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/semester.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminSemesterPage extends StatelessWidget {
   AdminSemesterPage({super.key});
@@ -26,9 +27,7 @@ class AdminSemesterPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
-            ),
+            decoration: CustomTheme.headerDecoration(),
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             width: double.infinity,
             child: Column(
@@ -37,6 +36,7 @@ class AdminSemesterPage extends StatelessWidget {
                 const Text(
                   "Semester",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
@@ -44,6 +44,7 @@ class AdminSemesterPage extends StatelessWidget {
                 const Text(
                   "Tambah, Edit atau Hapus Semester",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
@@ -51,14 +52,6 @@ class AdminSemesterPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, "/admin/semester/create");
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF696CFF),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
                   child: const Text("Tambah Semester"),
                 ),
                 Row(
@@ -192,12 +185,6 @@ class AdminSemesterPage extends StatelessWidget {
                                 id: activeSemesterValue.state,
                               ));
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF696CFF),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
                             child: const Text("Ubah Semester"),
                           );
                         },
@@ -215,19 +202,15 @@ class AdminSemesterPage extends StatelessWidget {
                 children: [
                   BlocBuilder<SemesterBloc, SemesterState>(
                     builder: (context, state) {
-                      if (state is SemesterGetLoading) {
-                        return const CenterLoading();
-                      }
-                      if (state is SemesterAllSuccess) {
-                        return SingleChildScrollView(
+                      return Skeletonizer(
+                        enabled: state is! SemesterAllSuccess,
+                        child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             border: TableBorder.all(
                               width: 2,
-                              color: Colors.grey,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(3),
-                              ),
+                              color: const Color(0xFFACAEFE),
+                              borderRadius: BorderRadius.circular(3),
                             ),
                             columns: const [
                               DataColumn(
@@ -235,7 +218,6 @@ class AdminSemesterPage extends StatelessWidget {
                                   child: Text(
                                     "No",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -244,7 +226,6 @@ class AdminSemesterPage extends StatelessWidget {
                                   child: Text(
                                     "Semester",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -253,7 +234,6 @@ class AdminSemesterPage extends StatelessWidget {
                                   child: Text(
                                     "Status",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -262,19 +242,22 @@ class AdminSemesterPage extends StatelessWidget {
                                   child: Text(
                                     "Aksi",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
                             ],
                             rows: List<DataRow>.generate(
-                              state.semesters.length,
+                              state is SemesterAllSuccess
+                                  ? state.semesters.length
+                                  : dummySemesters.length,
                               (index) {
-                                Semester semester = state.semesters[index];
+                                Semester semester = state is SemesterAllSuccess
+                                    ? state.semesters[index]
+                                    : dummySemesters[0];
                                 return DataRow(
                                   cells: [
                                     DataCell(
-                                      Text("${index + 1}"),
+                                      Center(child: Text("${index + 1}")),
                                     ),
                                     DataCell(
                                       Text(
@@ -397,31 +380,9 @@ class AdminSemesterPage extends StatelessWidget {
                                 );
                               },
                             ),
-                            // DataRow(
-                            //     cells: [
-                            //       DataCell(
-                            //         Text("1"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("Ganjil 2022/2023"),
-                            //       ),
-                            //       DataCell(
-                            //         Text("Aktif"),
-                            //       ),
-                            //       DataCell(
-                            //         Row(
-                            //           children: [
-                            //             EditIB(),
-                            //             DeleteIB(),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
                           ),
-                        );
-                      }
-                      return Container();
+                        ),
+                      );
                     },
                   )
                 ],

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/show_password_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class ChangePasswordPage extends StatelessWidget {
   ChangePasswordPage({super.key});
@@ -45,18 +46,7 @@ class ChangePasswordPage extends StatelessWidget {
               bottom: 10,
             ),
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: const [
-                BoxShadow(
-                  color: Color.fromARGB(25, 0, 0, 0),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
+            decoration: CustomTheme.contentDecoration(),
             child: Column(
               children: [
                 Container(

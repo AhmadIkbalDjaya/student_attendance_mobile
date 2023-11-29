@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/teacher.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminEditTeacherPage extends StatelessWidget {
   AdminEditTeacherPage({super.key, required this.teacherId});
@@ -32,9 +33,7 @@ class AdminEditTeacherPage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFD9D9D9),
-              ),
+              decoration: CustomTheme.headerDecoration(),
               padding: const EdgeInsets.only(
                   top: 0, bottom: 10, right: 10, left: 10),
               width: double.infinity,
@@ -48,6 +47,7 @@ class AdminEditTeacherPage extends StatelessWidget {
                         Text(
                           "Edit Guru",
                           style: TextStyle(
+                            color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
@@ -55,7 +55,10 @@ class AdminEditTeacherPage extends StatelessWidget {
                         SizedBox(height: 10),
                         Text(
                           "Ubah/Edit Guru pada colom dibawah",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -64,6 +67,7 @@ class AdminEditTeacherPage extends StatelessWidget {
                     top: 0,
                     left: 0,
                     child: BackButton(
+                      color: Colors.white,
                       onPressed: () {
                         Navigator.pop(context);
                         teacherBloc.add(GetAllTeacherEvent());
@@ -85,12 +89,7 @@ class AdminEditTeacherPage extends StatelessWidget {
                       vertical: 25,
                       horizontal: 10,
                     ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      color: Color(0xFFD9D9D9),
-                    ),
+                    decoration: CustomTheme.contentDecoration(),
                     child: BlocConsumer<TeacherBloc, TeacherState>(
                       listener: (context, state) {
                         if (state is TeacherDetailSuccess) {
@@ -105,43 +104,21 @@ class AdminEditTeacherPage extends StatelessWidget {
                         }
                       },
                       builder: (context, state) {
-                        if (state is TeacherGetLoading) {
-                          return const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                            ],
-                          );
-                        }
                         return Column(
                           children: [
                             TextField(
                               controller: nipController,
-                              decoration: InputDecoration(
-                                label: const Text("NIP"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 0,
-                                ),
+                              decoration: const InputDecoration(
+                                label: Text("NIP"),
                               ),
                               textInputAction: TextInputAction.next,
                             ),
                             const SizedBox(height: 25),
                             TextField(
                               controller: passwordController,
-                              decoration: InputDecoration(
-                                label: const Text("Password"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 0,
-                                ),
-                                suffixIcon: const Icon(Icons.remove_red_eye),
+                              decoration: const InputDecoration(
+                                label: Text("Password"),
+                                suffixIcon: Icon(Icons.remove_red_eye),
                               ),
                               textInputAction: TextInputAction.next,
                               obscureText: true,
@@ -149,30 +126,16 @@ class AdminEditTeacherPage extends StatelessWidget {
                             const SizedBox(height: 25),
                             TextField(
                               controller: nameController,
-                              decoration: InputDecoration(
-                                label: const Text("Nama"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 0,
-                                ),
+                              decoration: const InputDecoration(
+                                label: Text("Nama"),
                               ),
                               textInputAction: TextInputAction.next,
                             ),
                             const SizedBox(height: 25),
                             TextField(
                               controller: emailController,
-                              decoration: InputDecoration(
-                                label: const Text("Email"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 0,
-                                ),
+                              decoration: const InputDecoration(
+                                label: Text("Email"),
                               ),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.emailAddress,
@@ -180,15 +143,8 @@ class AdminEditTeacherPage extends StatelessWidget {
                             const SizedBox(height: 25),
                             TextField(
                               controller: phoneController,
-                              decoration: InputDecoration(
-                                label: const Text("Nomor Telepon"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 0,
-                                ),
+                              decoration: const InputDecoration(
+                                label: Text("Nomor Telepon"),
                               ),
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.number,
@@ -230,35 +186,25 @@ class AdminEditTeacherPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: BlocConsumer<TeacherBloc, TeacherState>(
                       builder: (context, state) {
-                        if (state is TeacherLoading) {
-                          return ElevatedButton(
-                            onPressed: () {},
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF696CFF),
-                            ),
-                            child: const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                    color: Colors.white)),
-                          );
-                        }
                         return ElevatedButton(
                           onPressed: () {
-                            teacherBloc.add(EditTeacherEvent(
-                              id: teacherId,
-                              username: nipController.text,
-                              password: passwordController.text,
-                              email: emailController.text,
-                              name: nameController.text,
-                              phone: phoneController.text,
-                              gender: genderValue.state,
-                            ));
+                            state is TeacherLoading
+                                ? null
+                                : teacherBloc.add(EditTeacherEvent(
+                                    id: teacherId,
+                                    username: nipController.text,
+                                    password: passwordController.text,
+                                    email: emailController.text,
+                                    name: nameController.text,
+                                    phone: phoneController.text,
+                                    gender: genderValue.state,
+                                  ));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF696CFF),
                           ),
-                          child: const Text("Simpan"),
+                          child: Text(
+                              state is TeacherLoading ? "Simpan..." : "Simpan"),
                         );
                       },
                       listener: (context, state) {

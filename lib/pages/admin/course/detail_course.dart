@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/models/admin/course.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminDetailCoursePage extends StatelessWidget {
   const AdminDetailCoursePage({super.key, required this.courseId});
@@ -25,9 +26,7 @@ class AdminDetailCoursePage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFD9D9D9),
-              ),
+              decoration: CustomTheme.headerDecoration(),
               padding: const EdgeInsets.only(
                   top: 0, bottom: 10, right: 10, left: 10),
               width: double.infinity,
@@ -41,6 +40,7 @@ class AdminDetailCoursePage extends StatelessWidget {
                         Text(
                           "Informasi Mapel",
                           style: TextStyle(
+                            color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
@@ -48,7 +48,10 @@ class AdminDetailCoursePage extends StatelessWidget {
                         SizedBox(height: 10),
                         Text(
                           "Datail Informasi Mata Pelajaran",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -57,6 +60,7 @@ class AdminDetailCoursePage extends StatelessWidget {
                     top: 0,
                     left: 0,
                     child: BackButton(
+                      color: Colors.white,
                       onPressed: () {
                         Navigator.pop(context);
                         courseBloc.add(GetAllCourseEvent());
@@ -67,32 +71,27 @@ class AdminDetailCoursePage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: ListView(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 15,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 25,
-                      horizontal: 30,
-                    ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      color: Color(0xFFD9D9D9),
-                    ),
-                    width: double.infinity,
-                    child: BlocBuilder<CourseBloc, CourseState>(
-                      builder: (context, state) {
-                        if (state is CourseGetLoading) {
-                          return const CenterLoading();
-                        }
-                        if (state is CourseDetailSuccess) {
-                          Course course = state.course;
-                          return Column(
+              child: BlocBuilder<CourseBloc, CourseState>(
+                builder: (context, state) {
+                  Course course = state is CourseDetailSuccess
+                      ? state.course
+                      : dummyCourses[0];
+                  return Skeletonizer(
+                    enabled: state is! CourseDetailSuccess,
+                    child: ListView(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 15,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 25,
+                            horizontal: 30,
+                          ),
+                          decoration: CustomTheme.contentDecoration(),
+                          width: double.infinity,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -141,74 +140,13 @@ class AdminDetailCoursePage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.amber[300],
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                        vertical: 0,
-                                      ),
-                                    ),
-                                    child: const Row(
-                                      children: [
-                                        Icon(
-                                          Icons.edit_square,
-                                          color: Colors.black,
-                                          size: 20,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "Edit",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                        vertical: 0,
-                                      ),
-                                    ),
-                                    child: const Row(
-                                      children: [
-                                        Icon(
-                                          Icons.delete,
-                                          color: Colors.black,
-                                          size: 20,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "Hapus",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )
                             ],
-                          );
-                        }
-                        return Container();
-                      },
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           ],

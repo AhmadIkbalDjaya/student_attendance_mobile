@@ -42,3 +42,11 @@ class Semester {
         "is_active": isActive,
       };
 }
+
+List<Semester> dummySemesters = [
+  Semester(id: 1, startYear: "2020", endYear: "2021", oddEven: "1", isActive: "1"),
+  Semester(id: 2, startYear: "2021", endYear: "2022", oddEven: "1", isActive: "1"),
+  Semester(id: 3, startYear: "2022", endYear: "2023", oddEven: "1", isActive: "1"),
+  Semester(id: 4, startYear: "2023", endYear: "2024", oddEven: "1", isActive: "1"),
+  Semester(id: 5, startYear: "2024", endYear: "2025", oddEven: "1", isActive: "1"),
+];

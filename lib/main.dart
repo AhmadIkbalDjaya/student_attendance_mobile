@@ -25,6 +25,7 @@ import 'package:student_attendance/pages/login.dart';
 import 'package:student_attendance/pages/splash_screen.dart';
 import 'package:student_attendance/pages/teacher/teacher.dart';
 import 'package:student_attendance/routes/routes.dart';
+import 'package:student_attendance/values/theme.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +102,9 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(
             scaffoldBackgroundColor: const Color(0xFFF9F9F9),
+            dataTableTheme: CustomTheme.customDataTableTheme,
+            elevatedButtonTheme: CustomTheme.elevatedButtonThemeData,
+            inputDecorationTheme: CustomTheme.inputDecorationTheme,
           ),
           debugShowCheckedModeBanner: false,
           // initialRoute: initialRoute,

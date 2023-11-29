@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
 import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/admin/course.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminCoursePage extends StatelessWidget {
   const AdminCoursePage({super.key});
@@ -22,9 +23,7 @@ class AdminCoursePage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
-            ),
+            decoration: CustomTheme.headerDecoration(),
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             width: double.infinity,
             child: Column(
@@ -33,6 +32,7 @@ class AdminCoursePage extends StatelessWidget {
                 const Text(
                   "Mata Pelajaran",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
@@ -40,6 +40,7 @@ class AdminCoursePage extends StatelessWidget {
                 const Text(
                   "Tambah, Edit atau Hapus Mata Pelajaran",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
@@ -47,14 +48,6 @@ class AdminCoursePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, "/admin/course/create");
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF696CFF),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
                   child: const Text("Tambah Mata Pelajaran"),
                 ),
               ],
@@ -67,19 +60,16 @@ class AdminCoursePage extends StatelessWidget {
                 children: [
                   BlocBuilder<CourseBloc, CourseState>(
                     builder: (context, state) {
-                      if (state is CourseGetLoading) {
-                        return const CenterLoading();
-                      }
-                      if (state is CourseAllSuccess) {
-                        return SingleChildScrollView(
+                      // if (state is CourseAllSuccess) {
+                      return Skeletonizer(
+                        enabled: state is! CourseAllSuccess,
+                        child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             border: TableBorder.all(
                               width: 2,
-                              color: Colors.grey,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(3),
-                              ),
+                              color: const Color(0xFFACAEFE),
+                              borderRadius: BorderRadius.circular(3),
                             ),
                             columns: const [
                               DataColumn(
@@ -87,7 +77,6 @@ class AdminCoursePage extends StatelessWidget {
                                   child: Text(
                                     "No",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -96,7 +85,6 @@ class AdminCoursePage extends StatelessWidget {
                                   child: Text(
                                     "Mata Pelajaran",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -105,7 +93,6 @@ class AdminCoursePage extends StatelessWidget {
                                   child: Text(
                                     "Kelas",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -114,19 +101,22 @@ class AdminCoursePage extends StatelessWidget {
                                   child: Text(
                                     "Aksi",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
                             ],
                             rows: List<DataRow>.generate(
-                              state.courses.length,
+                              state is CourseAllSuccess
+                                  ? state.courses.length
+                                  : dummyCourses.length,
                               (index) {
-                                Course course = state.courses[index];
+                                Course course = state is CourseAllSuccess
+                                    ? state.courses[index]
+                                    : dummyCourses[index];
                                 return DataRow(
                                   cells: [
                                     DataCell(
-                                      Text("${index + 1}"),
+                                      Center(child: Text("${index + 1}")),
                                     ),
                                     DataCell(
                                       Text(course.name),
@@ -252,9 +242,10 @@ class AdminCoursePage extends StatelessWidget {
                               },
                             ),
                           ),
-                        );
-                      }
-                      return Container();
+                        ),
+                      );
+                      // }
+                      // return Container();
                     },
                   )
                 ],

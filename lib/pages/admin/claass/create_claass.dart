@@ -3,9 +3,9 @@ import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminCreateClaassPage extends StatelessWidget {
   AdminCreateClaassPage({super.key});
@@ -27,9 +27,7 @@ class AdminCreateClaassPage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFD9D9D9),
-              ),
+              decoration: CustomTheme.headerDecoration(),
               padding: const EdgeInsets.only(
                   top: 0, bottom: 10, right: 10, left: 10),
               width: double.infinity,
@@ -43,6 +41,7 @@ class AdminCreateClaassPage extends StatelessWidget {
                         Text(
                           "Tambahkan Kelas",
                           style: TextStyle(
+                            color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
@@ -50,7 +49,10 @@ class AdminCreateClaassPage extends StatelessWidget {
                         SizedBox(height: 10),
                         Text(
                           "Tambahkan Kelas pada colom dibawah",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -59,6 +61,7 @@ class AdminCreateClaassPage extends StatelessWidget {
                     top: 0,
                     left: 0,
                     child: BackButton(
+                      color: Colors.white,
                       onPressed: () {
                         Navigator.pop(context);
                         claassBloc.add(GetAllClaassEvent());
@@ -80,12 +83,7 @@ class AdminCreateClaassPage extends StatelessWidget {
                       vertical: 25,
                       horizontal: 10,
                     ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      color: Color(0xFFD9D9D9),
-                    ),
+                    decoration: CustomTheme.contentDecoration(),
                     child: Column(
                       children: [
                         SizedBox(
@@ -189,21 +187,19 @@ class AdminCreateClaassPage extends StatelessWidget {
                         }
                       },
                       builder: (context, state) {
-                        if (state is ClaassLoading) {
-                          return const LoadingButton();
-                        }
                         return ElevatedButton(
                           onPressed: () {
-                            claassBloc.add(AddClaassEvent(
-                              majorId: majorValue.state,
-                              level: levelValue.state,
-                              name: nameController.text,
-                            ));
+                            state is ClaassLoading
+                                ? null
+                                : claassBloc.add(AddClaassEvent(
+                                    majorId: majorValue.state,
+                                    level: levelValue.state,
+                                    name: nameController.text,
+                                  ));
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF696CFF),
+                          child: Text(
+                            state is ClaassLoading ? "Simpan..." : "Simpan",
                           ),
-                          child: const Text("Simpan"),
                         );
                       },
                     ),

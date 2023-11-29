@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/models/admin/claass.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminClaassPage extends StatelessWidget {
   const AdminClaassPage({super.key});
@@ -21,9 +22,7 @@ class AdminClaassPage extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              color: Color(0xFFD9D9D9),
-            ),
+            decoration: CustomTheme.headerDecoration(),
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
             width: double.infinity,
             child: Column(
@@ -32,6 +31,7 @@ class AdminClaassPage extends StatelessWidget {
                 const Text(
                   "Kelas",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
@@ -39,6 +39,7 @@ class AdminClaassPage extends StatelessWidget {
                 const Text(
                   "Tambah, Edit atau Hapus Kelas",
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
@@ -46,14 +47,6 @@ class AdminClaassPage extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(context, "/admin/claass/create");
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF696CFF),
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(20),
-                      ),
-                    ),
-                  ),
                   child: const Text("Tambah Kelas"),
                 ),
               ],
@@ -66,22 +59,16 @@ class AdminClaassPage extends StatelessWidget {
                 children: [
                   BlocBuilder<ClaassBloc, ClaassState>(
                     builder: (context, state) {
-                      if (state is ClaassFailure) {
-                        return Text(state.message);
-                      }
-                      if (state is ClaassGetLoading) {
-                        return const CenterLoading();
-                      }
-                      if (state is ClaassAllSuccess) {
-                        return SingleChildScrollView(
+                      // if (state is ClaassAllSuccess) {
+                      return Skeletonizer(
+                        enabled: state is! ClaassAllSuccess,
+                        child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             border: TableBorder.all(
                               width: 2,
-                              color: Colors.grey,
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(3),
-                              ),
+                              color: const Color(0xFFACAEFE),
+                              borderRadius: BorderRadius.circular(3),
                             ),
                             columns: const [
                               DataColumn(
@@ -89,7 +76,6 @@ class AdminClaassPage extends StatelessWidget {
                                   child: Text(
                                     "No",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -98,7 +84,6 @@ class AdminClaassPage extends StatelessWidget {
                                   child: Text(
                                     "Nama Kelas",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -107,7 +92,6 @@ class AdminClaassPage extends StatelessWidget {
                                   child: Text(
                                     "Kelas",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -116,7 +100,6 @@ class AdminClaassPage extends StatelessWidget {
                                   child: Text(
                                     "Jurusan",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
@@ -125,27 +108,30 @@ class AdminClaassPage extends StatelessWidget {
                                   child: Text(
                                     "Aksi",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(color: Colors.grey),
                                   ),
                                 ),
                               ),
                             ],
-                            rows: List<DataRow>.generate(state.claasses.length,
-                                (index) {
-                              Claass claass = state.claasses[index];
+                            rows: List<DataRow>.generate(
+                                state is ClaassAllSuccess
+                                    ? state.claasses.length
+                                    : dummyClaasses.length, (index) {
+                              Claass claass = state is ClaassAllSuccess
+                                  ? state.claasses[index]
+                                  : dummyClaasses[0];
                               return DataRow(
                                 cells: [
                                   DataCell(
-                                    Text("${index + 1}"),
+                                    Center(child: Text("${index + 1}")),
                                   ),
                                   DataCell(
                                     Text(claass.name),
                                   ),
                                   DataCell(
-                                    Text(claass.level),
+                                    Center(child: Text(claass.level)),
                                   ),
                                   DataCell(
-                                    Text(claass.major),
+                                    Center(child: Text(claass.major)),
                                   ),
                                   DataCell(
                                     Row(
@@ -255,9 +241,10 @@ class AdminClaassPage extends StatelessWidget {
                               );
                             }),
                           ),
-                        );
-                      }
-                      return Container();
+                        ),
+                      );
+                      // }
+                      // return Container();
                     },
                   )
                 ],

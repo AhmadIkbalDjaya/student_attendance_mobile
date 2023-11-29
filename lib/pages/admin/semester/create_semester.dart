@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-// import 'package:student_attendance/components/prev_page_button.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminCreateSemesterPage extends StatelessWidget {
   AdminCreateSemesterPage({super.key});
@@ -27,9 +26,7 @@ class AdminCreateSemesterPage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFD9D9D9),
-              ),
+              decoration: CustomTheme.headerDecoration(),
               padding: const EdgeInsets.only(
                   top: 0, bottom: 10, right: 10, left: 10),
               width: double.infinity,
@@ -43,6 +40,7 @@ class AdminCreateSemesterPage extends StatelessWidget {
                         Text(
                           "Tambahkan Semester",
                           style: TextStyle(
+                            color: Colors.white,
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
@@ -50,7 +48,10 @@ class AdminCreateSemesterPage extends StatelessWidget {
                         SizedBox(height: 10),
                         Text(
                           "Tambahkan Semester pada colom dibawah",
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ],
                     ),
@@ -59,6 +60,7 @@ class AdminCreateSemesterPage extends StatelessWidget {
                     top: 0,
                     left: 0,
                     child: BackButton(
+                      color: Colors.white,
                       onPressed: () {
                         Navigator.pop(context);
                         semesterBloc.add(GetAllSemesterEvent());
@@ -80,12 +82,7 @@ class AdminCreateSemesterPage extends StatelessWidget {
                       vertical: 25,
                       horizontal: 10,
                     ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      color: Color(0xFFD9D9D9),
-                    ),
+                    decoration: CustomTheme.contentDecoration(),
                     child: Column(
                       children: [
                         const Text(
@@ -220,20 +217,21 @@ class AdminCreateSemesterPage extends StatelessWidget {
                         }
                       },
                       builder: (context, state) {
-                        if (state is SemesterLoading) {
-                          return const LoadingButton();
-                        }
                         return ElevatedButton(
                           onPressed: () {
-                            semesterBloc.add(AddSemesterEvent(
-                              oddEven: oddEvenValue.state,
-                              startYear: startYear.state,
-                            ));
+                            state is SemesterLoading
+                                ? null
+                                : semesterBloc.add(AddSemesterEvent(
+                                    oddEven: oddEvenValue.state,
+                                    startYear: startYear.state,
+                                  ));
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF696CFF),
                           ),
-                          child: const Text("Simpan"),
+                          child: Text(
+                            state is SemesterLoading ? "Simpan..." : "Simpan",
+                          ),
                         );
                       },
                     ),
