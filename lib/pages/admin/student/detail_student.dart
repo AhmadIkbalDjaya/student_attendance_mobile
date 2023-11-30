@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/models/admin/student.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminDetailStudentPage extends StatelessWidget {
-  const AdminDetailStudentPage({super.key, required this.studentId});
+  const AdminDetailStudentPage(
+      {super.key, required this.studentId, required this.claassId});
+  final int claassId;
   final int studentId;
   @override
   Widget build(BuildContext context) {
@@ -14,7 +18,7 @@ class AdminDetailStudentPage extends StatelessWidget {
     studentBloc.add(GetDetailStudentEvent(studentId: studentId));
     return WillPopScope(
       onWillPop: () async {
-        studentBloc.add(GetAllStudentEvent());
+        studentBloc.add(GetAllStudentEvent(claassId: claassId));
         return true;
       },
       child: Scaffold(
@@ -23,9 +27,7 @@ class AdminDetailStudentPage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFD9D9D9),
-              ),
+              decoration: CustomTheme.headerDecoration(),
               padding: const EdgeInsets.only(
                   top: 0, bottom: 10, right: 10, left: 10),
               width: double.infinity,
@@ -62,7 +64,7 @@ class AdminDetailStudentPage extends StatelessWidget {
                       color: Colors.white,
                       onPressed: () {
                         Navigator.pop(context);
-                        studentBloc.add(GetAllStudentEvent());
+                        studentBloc.add(GetAllStudentEvent(claassId: claassId));
                       },
                     ),
                   ),
@@ -72,35 +74,25 @@ class AdminDetailStudentPage extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 20,
-                      horizontal: 15,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 25,
-                      horizontal: 30,
-                    ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      color: Color(0xFFD9D9D9),
-                    ),
-                    width: double.infinity,
-                    child: BlocBuilder<StudentBloc, StudentState>(
-                      builder: (context, state) {
-                        if (state is StudentGetLoading) {
-                          return const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(),
-                            ],
-                          );
-                        }
-                        if (state is StudentDetailSuccess) {
-                          Student student = state.student;
-                          return Column(
+                  BlocBuilder<StudentBloc, StudentState>(
+                    builder: (context, state) {
+                      Student student = state is StudentDetailSuccess
+                          ? state.student
+                          : dummyStudents[0];
+                      return Skeletonizer(
+                        enabled: state is! StudentDetailSuccess,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(
+                            vertical: 20,
+                            horizontal: 15,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 25,
+                            horizontal: 30,
+                          ),
+                          decoration: CustomTheme.contentDecoration(),
+                          width: double.infinity,
+                          child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -155,72 +147,11 @@ class AdminDetailStudentPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.amber[300],
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                        vertical: 0,
-                                      ),
-                                    ),
-                                    child: const Row(
-                                      children: [
-                                        Icon(
-                                          Icons.edit_square,
-                                          color: Colors.black,
-                                          size: 20,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "Edit",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 15,
-                                        vertical: 0,
-                                      ),
-                                    ),
-                                    child: const Row(
-                                      children: [
-                                        Icon(
-                                          Icons.delete,
-                                          color: Colors.black,
-                                          size: 20,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "Hapus",
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )
                             ],
-                          );
-                        }
-                        return Container();
-                      },
-                    ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),

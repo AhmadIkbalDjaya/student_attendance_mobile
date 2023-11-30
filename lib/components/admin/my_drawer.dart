@@ -73,7 +73,7 @@ class MyDrawer extends StatelessWidget {
                         text: "Siswa",
                         icon: Icons.person,
                         index: 2,
-                        targetPage: "/admin/student",
+                        targetPage: "/admin/student_claass",
                         isActive: activePage.state == 2 ? true : false,
                       ),
                       DrawerMenu(

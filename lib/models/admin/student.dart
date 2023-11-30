@@ -50,3 +50,18 @@ class Student {
         "claass_name": claassName,
       };
 }
+
+List<Student> dummyStudents = [
+  Student(
+    id: 1,
+    nis: "123456",
+    name: "Nama Lengkap Murid",
+    gender: "male",
+    claassId: "1",
+    claassName: "10 IPA 1",
+  ),
+  Student(id: 2, nis: "123456", name: "Nama Lengkap Murid"),
+  Student(id: 3, nis: "123456", name: "Nama Lengkap Murid"),
+  Student(id: 4, nis: "123456", name: "Nama Lengkap Murid"),
+  Student(id: 5, nis: "123456", name: "Nama Lengkap Murid"),
+];

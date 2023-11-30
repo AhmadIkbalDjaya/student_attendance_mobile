@@ -15,6 +15,7 @@ import 'package:student_attendance/pages/admin/student/create_student.dart';
 import 'package:student_attendance/pages/admin/student/detail_student.dart';
 import 'package:student_attendance/pages/admin/student/edit_student.dart';
 import 'package:student_attendance/pages/admin/student/student.dart';
+import 'package:student_attendance/pages/admin/student/student_claass.dart';
 import 'package:student_attendance/pages/admin/teacher/create_teacher.dart';
 import 'package:student_attendance/pages/admin/teacher/detail_teacher.dart';
 import 'package:student_attendance/pages/admin/teacher/edit_teacher.dart';
@@ -139,19 +140,45 @@ class MyRoute {
             builder: (context) => const NotFoundPage(),
           );
         }
+      case "/admin/student_claass":
+        return MaterialPageRoute(
+          builder: (context) => const AdminStudentClaassPage(),
+        );
       case "/admin/student":
-        return MaterialPageRoute(
-          builder: (context) => const AdminStudentPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final claassId = arguments['claassId'] as int;
+          final claassName = arguments['claassName'];
+          return MaterialPageRoute(
+            builder: (context) => AdminStudentPage(
+              claassId: claassId,
+              claassName: claassName,
+            ),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/student/create":
-        return MaterialPageRoute(
-          builder: (context) => AdminCreateStudentPage(),
-        );
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final claassId = arguments['claassId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminCreateStudentPage(claassId: claassId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
       case "/admin/student/detail":
         if (arguments != null && arguments is Map<String, dynamic>) {
           final studentId = arguments['studentId'] as int;
+          final claassId = arguments['claassId'] as int;
           return MaterialPageRoute(
-            builder: (context) => AdminDetailStudentPage(studentId: studentId),
+            builder: (context) => AdminDetailStudentPage(
+              claassId: claassId,
+              studentId: studentId,
+            ),
           );
         } else {
           return MaterialPageRoute(
@@ -161,8 +188,12 @@ class MyRoute {
       case "/admin/student/edit":
         if (arguments != null && arguments is Map<String, dynamic>) {
           final studentId = arguments['studentId'] as int;
+          final claassId = arguments['claassId'] as int;
           return MaterialPageRoute(
-            builder: (context) => AdminEditStudentPage(studentId: studentId),
+            builder: (context) => AdminEditStudentPage(
+              claassId: claassId,
+              studentId: studentId,
+            ),
           );
         } else {
           return MaterialPageRoute(

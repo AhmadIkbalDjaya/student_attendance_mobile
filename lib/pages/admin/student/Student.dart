@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
@@ -11,12 +12,14 @@ import 'package:student_attendance/models/admin/student.dart';
 import 'package:student_attendance/values/theme.dart';
 
 class AdminStudentPage extends StatelessWidget {
-  const AdminStudentPage({super.key});
-
+  const AdminStudentPage(
+      {super.key, required this.claassId, required this.claassName});
+  final String claassName;
+  final int claassId;
   @override
   Widget build(BuildContext context) {
     StudentBloc studentBloc = context.read<StudentBloc>();
-    studentBloc.add(GetAllStudentEvent());
+    studentBloc.add(GetAllStudentEvent(claassId: claassId));
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -24,31 +27,53 @@ class AdminStudentPage extends StatelessWidget {
         children: [
           Container(
             decoration: CustomTheme.headerDecoration(),
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                const Text(
-                  "Siswa",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Siswa $claassName",
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text(
+                        "Tambah, Edit atau Hapus Siswa",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              "/admin/student/create",
+                              arguments: {"claassId": claassId},
+                            );
+                          },
+                          child: const Text("Tambah Siswa"),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const Text(
-                  "Tambah, Edit atau Hapus Siswa",
-                  style: TextStyle(
+                const Positioned(
+                  top: 0,
+                  left: 0,
+                  child: BackButton(
                     color: Colors.white,
-                    fontSize: 16,
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/admin/student/create");
-                  },
-                  child: const Text("Tambah Siswa"),
                 ),
               ],
             ),
@@ -60,11 +85,9 @@ class AdminStudentPage extends StatelessWidget {
                 children: [
                   BlocBuilder<StudentBloc, StudentState>(
                     builder: (context, state) {
-                      if (state is StudentGetLoading) {
-                        return const CenterLoading();
-                      }
-                      if (state is StudentAllSuccess) {
-                        return SingleChildScrollView(
+                      return Skeletonizer(
+                        enabled: state is! StudentAllSuccess,
+                        child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             border: TableBorder.all(
@@ -107,9 +130,13 @@ class AdminStudentPage extends StatelessWidget {
                               ),
                             ],
                             rows: List<DataRow>.generate(
-                              state.students.length,
+                              state is StudentAllSuccess
+                                  ? state.students.length
+                                  : dummyStudents.length,
                               (index) {
-                                Student student = state.students[index];
+                                Student student = state is StudentAllSuccess
+                                    ? state.students[index]
+                                    : dummyStudents[index];
                                 return DataRow(
                                   cells: [
                                     DataCell(
@@ -129,6 +156,7 @@ class AdminStudentPage extends StatelessWidget {
                                               Navigator.pushNamed(context,
                                                   '/admin/student/detail',
                                                   arguments: {
+                                                    "claassId": claassId,
                                                     "studentId": student.id
                                                   });
                                             },
@@ -138,6 +166,7 @@ class AdminStudentPage extends StatelessWidget {
                                               Navigator.pushNamed(context,
                                                   "/admin/student/edit",
                                                   arguments: {
+                                                    "claassId": claassId,
                                                     "studentId": student.id
                                                   });
                                             },
@@ -156,7 +185,10 @@ class AdminStudentPage extends StatelessWidget {
                                                         Navigator.of(context)
                                                             .pop();
                                                         studentBloc.add(
-                                                            GetAllStudentEvent());
+                                                          GetAllStudentEvent(
+                                                            claassId: claassId,
+                                                          ),
+                                                        );
                                                         showCostumSnackBar(
                                                           context: context,
                                                           message:
@@ -166,7 +198,10 @@ class AdminStudentPage extends StatelessWidget {
                                                       } else if (state
                                                           is StudentFailure) {
                                                         studentBloc.add(
-                                                            GetAllStudentEvent());
+                                                          GetAllStudentEvent(
+                                                            claassId: claassId,
+                                                          ),
+                                                        );
                                                         Navigator.of(context)
                                                             .pop();
                                                         showCostumSnackBar(
@@ -233,11 +268,10 @@ class AdminStudentPage extends StatelessWidget {
                               },
                             ),
                           ),
-                        );
-                      }
-                      return Container();
+                        ),
+                      );
                     },
-                  )
+                  ),
                 ],
               ),
             ),

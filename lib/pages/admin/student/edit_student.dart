@@ -3,19 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/bloc/admin/student/student_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:student_attendance/components/center_loading.dart';
 import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/student.dart';
+import 'package:student_attendance/values/theme.dart';
 
 class AdminEditStudentPage extends StatelessWidget {
-  AdminEditStudentPage({super.key, required this.studentId});
+  AdminEditStudentPage(
+      {super.key, required this.studentId, required this.claassId});
+  final int claassId;
   final int studentId;
   final nisController = TextEditingController();
   final nameController = TextEditingController();
   final genderValue = DropDownValueCubit();
-  final claassIdValue = DropDownValueCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class AdminEditStudentPage extends StatelessWidget {
     studentBloc.add(GetDetailStudentEvent(studentId: studentId));
     return WillPopScope(
       onWillPop: () async {
-        studentBloc.add(GetAllStudentEvent());
+        studentBloc.add(GetAllStudentEvent(claassId: claassId));
         return true;
       },
       child: Scaffold(
@@ -32,9 +33,7 @@ class AdminEditStudentPage extends StatelessWidget {
         body: Column(
           children: [
             Container(
-              decoration: const BoxDecoration(
-                color: Color(0xFFD9D9D9),
-              ),
+              decoration: CustomTheme.headerDecoration(),
               padding: const EdgeInsets.only(
                   top: 0, bottom: 10, right: 10, left: 10),
               width: double.infinity,
@@ -71,7 +70,7 @@ class AdminEditStudentPage extends StatelessWidget {
                       color: Colors.white,
                       onPressed: () {
                         Navigator.pop(context);
-                        studentBloc.add(GetAllStudentEvent());
+                        studentBloc.add(GetAllStudentEvent(claassId: claassId));
                       },
                     ),
                   ),
@@ -90,12 +89,7 @@ class AdminEditStudentPage extends StatelessWidget {
                       vertical: 25,
                       horizontal: 10,
                     ),
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                      color: Color(0xFFD9D9D9),
-                    ),
+                    decoration: CustomTheme.contentDecoration(),
                     child: BlocConsumer<StudentBloc, StudentState>(
                       listener: (context, state) {
                         if (state is StudentDetailSuccess) {
@@ -105,45 +99,24 @@ class AdminEditStudentPage extends StatelessWidget {
                           if (student.gender != null) {
                             genderValue.changeValue(student.gender.toString());
                           }
-                          if (student.claassId != null) {
-                            claassIdValue
-                                .changeValue(student.claassId.toString());
-                          }
                         }
                       },
                       builder: (context, state) {
-                        if (state is StudentGetLoading) {
-                          return const CenterLoading();
-                        }
                         return Column(
                           children: [
                             TextField(
                               controller: nisController,
                               keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                label: const Text("NIS"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 0,
-                                ),
+                              decoration: const InputDecoration(
+                                label: Text("NIS"),
                               ),
                               textInputAction: TextInputAction.next,
                             ),
                             const SizedBox(height: 25),
                             TextField(
                               controller: nameController,
-                              decoration: InputDecoration(
-                                label: const Text("Nama"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 0,
-                                ),
+                              decoration: const InputDecoration(
+                                label: Text("Nama"),
                               ),
                               textInputAction: TextInputAction.next,
                             ),
@@ -175,34 +148,6 @@ class AdminEditStudentPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 25),
-                            DropdownButtonFormField(
-                              value: claassIdValue.state != ""
-                                  ? claassIdValue.state
-                                  : null,
-                              hint: const Text("Kelas"),
-                              items: const [
-                                DropdownMenuItem(
-                                  value: "1",
-                                  child: Text("10 IPA I"),
-                                ),
-                                DropdownMenuItem(
-                                  value: "2",
-                                  child: Text("12 IPS II"),
-                                ),
-                              ],
-                              onChanged: (value) {
-                                claassIdValue.changeValue("$value");
-                              },
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                              ),
-                            ),
                           ],
                         );
                       },
@@ -217,23 +162,26 @@ class AdminEditStudentPage extends StatelessWidget {
                         }
                         return ElevatedButton(
                           onPressed: () {
-                            studentBloc.add(EditStudentEvent(
-                              id: studentId,
-                              nis: nisController.text,
-                              name: nameController.text,
-                              gender: genderValue.state,
-                              classId: claassIdValue.state,
-                            ));
+                            state is StudentLoading
+                                ? null
+                                : studentBloc.add(EditStudentEvent(
+                                    id: studentId,
+                                    nis: nisController.text,
+                                    name: nameController.text,
+                                    gender: genderValue.state,
+                                    classId: claassId.toString(),
+                                  ));
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF696CFF),
+                          child: Text(
+                            state is StudentLoading ? "Simpan..." : "Simpan",
                           ),
-                          child: const Text("Simpan"),
                         );
                       },
                       listener: (context, state) {
                         if (state is StudentEditSuccess) {
-                          Navigator.pushNamed(context, "/admin/student");
+                          Navigator.pop(context);
+                          studentBloc
+                              .add(GetAllStudentEvent(claassId: claassId));
                           showCostumSnackBar(
                             context: context,
                             message: "Siswa Berhasil Diedit",

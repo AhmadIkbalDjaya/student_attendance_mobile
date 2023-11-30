@@ -2,7 +2,10 @@ part of 'student_bloc.dart';
 
 sealed class StudentEvent {}
 
-class GetAllStudentEvent extends StudentEvent {}
+class GetAllStudentEvent extends StudentEvent {
+  final int claassId;
+  GetAllStudentEvent({required this.claassId});
+}
 
 class GetDetailStudentEvent extends StudentEvent {
   final int studentId;

@@ -43,10 +43,14 @@ class Claass {
 }
 
 List<Claass> dummyClaasses = [
-  Claass(id: 1, majorId: "1", major: "IPA", level: "10", name: "10 IPA 1"),
-  Claass(id: 2, majorId: "1", major: "IPA", level: "11", name: "11 IPA 2"),
-  Claass(id: 3, majorId: "1", major: "IPA", level: "12", name: "12 IPA 3"),
-  Claass(id: 4, majorId: "2", major: "IPS", level: "10", name: "10 IPS 1"),
-  Claass(id: 5, majorId: "2", major: "IPS", level: "11", name: "11 IPS 2"),
-  Claass(id: 6, majorId: "2", major: "IPS", level: "12", name: "12 IPS 3"),
+  Claass(
+      id: 1, majorId: "1", major: "IPA", level: "10", name: "Kelas 10 IPA 1"),
+  Claass(
+      id: 2, majorId: "1", major: "IPA", level: "11", name: "Kelas 11 IPA 2"),
+  Claass(
+      id: 3, majorId: "1", major: "IPA", level: "12", name: "Kelas 12 IPA 3"),
+  Claass(
+      id: 4, majorId: "2", major: "IPS", level: "10", name: "Kelas 10 IPS 1"),
+  Claass(
+      id: 5, majorId: "2", major: "IPS", level: "11", name: "Kelas 11 IPS 2"),
 ];
