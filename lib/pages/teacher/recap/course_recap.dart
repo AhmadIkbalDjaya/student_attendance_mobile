@@ -5,6 +5,7 @@ import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
+import 'package:student_attendance/helper/pdf_helper.dart';
 import 'package:student_attendance/models/teacher/course_recap.dart';
 
 class CourseRecapPage extends StatelessWidget {
@@ -254,7 +255,11 @@ class CourseRecapPage extends StatelessWidget {
                         ),
                         Skeleton.ignore(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              state is CourseRecapSuccess
+                                  ? PdfHelper.getPDF(state.courseRecap)
+                                  : null;
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF696CFF),
                             ),
