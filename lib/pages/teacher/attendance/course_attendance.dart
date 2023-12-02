@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
+import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/components/teacher/attendance_box.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
@@ -39,7 +40,13 @@ class CourseAttendancePage extends StatelessWidget {
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                  child: BlocBuilder<AttendanceBloc, AttendanceState>(
+                  child: BlocConsumer<AttendanceBloc, AttendanceState>(
+                    listener: (context, state) {
+                      if (state is AttendanceFailure) {
+                        showCostumSnackBar(
+                            context: context, message: state.message);
+                      }
+                    },
                     builder: (context, state) {
                       Course course = state is AttendanceGetSuccess
                           ? state.courseAttendance.course
@@ -142,8 +149,6 @@ class CourseAttendancePage extends StatelessWidget {
                           ],
                         ),
                       );
-                      // }
-                      // return Container();
                     },
                   ),
                 ),

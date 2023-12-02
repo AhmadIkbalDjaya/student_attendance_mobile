@@ -7,6 +7,9 @@ import 'dart:convert';
 CourseAttendance courseAttendanceFromJson(String str) =>
     CourseAttendance.fromJson(json.decode(str)['data']);
 
+Attendance attendanceFromJson(String str) =>
+    Attendance.fromJson(json.decode(str)['data']);
+
 String courseAttendanceToJson(CourseAttendance data) =>
     json.encode(data.toJson());
 
@@ -35,23 +38,35 @@ class CourseAttendance {
 class Attendance {
   final int id;
   final String title;
+  final String datetime;
+  final String courseId;
+  final String course;
   final String isFilled;
 
   Attendance({
     required this.id,
     required this.title,
+    required this.datetime,
+    required this.courseId,
+    required this.course,
     required this.isFilled,
   });
 
   factory Attendance.fromJson(Map<String, dynamic> json) => Attendance(
         id: json["id"],
         title: json["title"],
+        datetime: json["datetime"],
+        courseId: json["course_id"],
+        course: json["course"],
         isFilled: json["is_filled"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
+        "datetime": datetime,
+        "courseId": courseId,
+        "course": course,
         "is_filled": isFilled,
       };
 }
@@ -94,16 +109,25 @@ CourseAttendance dummyCourseAttendance = CourseAttendance(
     Attendance(
       id: 1,
       title: "Pertemuan 1",
+      datetime: "1972-08-17 04:24:11",
+      courseId: "1",
+      course: "Bahasa Indonesia",
       isFilled: "0",
     ),
     Attendance(
       id: 2,
       title: "Pertemuan 2",
+      datetime: "1972-08-17 04:24:11",
+      courseId: "1",
+      course: "Bahasa Indonesia",
       isFilled: "0",
     ),
     Attendance(
       id: 3,
       title: "Pertemuan 3",
+      datetime: "1972-08-17 04:24:11",
+      courseId: "1",
+      course: "Bahasa Indonesia",
       isFilled: "0",
     ),
   ],

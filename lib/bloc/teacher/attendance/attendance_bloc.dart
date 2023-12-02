@@ -17,7 +17,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           emit(AttendanceGetLoading());
           final response = await http.get(
             Uri.parse(
-                "${constant.apiUrl}/teacher/attendance/list/${event.courseId}"),
+                "${constant.apiUrl}/teacher/attendance/course/${event.courseId}"),
             headers: {HttpHeaders.acceptHeader: "application/json"},
           );
           if (response.statusCode == 200) {
@@ -26,6 +26,31 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           } else {
             emit(AttendanceFailure(
                 message: jsonDecode(response.body)['message']));
+          }
+        } catch (e) {
+          emit(AttendanceFailure(message: e.toString()));
+        }
+      },
+    );
+
+    on<GetDetailAttendanceEvent>(
+      (event, emit) async {
+        try {
+          emit(AttendanceGetLoading());
+          final response = await http.get(
+            Uri.parse(
+                "${constant.apiUrl}/teacher/attendance/${event.attendanceId}"),
+            headers: {
+              HttpHeaders.acceptHeader: "application/json",
+            },
+          );
+          if (response.statusCode == 200) {
+            emit(AttendanceDetailSucces(
+                attendance: attendanceFromJson(response.body)));
+          } else {
+            emit(
+              AttendanceFailure(message: jsonDecode(response.body).toString()),
+            );
           }
         } catch (e) {
           emit(AttendanceFailure(message: e.toString()));

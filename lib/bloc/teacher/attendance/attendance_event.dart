@@ -8,6 +8,11 @@ class GetCourseAttendanceEvent extends AttendanceEvent {
   GetCourseAttendanceEvent({required this.courseId});
 }
 
+class GetDetailAttendanceEvent extends AttendanceEvent {
+  final int attendanceId;
+  GetDetailAttendanceEvent({required this.attendanceId});
+}
+
 class DeleteAttendanceEvent extends AttendanceEvent {
   final int attendanceId;
   DeleteAttendanceEvent({required this.attendanceId});

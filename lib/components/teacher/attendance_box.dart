@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
@@ -62,7 +63,7 @@ class AttendanceBox extends StatelessWidget {
                         context,
                         "/teacher/attendance/student_attendance",
                         arguments: {
-                          "attendanceId": attendance.id,
+                          // "attendanceId": attendance.id,
                           "courseId": courseId,
                         },
                       );
@@ -93,7 +94,28 @@ class AttendanceBox extends StatelessWidget {
                         ),
                       ),
                     ),
-                    IconButton(
+                    const SizedBox(width: 10),
+                    CupertinoButton(
+                      minSize: double.minPositive,
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context,
+                          "/teacher/attendance/edit",
+                          arguments: {
+                            "courseId": courseId,
+                            "attendanceId": attendance.id,
+                          },
+                        );
+                      },
+                      child: const Icon(
+                        Icons.edit,
+                        color: Colors.amber,
+                      ),
+                    ),
+                    CupertinoButton(
+                      minSize: double.minPositive,
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
                       onPressed: () {
                         showDialog(
                           context: context,
@@ -154,7 +176,7 @@ class AttendanceBox extends StatelessWidget {
                           },
                         );
                       },
-                      icon: const Icon(
+                      child: const Icon(
                         Icons.delete,
                         color: Colors.red,
                       ),

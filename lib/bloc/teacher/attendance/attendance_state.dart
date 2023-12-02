@@ -14,6 +14,11 @@ class AttendanceGetSuccess extends AttendanceState {
   AttendanceGetSuccess({required this.courseAttendance});
 }
 
+class AttendanceDetailSucces extends AttendanceState {
+  Attendance attendance;
+  AttendanceDetailSucces({required this.attendance});
+}
+
 class AttendanceDeleteSuccess extends AttendanceState {}
 
 class AttendanceFailure extends AttendanceState {

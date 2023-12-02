@@ -5,33 +5,32 @@ import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/values/constant.dart' as constant;
 
-part 'create_attendance_event.dart';
-part 'create_attendance_state.dart';
+part 'edit_attendance_event.dart';
+part 'edit_attendance_state.dart';
 
-class CreateAttendanceBloc
-    extends Bloc<CreateAttendanceEvent, CreateAttendanceState> {
-  CreateAttendanceBloc() : super(CreateAttendanceInitial()) {
-    on<CreateNewAttendanceEvent>((event, emit) async {
+class EditAttendanceBloc
+    extends Bloc<EditAttendanceEvent, EditAttendanceState> {
+  EditAttendanceBloc() : super(EditAttendanceInitial()) {
+    on<EditEvent>((event, emit) async {
       try {
-        emit(CreateAttendanceLoading());
+        emit(EditAttendanceLoading());
         final response = await http.post(
           Uri.parse(
-              "${constant.apiUrl}/teacher/attendance"),
+              "${constant.apiUrl}/teacher/attendance/${event.attendanceId}?_method=put"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
-            "course_id": event.courseId,
             "title": event.title,
             "datetime": event.datetime,
           },
         );
         if (response.statusCode == 200) {
-          emit(CreateAttendanceSuccess());
+          emit(EditAttendanceSuccess());
         } else {
-          emit(CreateAttendanceFailure(
+          emit(EditAttendanceFailure(
               message: jsonDecode(response.body)["message"]));
         }
       } catch (e) {
-        emit(CreateAttendanceFailure(message: e.toString()));
+        emit(EditAttendanceFailure(message: e.toString()));
       }
     });
   }

@@ -24,6 +24,7 @@ import 'package:student_attendance/pages/login.dart';
 import 'package:student_attendance/pages/admin/admin_home.dart';
 import 'package:student_attendance/pages/error/not_found.dart';
 import 'package:student_attendance/pages/splash_screen.dart';
+import 'package:student_attendance/pages/teacher/attendance/edit_attendance.dart';
 import 'package:student_attendance/pages/teacher/attendance/student_attendance.dart';
 import 'package:student_attendance/pages/teacher/attendance/Claass.dart';
 import 'package:student_attendance/pages/teacher/attendance/create_attendance.dart';
@@ -275,6 +276,21 @@ class MyRoute {
           final courseId = arguments['courseId'];
           return MaterialPageRoute(
             builder: (context) => CreateAttendancePage(courseId: courseId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
+      case "/teacher/attendance/edit":
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final courseId = arguments['courseId'];
+          final attendanceId = arguments['attendanceId'];
+          return MaterialPageRoute(
+            builder: (context) => EditAttendancePage(
+              courseId: courseId,
+              attendanceId: attendanceId,
+            ),
           );
         } else {
           return MaterialPageRoute(

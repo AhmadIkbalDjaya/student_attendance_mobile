@@ -3,6 +3,7 @@ import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart'
 import 'package:student_attendance/bloc/teacher/create_attendance/create_attendance_bloc.dart';
 import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
+import 'package:student_attendance/cubit/date_picker_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
@@ -202,7 +203,7 @@ class CreateAttendancePage extends StatelessWidget {
                           onPressed: () {
                             createAttendanceBloc.add(
                               CreateNewAttendanceEvent(
-                                courseId: courseId,
+                                courseId: courseId.toString(),
                                 title: titleController.text,
                                 datetime: datePickerCubit.state != null
                                     ? datePickerCubit.state.toString()
@@ -226,21 +227,5 @@ class CreateAttendancePage extends StatelessWidget {
       ),
       bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
     );
-  }
-}
-
-class DatePickerCubit extends Cubit<DateTime?> {
-  DatePickerCubit() : super(null);
-
-  void pickDate(BuildContext context, DateTime initialDate) async {
-    DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: initialDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(3000),
-    );
-    if (picked != null) {
-      emit(picked);
-    }
   }
 }

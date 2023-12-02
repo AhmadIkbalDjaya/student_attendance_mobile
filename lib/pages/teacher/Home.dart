@@ -97,7 +97,6 @@ class HomePage extends StatelessWidget {
                 builder: (context, state) {
                   return Skeletonizer(
                     enabled: state is! TeacherHomeSuccess,
-                    // effect: PaintingEffect,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 30, horizontal: 15),
