@@ -86,9 +86,6 @@ flutter:
     - family: CostumIcons
       fonts:
         - asset: assets/fonts/CostumIcons.ttf
-    - family: OpenSans
-      fonts:
-        - asset: assets/fonts/OpenSans.ttf
     # - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

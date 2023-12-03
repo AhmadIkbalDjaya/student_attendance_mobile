@@ -5,6 +5,7 @@ import 'package:student_attendance/bloc/course_recap/course_recap_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
+import 'package:student_attendance/helper/pdf_helper.dart';
 import 'package:student_attendance/models/teacher/course_recap.dart';
 import 'package:student_attendance/values/theme.dart';
 
@@ -220,7 +221,11 @@ class AdminRecapCoursePage extends StatelessWidget {
                         ),
                         Skeleton.ignore(
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              state is CourseRecapSuccess
+                                  ? PdfHelper.getPDF(state.courseRecap)
+                                  : null;
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xFF696CFF),
                             ),
@@ -236,8 +241,6 @@ class AdminRecapCoursePage extends StatelessWidget {
                       ],
                     ),
                   );
-                  // }
-                  // return Container();
                 },
               ),
             ),
