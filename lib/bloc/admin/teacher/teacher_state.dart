@@ -17,6 +17,8 @@ class TeacherEditSuccess extends TeacherState {}
 
 class TeacherDeleteSuccess extends TeacherState {}
 
+class TeacherSetPassSuccess extends TeacherState {}
+
 class TeacherFailure extends TeacherState {
   String message;
   TeacherFailure({this.message = "error"});

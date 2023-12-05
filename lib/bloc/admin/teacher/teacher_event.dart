@@ -64,3 +64,11 @@ class DeleteTeacherEvent extends TeacherEvent {
   int id;
   DeleteTeacherEvent({required this.id});
 }
+
+class SetTeacherPasswordEvent extends TeacherEvent {
+  int id;
+  String? password;
+  SetTeacherPasswordEvent({required this.id, this.password}) {
+    password ??= "";
+  }
+}

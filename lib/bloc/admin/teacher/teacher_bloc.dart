@@ -115,5 +115,25 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
         emit(TeacherFailure(message: e.toString()));
       }
     });
+
+    on<SetTeacherPasswordEvent>(
+      (event, emit) async {
+        try {
+          emit(TeacherLoading());
+          final response = await http.post(
+            Uri.parse("${constant.apiUrl}/admin/teacher/setPass/${event.id}"),
+            body: {"password": event.password},
+            headers: {HttpHeaders.acceptHeader: "application/json"},
+          );
+          if (response.statusCode == 200) {
+            emit(TeacherSetPassSuccess());
+          } else {
+            emit(TeacherFailure(message: jsonDecode(response.body)["message"]));
+          }
+        } catch (e) {
+          emit(TeacherFailure(message: e.toString()));
+        }
+      },
+    );
   }
 }

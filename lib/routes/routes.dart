@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:student_attendance/pages/admin/about_us/about_us.dart';
+import 'package:student_attendance/pages/admin/about_us/create_about_us.dart';
+import 'package:student_attendance/pages/admin/about_us/detail_about_us.dart';
+import 'package:student_attendance/pages/admin/about_us/edit_about_us.dart';
+import 'package:student_attendance/pages/admin/admin_change_password.dart';
 import 'package:student_attendance/pages/admin/claass/claass.dart';
 import 'package:student_attendance/pages/admin/claass/create_claass.dart';
 import 'package:student_attendance/pages/admin/claass/edit_claass.dart';
@@ -19,6 +24,7 @@ import 'package:student_attendance/pages/admin/student/student_claass.dart';
 import 'package:student_attendance/pages/admin/teacher/create_teacher.dart';
 import 'package:student_attendance/pages/admin/teacher/detail_teacher.dart';
 import 'package:student_attendance/pages/admin/teacher/edit_teacher.dart';
+import 'package:student_attendance/pages/admin/teacher/set_pass_teacher.dart';
 import 'package:student_attendance/pages/admin/teacher/teacher.dart';
 import 'package:student_attendance/pages/login.dart';
 import 'package:student_attendance/pages/admin/admin_home.dart';
@@ -55,6 +61,10 @@ class MyRoute {
       case "/admin":
         return MaterialPageRoute(
           builder: (context) => const AdminHomePage(),
+        );
+      case "/admin/changePass":
+        return MaterialPageRoute(
+          builder: (context) => AdminChangePassPage(),
         );
 
       case "/admin/claass":
@@ -228,6 +238,51 @@ class MyRoute {
           return MaterialPageRoute(
             builder: (context) => AdminEditTeacherPage(
               teacherId: teacherId,
+            ),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
+      case "/admin/teacher/setPass":
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final teacherId = arguments['teacherId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminSetPassTeacherPage(
+              teacherId: teacherId,
+            ),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
+      case "/admin/aboutUs":
+        return MaterialPageRoute(
+          builder: (context) => const AdminAboutUsPage(),
+        );
+      case "/admin/aboutUs/create":
+        return MaterialPageRoute(
+          builder: (context) => AdminCreateAboutUsPage(),
+        );
+      case "/admin/aboutUs/detail":
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final aboutUsId = arguments['aboutUsId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminDetailAboutUsPage(aboutUsId: aboutUsId),
+          );
+        } else {
+          return MaterialPageRoute(
+            builder: (context) => const NotFoundPage(),
+          );
+        }
+      case "/admin/aboutUs/edit":
+        if (arguments != null && arguments is Map<String, dynamic>) {
+          final aboutUsId = arguments['aboutUsId'] as int;
+          return MaterialPageRoute(
+            builder: (context) => AdminEditAboutUsPage(
+              aboutUsId: aboutUsId,
             ),
           );
         } else {

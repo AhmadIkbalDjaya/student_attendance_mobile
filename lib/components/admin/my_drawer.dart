@@ -104,6 +104,20 @@ class MyDrawer extends StatelessWidget {
                         targetPage: "/admin/recap",
                         isActive: activePage.state == 6 ? true : false,
                       ),
+                      DrawerMenu(
+                        text: "About Us",
+                        icon: Icons.info_outline_rounded,
+                        index: 7,
+                        targetPage: "/admin/aboutUs",
+                        isActive: activePage.state == 7 ? true : false,
+                      ),
+                      DrawerMenu(
+                        text: "Ubah Password",
+                        icon: Icons.key,
+                        index: 8,
+                        targetPage: "/admin/changePass",
+                        isActive: activePage.state == 8 ? true : false,
+                      ),
                     ],
                   ),
                   BlocConsumer<LoginBloc, LoginState>(

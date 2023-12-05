@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:student_attendance/bloc/admin/teacher/teacher_bloc.dart';
+import 'package:student_attendance/bloc/admin/about_us/about_us_bloc.dart';
 import 'package:student_attendance/components/admin/button/detail_icon_button.dart';
 import 'package:student_attendance/components/admin/button/edit_icon_button.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
-import 'package:student_attendance/models/admin/teacher.dart';
+import 'package:student_attendance/models/admin/about_us.dart';
 import 'package:student_attendance/values/theme.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AdminTeacherPage extends StatelessWidget {
-  const AdminTeacherPage({super.key});
+class AdminAboutUsPage extends StatelessWidget {
+  const AdminAboutUsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TeacherBloc teacherBloc = context.read<TeacherBloc>();
-    teacherBloc.add(GetAllTeacherEvent());
+    AboutUsBloc aboutUsBloc = context.read<AboutUsBloc>();
+    aboutUsBloc.add(GetAllAboutUsEvent());
     return Scaffold(
       appBar: const MyAppBar(),
       drawer: const MyDrawer(),
@@ -30,7 +30,7 @@ class AdminTeacherPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Guru",
+                  "AboutUs",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,
@@ -38,7 +38,7 @@ class AdminTeacherPage extends StatelessWidget {
                   ),
                 ),
                 const Text(
-                  "Tambah, Edit atau Hapus Guru",
+                  "Tambah, Edit atau Hapus AboutUs",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
@@ -46,9 +46,9 @@ class AdminTeacherPage extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/admin/teacher/create");
+                    Navigator.pushNamed(context, "/admin/aboutUs/create");
                   },
-                  child: const Text("Tambah Guru"),
+                  child: const Text("Tambah AboutUs"),
                 ),
               ],
             ),
@@ -58,10 +58,10 @@ class AdminTeacherPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 3),
               child: ListView(
                 children: [
-                  BlocBuilder<TeacherBloc, TeacherState>(
+                  BlocBuilder<AboutUsBloc, AboutUsState>(
                     builder: (context, state) {
                       return Skeletonizer(
-                        enabled: state is! TeacherAllSuccess,
+                        enabled: state is! AboutUsAllSuccess,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
@@ -82,7 +82,7 @@ class AdminTeacherPage extends StatelessWidget {
                               DataColumn(
                                 label: Expanded(
                                   child: Text(
-                                    "NIP",
+                                    "Nama",
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -90,7 +90,7 @@ class AdminTeacherPage extends StatelessWidget {
                               DataColumn(
                                 label: Expanded(
                                   child: Text(
-                                    "Nama",
+                                    "Posisi / Jabatan",
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -105,55 +105,47 @@ class AdminTeacherPage extends StatelessWidget {
                               ),
                             ],
                             rows: List<DataRow>.generate(
-                              state is TeacherAllSuccess
-                                  ? state.teachers.length
-                                  : dummyTeachers.length,
+                              state is AboutUsAllSuccess
+                                  ? state.aboutUses.length
+                                  : dummtAboutUses.length,
                               (index) {
-                                Teacher teacher = state is TeacherAllSuccess
-                                    ? state.teachers[index]
-                                    : dummyTeachers[index];
+                                AboutUs aboutUs = state is AboutUsAllSuccess
+                                    ? state.aboutUses[index]
+                                    : dummtAboutUses[index];
                                 return DataRow(
                                   cells: [
                                     DataCell(
                                       Center(child: Text("${index + 1}")),
                                     ),
                                     DataCell(
-                                      Text(teacher.username),
+                                      Text(aboutUs.name),
                                     ),
                                     DataCell(
-                                      Text(teacher.name),
+                                      Text(aboutUs.position),
                                     ),
                                     DataCell(
                                       Row(
                                         children: [
-                                          IconButton(
-                                            onPressed: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                "/admin/teacher/setPass",
-                                                arguments: {
-                                                  "teacherId": teacher.id,
-                                                },
-                                              );
-                                            },
-                                            icon: const Icon(Icons.key),
-                                          ),
                                           DetailIB(
                                             onPress: () {
-                                              Navigator.pushNamed(context,
-                                                  "/admin/teacher/detail",
-                                                  arguments: {
-                                                    "teacherId": teacher.id,
-                                                  });
+                                              Navigator.pushNamed(
+                                                context,
+                                                "/admin/aboutUs/detail",
+                                                arguments: {
+                                                  "aboutUsId": aboutUs.id,
+                                                },
+                                              );
                                             },
                                           ),
                                           EditIB(
                                             onPress: () {
-                                              Navigator.pushNamed(context,
-                                                  "/admin/teacher/edit",
-                                                  arguments: {
-                                                    "teacherId": teacher.id,
-                                                  });
+                                              Navigator.pushNamed(
+                                                context,
+                                                "/admin/aboutUs/edit",
+                                                arguments: {
+                                                  "aboutUsId": aboutUs.id,
+                                                },
+                                              );
                                             },
                                           ),
                                           IconButton(
@@ -162,31 +154,31 @@ class AdminTeacherPage extends StatelessWidget {
                                                 context: context,
                                                 builder: (context) {
                                                   return BlocConsumer<
-                                                      TeacherBloc,
-                                                      TeacherState>(
+                                                      AboutUsBloc,
+                                                      AboutUsState>(
                                                     listener: (context, state) {
                                                       if (state
-                                                          is TeacherDeleteSuccess) {
+                                                          is AboutUsDeleteSuccess) {
                                                         Navigator.of(context)
                                                             .pop();
-                                                        teacherBloc.add(
-                                                            GetAllTeacherEvent());
+                                                        aboutUsBloc.add(
+                                                            GetAllAboutUsEvent());
                                                         showCostumSnackBar(
                                                           context: context,
                                                           message:
-                                                              "Guru Behasil Dihapus",
+                                                              "AboutUs Behasil Dihapus",
                                                           type: "success",
                                                         );
                                                       } else if (state
-                                                          is TeacherFailure) {
+                                                          is AboutUsFailure) {
                                                         Navigator.of(context)
                                                             .pop();
-                                                        teacherBloc.add(
-                                                            GetAllTeacherEvent());
+                                                        aboutUsBloc.add(
+                                                            GetAllAboutUsEvent());
                                                         showCostumSnackBar(
                                                           context: context,
                                                           message:
-                                                              "Guru Gagal Dihapus",
+                                                              "AboutUs Gagal Dihapus",
                                                           type: "danger",
                                                         );
                                                       }
@@ -199,7 +191,7 @@ class AdminTeacherPage extends StatelessWidget {
                                                               TextAlign.center,
                                                         ),
                                                         content: state
-                                                                is TeacherLoading
+                                                                is AboutUsLoading
                                                             ? const Row(
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
@@ -209,7 +201,7 @@ class AdminTeacherPage extends StatelessWidget {
                                                                 ],
                                                               )
                                                             : Text(
-                                                                "Yakin Ingin Menghapus ${teacher.name}?",
+                                                                "Yakin Ingin Menghapus ${aboutUs.name}?",
                                                                 textAlign:
                                                                     TextAlign
                                                                         .center,
@@ -226,13 +218,16 @@ class AdminTeacherPage extends StatelessWidget {
                                                           ),
                                                           TextButton(
                                                             onPressed: () {
-                                                              teacherBloc.add(
-                                                                  DeleteTeacherEvent(
-                                                                      id: teacher
-                                                                          .id));
+                                                              aboutUsBloc.add(
+                                                                DeleteAboutUsEvent(
+                                                                  id: aboutUs
+                                                                      .id,
+                                                                ),
+                                                              );
                                                             },
                                                             child: const Text(
-                                                                "Ya"),
+                                                              "Ya",
+                                                            ),
                                                           ),
                                                         ],
                                                       );

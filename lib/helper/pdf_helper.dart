@@ -33,7 +33,7 @@ class PdfHelper {
 
     final dir = await getExternalStorageDirectory();
 
-    final file = await File('${dir?.path}/recap-${course.courseName}.pdf');
+    final file = File('${dir?.path}/recap-${course.courseName}.pdf');
 
     await file.writeAsBytes(bytes);
     DocumentFileSavePlus()

@@ -62,7 +62,7 @@ class AccountSettingBloc
       try {
         emit(Loading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/teacher/changePass"),
+          Uri.parse("${constant.apiUrl}/user/changePass"),
           headers: {
             HttpHeaders.acceptHeader: "application/json",
             HttpHeaders.authorizationHeader: "Bearer ${Auth.token}",
