@@ -63,7 +63,7 @@ class AttendanceBox extends StatelessWidget {
                         context,
                         "/teacher/attendance/student_attendance",
                         arguments: {
-                          // "attendanceId": attendance.id,
+                          "attendanceId": attendance.id,
                           "courseId": courseId,
                         },
                       );

@@ -17,7 +17,7 @@ class StudentAttendanceBloc
         emit(StudentAttendanceGetLoading());
         final response = await http.get(
             Uri.parse(
-                "${constant.apiUrl}/teacher/attendance/${event.attendanceId}"),
+                "${constant.apiUrl}/teacher/studentAttendance/${event.attendanceId}"),
             headers: {HttpHeaders.acceptHeader: "application/json"});
         if (response.statusCode == 200) {
           emit(StudentAttendanceGetSuccess(
