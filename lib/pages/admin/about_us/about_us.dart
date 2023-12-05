@@ -6,7 +6,7 @@ import 'package:student_attendance/components/admin/button/edit_icon_button.dart
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
-import 'package:student_attendance/models/admin/about_us.dart';
+import 'package:student_attendance/models/about_us.dart';
 import 'package:student_attendance/values/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

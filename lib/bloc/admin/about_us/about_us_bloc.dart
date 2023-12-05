@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:student_attendance/models/admin/about_us.dart';
+import 'package:student_attendance/models/about_us.dart';
 import 'package:student_attendance/values/constant.dart' as constant;
 import 'package:http/http.dart' as http;
 
