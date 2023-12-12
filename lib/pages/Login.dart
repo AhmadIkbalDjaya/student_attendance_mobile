@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    "Absens Siswa MA Pompanua",
+                    "Absensi Siswa \nMA Pompanua",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFF696CFF),

@@ -124,13 +124,15 @@ class AdminCreateCoursePage extends StatelessWidget {
                                 return DropdownButtonFormField(
                                   hint: const Text("Guru Pengajar"),
                                   items: List<DropdownMenuItem>.generate(
-                                      state.teachers.length, (index) {
-                                    Teacher teacher = state.teachers[index];
-                                    return DropdownMenuItem(
-                                      value: "${teacher.id}",
-                                      child: Text(teacher.name),
-                                    );
-                                  }),
+                                    state.teachers.length,
+                                    (index) {
+                                      Teacher teacher = state.teachers[index];
+                                      return DropdownMenuItem(
+                                        value: "${teacher.id}",
+                                        child: Text(teacher.name),
+                                      );
+                                    },
+                                  ),
                                   decoration: const InputDecoration(),
                                   onChanged: (value) {
                                     teacherIdValue.changeValue(value);

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
+import 'package:student_attendance/bloc/admin/major/major_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/drop_down_value_cubit.dart';
 import 'package:student_attendance/models/admin/claass.dart';
+import 'package:student_attendance/models/id_name.dart';
 import 'package:student_attendance/values/theme.dart';
 
 class AdminEditClaassPage extends StatelessWidget {
@@ -19,6 +21,8 @@ class AdminEditClaassPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ClaassBloc claassBloc = context.read<ClaassBloc>();
     claassBloc.add(GetDetailClaassEvent(claassId: claassId));
+    MajorBloc majorBloc = context.read<MajorBloc>();
+    majorBloc.add(GetAllMajorEvent());
     return WillPopScope(
       onWillPop: () async {
         claassBloc.add(GetAllClaassEvent());
@@ -102,32 +106,41 @@ class AdminEditClaassPage extends StatelessWidget {
                             SizedBox(
                               height: 40,
                               width: double.infinity,
-                              child: DropdownButtonFormField(
-                                value: majorValue.state != ""
-                                    ? majorValue.state
-                                    : null,
-                                hint: const Text("Jurusan"),
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: "1",
-                                    child: Text("IPA"),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: "2",
-                                    child: Text("IPS"),
-                                  ),
-                                ],
-                                decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 10),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(8),
+                              child: BlocBuilder<MajorBloc, MajorState>(
+                                builder: (context, state) {
+                                  return DropdownButtonFormField(
+                                    hint: const Text("Jurusan"),
+                                    items: state is MajorAllSuccess
+                                        ? List<DropdownMenuItem>.generate(
+                                            state.majors.length,
+                                            (index) {
+                                              IdName major =
+                                                  state.majors[index];
+                                              return DropdownMenuItem(
+                                                value: "${major.id}",
+                                                child: Text(major.name),
+                                              );
+                                            },
+                                          )
+                                        : [],
+                                    value: state is MajorAllSuccess
+                                        ? majorValue.state != ""
+                                            ? majorValue.state
+                                            : null
+                                        : null,
+                                    decoration: const InputDecoration(
+                                      contentPadding:
+                                          EdgeInsets.symmetric(horizontal: 10),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(8),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  majorValue.changeValue(value.toString());
+                                    onChanged: (value) {
+                                      majorValue.changeValue(value.toString());
+                                    },
+                                  );
                                 },
                               ),
                             ),

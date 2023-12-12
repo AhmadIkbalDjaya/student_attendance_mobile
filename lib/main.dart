@@ -6,6 +6,7 @@ import 'package:student_attendance/bloc/admin/admin_home/admin_home_bloc.dart';
 import 'package:student_attendance/bloc/admin/admin_recap/admin_recap_bloc.dart';
 import 'package:student_attendance/bloc/admin/claass/claass_bloc.dart';
 import 'package:student_attendance/bloc/admin/course/course_bloc.dart';
+import 'package:student_attendance/bloc/admin/major/major_bloc.dart';
 import 'package:student_attendance/bloc/admin/semester/semester_bloc.dart';
 import 'package:student_attendance/bloc/admin/teacher/teacher_bloc.dart';
 import 'package:student_attendance/bloc/auth/auth_bloc.dart';
@@ -78,6 +79,9 @@ class MyApp extends StatelessWidget {
           ),
           BlocProvider(
             create: (context) => AboutUsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => MajorBloc(),
           ),
           BlocProvider(
             create: (context) => TeacherHomeBloc(),
