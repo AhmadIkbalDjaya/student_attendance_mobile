@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:student_attendance/models/id_name.dart';
@@ -16,7 +15,7 @@ class MajorBloc extends Bloc<MajorEvent, MajorState> {
         emit(MajorLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/major"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(MajorAllSuccess(majors: idNamesFromJson(response.body)));

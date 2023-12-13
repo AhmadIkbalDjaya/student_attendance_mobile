@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +15,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
         emit(ClaassGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/claass"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(ClaassAllSuccess(claasses: claassesFromJson(response.body)));
@@ -33,7 +32,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
         emit(ClaassGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/claass/${event.claassId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(ClaassDetailSuccess(claass: claassFromJson(response.body)));
@@ -50,7 +49,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
         emit(ClaassLoading());
         final response = await http.post(
           Uri.parse("${constant.apiUrl}/admin/claass"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "major_id": event.majorId,
             "level": event.level,
@@ -73,7 +72,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
         emit(ClaassLoading());
         final response = await http.post(
           Uri.parse("${constant.apiUrl}/admin/claass/${event.id}?_method=put"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "major_id": event.majorId,
             "level": event.level,
@@ -96,7 +95,7 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
         emit(ClaassLoading());
         final response = await http.delete(
           Uri.parse("${constant.apiUrl}/admin/claass/${event.id}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(ClaassDeleteSuccess());

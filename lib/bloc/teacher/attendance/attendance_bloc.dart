@@ -18,7 +18,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           final response = await http.get(
             Uri.parse(
                 "${constant.apiUrl}/teacher/attendance/course/${event.courseId}"),
-            headers: {HttpHeaders.acceptHeader: "application/json"},
+            headers: constant.apiHeaderWithToken,
           );
           if (response.statusCode == 200) {
             emit(AttendanceGetSuccess(

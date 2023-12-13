@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +15,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
         emit(SemesterGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/semester"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(SemesterAllSuccess(semesters: semestersFromJson(response.body)));
@@ -33,7 +32,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
         emit(SemesterGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/semester/${event.semesterId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(
@@ -51,7 +50,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
         emit(SemesterLoading());
         final response = await http.post(
           Uri.parse("${constant.apiUrl}/admin/semester"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "start_year": event.startYear,
             "odd_even": event.oddEven,
@@ -74,7 +73,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
         final response = await http.post(
           Uri.parse(
               "${constant.apiUrl}/admin/semester/${event.id}?_method=put"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "start_year": event.startYear,
             "odd_even": event.oddEven,
@@ -96,7 +95,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
         emit(SemesterLoading());
         final response = await http.delete(
           Uri.parse("${constant.apiUrl}/admin/semester/${event.id}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(SemesterDeleteSuccess());
@@ -113,7 +112,7 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
         emit(SemesterLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/semester/${event.id}/setActive"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(SemesterChangeSuccess());

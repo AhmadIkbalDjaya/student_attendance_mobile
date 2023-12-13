@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +20,7 @@ class UpdateStudentAttendanceBloc
         final response = await http.post(
           Uri.parse(
               "${constant.apiUrl}/teacher/attendance/update/${event.attendanceId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: requrestBody,
         );
         if (response.statusCode == 200) {

@@ -58,12 +58,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         emit(LoginLoading());
         SharedPreferences pref = await SharedPreferences.getInstance();
-        String? token = pref.getString("token");
-        final response =
-            await http.get(Uri.parse("${constant.apiUrl}/logout"), headers: {
-          HttpHeaders.acceptHeader: "application/json",
-          HttpHeaders.authorizationHeader: "Bearer $token",
-        });
+        final response = await http.get(
+          Uri.parse("${constant.apiUrl}/logout"),
+          headers: constant.apiHeaderWithToken,
+        );
         if (response.statusCode == 200) {
           pref.remove("token");
           pref.remove("role");

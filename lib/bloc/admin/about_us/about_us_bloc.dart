@@ -33,7 +33,7 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
         emit(AboutUsGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/aboutUs/${event.aboutUsId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(AboutUsDetailSuccess(aboutUs: aboutUsFromJson(response.body)));
@@ -50,7 +50,7 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
         emit(AboutUsLoading());
         final response = await http.post(
           Uri.parse("${constant.apiUrl}/admin/aboutUs"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "name": event.name,
             "position": event.position,
@@ -100,7 +100,7 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
         emit(AboutUsLoading());
         final response = await http.delete(
           Uri.parse("${constant.apiUrl}/admin/aboutUs/${event.id}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(AboutUsDeleteSuccess());

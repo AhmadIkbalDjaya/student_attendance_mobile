@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -16,9 +15,11 @@ class StudentAttendanceBloc
       try {
         emit(StudentAttendanceGetLoading());
         final response = await http.get(
-            Uri.parse(
-                "${constant.apiUrl}/teacher/studentAttendance/${event.attendanceId}"),
-            headers: {HttpHeaders.acceptHeader: "application/json"});
+          Uri.parse(
+            "${constant.apiUrl}/teacher/studentAttendance/${event.attendanceId}",
+          ),
+          headers: constant.apiHeaderWithToken,
+        );
         if (response.statusCode == 200) {
           emit(StudentAttendanceGetSuccess(
             studentAttendance: studentAttendanceFromJson(response.body),

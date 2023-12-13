@@ -17,7 +17,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         final response = await http.get(
           Uri.parse(
               "${constant.apiUrl}/admin/studentByClaass/${event.claassId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentAllSuccess(students: studentsFromJson(response.body)));
@@ -34,7 +34,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         emit(StudentGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/student/${event.studentId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentDetailSuccess(student: studentFromJson(response.body)));
@@ -100,7 +100,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         emit(StudentLoading());
         final response = await http.delete(
           Uri.parse("${constant.apiUrl}/admin/student/${event.id}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentDeleteSuccess());

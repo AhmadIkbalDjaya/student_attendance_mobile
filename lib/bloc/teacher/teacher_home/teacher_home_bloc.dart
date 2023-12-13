@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/models/teacher/teacher_home.dart';
-import 'package:student_attendance/values/auth.dart';
 import 'package:student_attendance/values/constant.dart' as constant;
 
 part 'teacher_home_event.dart';
@@ -17,10 +15,7 @@ class TeacherHomeBloc extends Bloc<TeacherHomeEvent, TeacherHomeState> {
         emit(TeacherHomeLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/teacher/home"),
-          headers: {
-            HttpHeaders.acceptHeader: "application/json",
-            HttpHeaders.authorizationHeader: "Bearer ${Auth.token}",
-          },
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherHomeSuccess(

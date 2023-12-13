@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -17,7 +16,7 @@ class EditAttendanceBloc
         final response = await http.post(
           Uri.parse(
               "${constant.apiUrl}/teacher/attendance/${event.attendanceId}?_method=put"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "title": event.title,
             "datetime": event.datetime,

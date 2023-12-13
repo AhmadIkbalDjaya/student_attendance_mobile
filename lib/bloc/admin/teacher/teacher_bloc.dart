@@ -33,7 +33,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
         emit(TeacherGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/teacher/${event.teacherId}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherDetailSuccess(teacher: teacherFromJson(response.body)));
@@ -50,7 +50,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
         emit(TeacherLoading());
         final response = await http.post(
           Uri.parse("${constant.apiUrl}/admin/teacher"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "username": event.username,
             "password": event.password,
@@ -104,7 +104,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
         emit(TeacherLoading());
         final response = await http.delete(
           Uri.parse("${constant.apiUrl}/admin/teacher/${event.id}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherDeleteSuccess());
@@ -123,7 +123,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
           final response = await http.post(
             Uri.parse("${constant.apiUrl}/admin/teacher/setPass/${event.id}"),
             body: {"password": event.password},
-            headers: {HttpHeaders.acceptHeader: "application/json"},
+            headers: constant.apiHeaderWithToken,
           );
           if (response.statusCode == 200) {
             emit(TeacherSetPassSuccess());

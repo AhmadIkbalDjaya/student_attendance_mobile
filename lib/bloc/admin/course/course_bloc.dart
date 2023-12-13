@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +15,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         emit(CourseGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/course"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(CourseAllSuccess(courses: coursesFromJson(response.body)));
@@ -33,7 +32,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         emit(CourseGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/course/${event.id}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(CourseDetailSuccess(course: courseFromJson(response.body)));
@@ -50,7 +49,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         emit(CourseLoading());
         final response = await http.post(
           Uri.parse("${constant.apiUrl}/admin/course"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "name": event.name,
             "claass_id": event.claassId,
@@ -74,7 +73,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         emit(CourseLoading());
         final response = await http.post(
           Uri.parse("${constant.apiUrl}/admin/course/${event.id}?_method=put"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
           body: {
             "name": event.name,
             "claass_id": event.claassId,
@@ -98,7 +97,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
         emit(CourseLoading());
         final response = await http.delete(
           Uri.parse("${constant.apiUrl}/admin/course/${event.id}"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(CourseDeleteSuccess());

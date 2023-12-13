@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -15,9 +14,8 @@ class CreateAttendanceBloc
       try {
         emit(CreateAttendanceLoading());
         final response = await http.post(
-          Uri.parse(
-              "${constant.apiUrl}/teacher/attendance"),
-          headers: {HttpHeaders.acceptHeader: "application/json"},
+          Uri.parse("${constant.apiUrl}/teacher/attendance"),
+          headers: constant.apiHeaderWithToken,
           body: {
             "course_id": event.courseId,
             "title": event.title,
