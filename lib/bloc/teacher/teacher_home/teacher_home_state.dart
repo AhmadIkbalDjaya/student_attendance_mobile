@@ -16,3 +16,5 @@ class TeacherHomeFailure extends TeacherHomeState {
   String message;
   TeacherHomeFailure({this.message = "error"});
 }
+
+class InvalidToken extends TeacherHomeState {}

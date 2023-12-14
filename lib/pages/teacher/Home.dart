@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     TeacherHomeBloc teacherHomeBloc = context.read<TeacherHomeBloc>();
     teacherHomeBloc.add(GetTeacherHomeEvent());
+    AuthBloc authBloc = context.read<AuthBloc>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -24,7 +25,7 @@ class HomePage extends StatelessWidget {
           BlocConsumer<LoginBloc, LoginState>(
             listener: (context, state) {
               if (state is LogoutSuccess) {
-                context.read<AuthBloc>().add(SetSignOut());
+                authBloc.add(SetSignOut());
                 Navigator.pushNamed(context, "/");
               }
             },
@@ -93,13 +94,20 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 25),
-              BlocBuilder<TeacherHomeBloc, TeacherHomeState>(
+              BlocConsumer<TeacherHomeBloc, TeacherHomeState>(
+                listener: (context, state) {
+                  if (state is InvalidToken) {
+                    authBloc.add(SetSignOut());
+                  }
+                },
                 builder: (context, state) {
                   return Skeletonizer(
                     enabled: state is! TeacherHomeSuccess,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 30, horizontal: 15),
+                        vertical: 30,
+                        horizontal: 15,
+                      ),
                       height: 160,
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(10)),

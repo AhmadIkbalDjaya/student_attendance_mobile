@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_attendance/bloc/admin/admin_home/admin_home_bloc.dart';
+import 'package:student_attendance/bloc/auth/auth_bloc.dart';
 import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,12 @@ class AdminHomePage extends StatelessWidget {
             horizontal: 50,
             vertical: 30,
           ),
-          child: BlocBuilder<AdminHomeBloc, AdminHomeState>(
+          child: BlocConsumer<AdminHomeBloc, AdminHomeState>(
+            listener: (context, state) {
+              if (state is InvalidToken) {
+                context.read<AuthBloc>().add(SetSignOut());
+              }
+            },
             builder: (context, state) {
               if (state is AdminHomeSuccess) {
                 return ListView(

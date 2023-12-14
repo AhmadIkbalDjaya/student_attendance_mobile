@@ -16,3 +16,5 @@ class AdminHomeFailure extends AdminHomeState {
   String message;
   AdminHomeFailure({this.message = "error"});
 }
+
+class InvalidToken extends AdminHomeState {}

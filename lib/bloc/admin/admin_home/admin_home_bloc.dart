@@ -22,6 +22,8 @@ class AdminHomeBloc extends Bloc<AdminHomeEvent, AdminHomeState> {
         );
         if (response.statusCode == 200) {
           emit(AdminHomeSuccess(adminHome: adminHomeFromJson(response.body)));
+        } else if (response.statusCode == 401 || response.statusCode == 403) {
+          emit(InvalidToken());
         } else {
           emit(AdminHomeFailure(message: jsonDecode(response.body)["message"]));
         }

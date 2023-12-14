@@ -21,6 +21,8 @@ class TeacherHomeBloc extends Bloc<TeacherHomeEvent, TeacherHomeState> {
           emit(TeacherHomeSuccess(
             teacherHome: teacherHomeFromJson(response.body),
           ));
+        } else if (response.statusCode == 401 || response.statusCode == 403) {
+          emit(InvalidToken());
         } else {
           emit(
             TeacherHomeFailure(message: jsonDecode(response.body)["message"]),
