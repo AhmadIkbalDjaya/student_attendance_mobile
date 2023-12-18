@@ -6,6 +6,7 @@ import 'package:student_attendance/components/admin/my_app_bar.dart';
 import 'package:student_attendance/components/admin/my_drawer.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/helper/pdf_helper.dart';
+import 'package:student_attendance/models/teacher/course.dart';
 import 'package:student_attendance/models/teacher/course_recap.dart';
 import 'package:student_attendance/values/theme.dart';
 
@@ -60,7 +61,7 @@ class AdminRecapCoursePage extends StatelessWidget {
                             child: Column(
                               children: [
                                 Text(
-                                  "${course.courseName} ${course.claass}",
+                                  "${course.name} ${course.claass}",
                                   style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,

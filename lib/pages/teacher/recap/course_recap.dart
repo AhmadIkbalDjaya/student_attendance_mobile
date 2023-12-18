@@ -66,7 +66,7 @@ class CourseRecapPage extends StatelessWidget {
                               children: [
                                 Text(
                                   state is CourseRecapSuccess
-                                      ? "${state.courseRecap.course.courseName} ${state.courseRecap.course.claass}"
+                                      ? "${state.courseRecap.course.name} ${state.courseRecap.course.claass}"
                                       : "Bahasa Indonesia XII IPA 1",
                                   style: const TextStyle(
                                     color: Colors.white,

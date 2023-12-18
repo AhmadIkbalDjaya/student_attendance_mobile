@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:student_attendance/models/teacher/course.dart';
+
 CourseAttendance courseAttendanceFromJson(String str) =>
     CourseAttendance.fromJson(json.decode(str)['data']);
 
@@ -71,40 +73,8 @@ class Attendance {
       };
 }
 
-class Course {
-  final int id;
-  final String name;
-  final String claass;
-  final String semester;
-
-  Course({
-    required this.id,
-    required this.name,
-    required this.claass,
-    required this.semester,
-  });
-
-  factory Course.fromJson(Map<String, dynamic> json) => Course(
-        id: json["id"],
-        name: json["name"],
-        claass: json["claass"],
-        semester: json["semester"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "claass": claass,
-        "semester": semester,
-      };
-}
-
 CourseAttendance dummyCourseAttendance = CourseAttendance(
-  course: Course(
-      id: 1,
-      name: "Bahasa Indonesia",
-      claass: "10 IPA 1",
-      semester: "(Genap) 2020 /2021"),
+  course: dummyCourse,
   attendances: [
     Attendance(
       id: 1,

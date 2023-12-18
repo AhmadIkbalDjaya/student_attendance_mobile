@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -15,9 +14,7 @@ class AdminRecapBloc extends Bloc<AdminRecapEvent, AdminRecapState> {
         emit(AdminRecapLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/recap"),
-          headers: {
-            HttpHeaders.acceptHeader: "application/json",
-          },
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(

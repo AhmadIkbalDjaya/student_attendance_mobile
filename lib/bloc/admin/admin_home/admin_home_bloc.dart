@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -16,9 +15,7 @@ class AdminHomeBloc extends Bloc<AdminHomeEvent, AdminHomeState> {
         emit(AdminHomeLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/home"),
-          headers: {
-            HttpHeaders.acceptHeader: "application/json",
-          },
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(AdminHomeSuccess(adminHome: adminHomeFromJson(response.body)));

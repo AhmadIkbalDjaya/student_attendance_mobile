@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:student_attendance/models/teacher/course.dart';
+
 CourseRecap courseRecapFromJson(String str) =>
     CourseRecap.fromJson(json.decode(str)['data']);
 
@@ -28,38 +30,6 @@ class CourseRecap {
         "course": course.toJson(),
         "students_recap":
             List<dynamic>.from(studentsRecap.map((x) => x.toJson())),
-      };
-}
-
-class Course {
-  final int id;
-  final String claass;
-  final String courseName;
-  final String semester;
-  final int attendanceCount;
-
-  Course({
-    required this.id,
-    required this.claass,
-    required this.courseName,
-    required this.semester,
-    required this.attendanceCount,
-  });
-
-  factory Course.fromJson(Map<String, dynamic> json) => Course(
-        id: json["id"],
-        claass: json["claass"],
-        courseName: json["course_name"],
-        semester: json["semester"],
-        attendanceCount: json["attendance_count"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "claass": claass,
-        "course_name": courseName,
-        "semester": semester,
-        "attendance_count": attendanceCount,
       };
 }
 
@@ -104,12 +74,7 @@ class StudentsRecap {
 }
 
 CourseRecap dummyCourseRecap = CourseRecap(
-  course: Course(
-      id: 1,
-      claass: "10 IPA 1",
-      courseName: "Bahasa Indonesia",
-      semester: "(Ganjil) 2020/2021",
-      attendanceCount: 16),
+  course: dummyCourse,
   studentsRecap: [
     StudentsRecap(
       name: "Nama Siswa 1",

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -49,15 +48,16 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<AddStudentEvent>((event, emit) async {
       try {
         emit(StudentLoading());
-        final response = await http
-            .post(Uri.parse("${constant.apiUrl}/admin/student"), body: {
-          "nis": event.nis,
-          "name": event.name,
-          "gender": event.gender,
-          "claass_id": event.classId
-        }, headers: {
-          HttpHeaders.acceptHeader: "application/json",
-        });
+        final response = await http.post(
+          Uri.parse("${constant.apiUrl}/admin/student"),
+          body: {
+            "nis": event.nis,
+            "name": event.name,
+            "gender": event.gender,
+            "claass_id": event.classId
+          },
+          headers: constant.apiHeaderWithToken,
+        );
         if (response.statusCode == 200) {
           emit(StudentAddSuccess());
         } else {
@@ -73,17 +73,15 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentLoading());
         final response = await http.post(
-            Uri.parse(
-                "${constant.apiUrl}/admin/student/${event.id}?_method=put"),
-            body: {
-              "nis": event.nis,
-              "name": event.name,
-              "gender": event.gender,
-              "claass_id": event.classId
-            },
-            headers: {
-              HttpHeaders.acceptHeader: "application/json",
-            });
+          Uri.parse("${constant.apiUrl}/admin/student/${event.id}?_method=put"),
+          body: {
+            "nis": event.nis,
+            "name": event.name,
+            "gender": event.gender,
+            "claass_id": event.classId
+          },
+          headers: constant.apiHeaderWithToken,
+        );
         if (response.statusCode == 200) {
           emit(StudentEditSuccess());
         } else {

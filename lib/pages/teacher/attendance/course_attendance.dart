@@ -6,6 +6,7 @@ import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/components/teacher/attendance_box.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
+import 'package:student_attendance/models/teacher/course.dart';
 import 'package:student_attendance/models/teacher/course_attendance.dart';
 import 'package:student_attendance/presentation/costum_icons_icons.dart';
 

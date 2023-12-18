@@ -16,7 +16,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
         emit(TeacherGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/teacher"),
-          headers: {HttpHeaders.acceptHeader: "apllication/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherAllSuccess(teachers: teachersFromJson(response.body)));

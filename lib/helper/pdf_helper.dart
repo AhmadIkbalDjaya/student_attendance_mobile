@@ -5,10 +5,10 @@ import 'package:document_file_save_plus/document_file_save_plus.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:student_attendance/models/teacher/course.dart';
 import 'package:student_attendance/models/teacher/course_recap.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:student_attendance/values/auth.dart';
 
 class PdfHelper {
   static getPDF(CourseRecap courseRecap) async {
@@ -33,11 +33,11 @@ class PdfHelper {
 
     final dir = await getExternalStorageDirectory();
 
-    final file = File('${dir?.path}/recap-${course.courseName}.pdf');
+    final file = File('${dir?.path}/recap-${course.name}.pdf');
 
     await file.writeAsBytes(bytes);
     DocumentFileSavePlus()
-        .saveFile(bytes, "recap-${course.courseName}.pdf", "application/pdf");
+        .saveFile(bytes, "recap-${course.name}.pdf", "application/pdf");
     await OpenFile.open(file.path);
   }
 
@@ -164,7 +164,7 @@ class PdfHelper {
     return pw.Column(
       children: [
         pw.Text(
-          "REKAP ABSENSI ${course.courseName.toUpperCase()}",
+          "REKAP ABSENSI ${course.name.toUpperCase()}",
           style: pw.TextStyle(
             fontSize: 16,
             fontWeight: pw.FontWeight.bold,
@@ -177,21 +177,21 @@ class PdfHelper {
             pw.Column(
               children: [
                 detailItem("Nama Kelas", course.claass, 90, 135),
-                detailItem("Mata Pelajaran", course.courseName, 90, 135),
-                detailItem("Guru Pengajar", Auth.name.toString(), 90, 135),
+                detailItem("Mata Pelajaran", course.name, 90, 135),
+                detailItem("Guru Pengajar", course.teacher, 90, 135),
               ],
             ),
             pw.Column(
               children: [
                 detailItem(
                   "Jumlah Siswa",
-                  courseRecap.studentsRecap.length.toString(),
+                  courseRecap.course.studentCount.toString(),
                   115,
                   125,
                 ),
                 detailItem(
                   "Jumlah Pertemuan",
-                  course.attendanceCount.toString(),
+                  courseRecap.course.attendanceCount.toString(),
                   115,
                   125,
                 ),
