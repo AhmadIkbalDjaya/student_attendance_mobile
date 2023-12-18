@@ -19,7 +19,7 @@ class UpdateStudentAttendanceBloc
         }
         final response = await http.post(
           Uri.parse(
-              "${constant.apiUrl}/teacher/attendance/update/${event.attendanceId}"),
+              "${constant.apiUrl}/teacher/studentAttendance/${event.attendanceId}?_method=put"),
           headers: constant.apiHeaderWithToken,
           body: requrestBody,
         );

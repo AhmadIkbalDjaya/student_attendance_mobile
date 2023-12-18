@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
-import 'package:student_attendance/bloc/teacher/edit_attendance/edit_attendance_bloc.dart';
+import 'package:student_attendance/bloc/teacher/attendance/attendance/attendance_bloc.dart';
+import 'package:student_attendance/bloc/teacher/attendance/edit_attendance/edit_attendance_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/date_picker_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';

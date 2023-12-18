@@ -164,7 +164,7 @@ class PdfHelper {
     return pw.Column(
       children: [
         pw.Text(
-          "REKAP ABSENSI MAPEL",
+          "REKAP ABSENSI ${course.courseName.toUpperCase()}",
           style: pw.TextStyle(
             fontSize: 16,
             fontWeight: pw.FontWeight.bold,
@@ -176,9 +176,9 @@ class PdfHelper {
           children: [
             pw.Column(
               children: [
-                detailItem("Nama Kelas", course.claass, 120),
-                detailItem("Mata Pelajaran", course.courseName, 120),
-                detailItem("Guru Pengajar", Auth.name.toString(), 120),
+                detailItem("Nama Kelas", course.claass, 90, 135),
+                detailItem("Mata Pelajaran", course.courseName, 90, 135),
+                detailItem("Guru Pengajar", Auth.name.toString(), 90, 135),
               ],
             ),
             pw.Column(
@@ -186,17 +186,20 @@ class PdfHelper {
                 detailItem(
                   "Jumlah Siswa",
                   courseRecap.studentsRecap.length.toString(),
-                  120,
+                  115,
+                  125,
                 ),
                 detailItem(
                   "Jumlah Pertemuan",
                   course.attendanceCount.toString(),
-                  120,
+                  115,
+                  125,
                 ),
                 detailItem(
                   "Tahun Ajaran",
                   course.semester,
-                  120,
+                  115,
+                  125,
                 ),
               ],
             ),
@@ -218,7 +221,7 @@ class PdfHelper {
           ),
         ),
         pw.Text(
-          "Jl. Ahmad Yani No. 97 Kelurahan Pompanua, Telp : 085 398 947 261",
+          "Jl. Ahmad Yani No. 97 Kelurahan Pompanua, Telp : 0852-4693-8443",
         ),
         pw.Divider(
           height: 2,
@@ -228,15 +231,16 @@ class PdfHelper {
     );
   }
 
-  static pw.Row detailItem(String key, String value, double width) {
+  static pw.Row detailItem(
+      String key, String value, double widthLeft, double widthRight) {
     return pw.Row(
       children: [
         pw.SizedBox(
-          width: width,
+          width: widthLeft,
           child: pw.Text(key),
         ),
         pw.SizedBox(
-          width: width,
+          width: widthRight,
           child: pw.Text(": $value"),
         ),
       ],

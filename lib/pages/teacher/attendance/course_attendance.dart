@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:student_attendance/bloc/teacher/attendance/attendance_bloc.dart';
+import 'package:student_attendance/bloc/teacher/attendance/attendance/attendance_bloc.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/components/teacher/attendance_box.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';

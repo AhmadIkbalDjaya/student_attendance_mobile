@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:student_attendance/bloc/teacher/student_attendance/student_attendance_bloc.dart';
-import 'package:student_attendance/bloc/teacher/update_student_attendance/update_student_attendance_bloc.dart';
+import 'package:student_attendance/bloc/teacher/attendance/student_attendance/student_attendance/student_attendance_bloc.dart';
+import 'package:student_attendance/bloc/teacher/attendance/student_attendance/update_student_attendance/update_student_attendance_bloc.dart';
 import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/radio_cubit.dart';
@@ -98,7 +98,7 @@ class StudentAttendancePage extends StatelessWidget {
                                 Row(
                                   children: [
                                     Text(
-                                      attendance.datetime,
+                                      attendance.datetime.split("-")[0],
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
