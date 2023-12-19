@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:student_attendance/models/admin/teacher.dart';
 
 part 'teacher_event.dart';
@@ -14,8 +14,8 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/teacher"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/teacher"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherAllSuccess(teachers: teachersFromJson(response.body)));
@@ -31,8 +31,8 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/teacher/${event.teacherId}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/teacher/${event.teacherId}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherDetailSuccess(teacher: teacherFromJson(response.body)));
@@ -48,8 +48,8 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/teacher"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/teacher"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "username": event.username,
             "password": event.password,
@@ -74,7 +74,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/teacher/${event.id}?_method=put"),
+          Uri.parse("${ApiConfig.url}/admin/teacher/${event.id}?_method=put"),
           body: {
             "username": event.username,
             "password": event.password,
@@ -83,7 +83,7 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
             "phone": event.phone,
             "gender": event.gender,
           },
-          headers: constant.apiHeaderWithToken,
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherEditSuccess());
@@ -100,8 +100,8 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherLoading());
         final response = await http.delete(
-          Uri.parse("${constant.apiUrl}/admin/teacher/${event.id}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/teacher/${event.id}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherDeleteSuccess());
@@ -118,9 +118,9 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
         try {
           emit(TeacherLoading());
           final response = await http.post(
-            Uri.parse("${constant.apiUrl}/admin/teacher/setPass/${event.id}"),
+            Uri.parse("${ApiConfig.url}/admin/teacher/setPass/${event.id}"),
             body: {"password": event.password},
-            headers: constant.apiHeaderWithToken,
+            headers: ApiConfig.headerWithToken,
           );
           if (response.statusCode == 200) {
             emit(TeacherSetPassSuccess());

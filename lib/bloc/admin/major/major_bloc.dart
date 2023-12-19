@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:student_attendance/models/id_name.dart';
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:http/http.dart' as http;
 
 part 'major_event.dart';
@@ -14,8 +14,8 @@ class MajorBloc extends Bloc<MajorEvent, MajorState> {
       try {
         emit(MajorLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/major"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/major"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(MajorAllSuccess(majors: idNamesFromJson(response.body)));

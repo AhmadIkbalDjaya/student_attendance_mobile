@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_attendance/models/login.dart';
 import 'package:student_attendance/values/auth.dart';
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -17,7 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       try {
         emit(LoginLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/login"),
+          Uri.parse("${ApiConfig.url}/login"),
           headers: {HttpHeaders.acceptHeader: "application/json"},
           body: {
             "username": event.username,
@@ -45,6 +45,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             phone: login.user.phone,
             gender: login.user.gender,
           );
+          ApiConfig.setHeader(token: login.token);
           emit(LoginSuccess(login: login));
         } else {
           emit(LoginFailure(message: jsonDecode(response.body)["message"]));
@@ -59,8 +60,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         emit(LoginLoading());
         SharedPreferences pref = await SharedPreferences.getInstance();
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/logout"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/logout"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           pref.remove("token");
@@ -72,6 +73,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           pref.remove("phone");
           pref.remove("gender");
           Auth.resetAuth();
+          ApiConfig.setHeader(token: " ");
           emit(LogoutSuccess());
         } else {
           emit(LoginFailure(message: jsonDecode(response.body)["message"]));

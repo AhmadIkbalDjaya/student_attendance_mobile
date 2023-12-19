@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/models/admin/claass.dart';
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 
 part 'claass_event.dart';
 part 'claass_state.dart';
@@ -14,8 +14,8 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/claass"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/claass"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(ClaassAllSuccess(claasses: claassesFromJson(response.body)));
@@ -31,8 +31,8 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/claass/${event.claassId}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/claass/${event.claassId}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(ClaassDetailSuccess(claass: claassFromJson(response.body)));
@@ -48,8 +48,8 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/claass"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/claass"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "major_id": event.majorId,
             "level": event.level,
@@ -71,8 +71,8 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/claass/${event.id}?_method=put"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/claass/${event.id}?_method=put"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "major_id": event.majorId,
             "level": event.level,
@@ -94,8 +94,8 @@ class ClaassBloc extends Bloc<ClaassEvent, ClaassState> {
       try {
         emit(ClaassLoading());
         final response = await http.delete(
-          Uri.parse("${constant.apiUrl}/admin/claass/${event.id}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/claass/${event.id}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(ClaassDeleteSuccess());

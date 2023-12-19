@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/models/admin/admin_home.dart';
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 
 part 'admin_home_event.dart';
 part 'admin_home_state.dart';
@@ -14,8 +14,8 @@ class AdminHomeBloc extends Bloc<AdminHomeEvent, AdminHomeState> {
       try {
         emit(AdminHomeLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/home"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/home"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(AdminHomeSuccess(adminHome: adminHomeFromJson(response.body)));

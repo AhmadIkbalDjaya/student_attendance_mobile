@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:student_attendance/models/about_us.dart';
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:http/http.dart' as http;
 
 part 'about_us_event.dart';
@@ -14,8 +14,8 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
       try {
         emit(AboutUsGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/aboutUs"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/aboutUs"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(AboutUsAllSuccess(aboutUses: aboutUsesFromJson(response.body)));
@@ -31,8 +31,8 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
       try {
         emit(AboutUsGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/aboutUs/${event.aboutUsId}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/aboutUs/${event.aboutUsId}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(AboutUsDetailSuccess(aboutUs: aboutUsFromJson(response.body)));
@@ -48,8 +48,8 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
       try {
         emit(AboutUsLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/aboutUs"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/aboutUs"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "name": event.name,
             "position": event.position,
@@ -72,14 +72,14 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
       try {
         emit(AboutUsLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/aboutUs/${event.id}?_method=put"),
+          Uri.parse("${ApiConfig.url}/admin/aboutUs/${event.id}?_method=put"),
           body: {
             "name": event.name,
             "position": event.position,
             "email": event.email,
             "phone": event.phone,
           },
-          headers: constant.apiHeaderWithToken,
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(AboutUsEditSuccess());
@@ -96,8 +96,8 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
       try {
         emit(AboutUsLoading());
         final response = await http.delete(
-          Uri.parse("${constant.apiUrl}/admin/aboutUs/${event.id}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/aboutUs/${event.id}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(AboutUsDeleteSuccess());

@@ -1,7 +1,6 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:student_attendance/models/admin/admin_recap.dart';
 
 part 'admin_recap_event.dart';
@@ -13,8 +12,8 @@ class AdminRecapBloc extends Bloc<AdminRecapEvent, AdminRecapState> {
       try {
         emit(AdminRecapLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/recap"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/recap"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(

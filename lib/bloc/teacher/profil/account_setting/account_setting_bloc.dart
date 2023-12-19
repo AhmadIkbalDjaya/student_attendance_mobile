@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:student_attendance/models/admin/teacher.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/values/auth.dart';
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 
 part 'account_setting_event.dart';
 part 'account_setting_state.dart';
@@ -18,7 +18,7 @@ class AccountSettingBloc
       try {
         emit(Loading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/teacher/updateProfil"),
+          Uri.parse("${ApiConfig.url}/teacher/updateProfil"),
           headers: {
             HttpHeaders.acceptHeader: "application/json",
             HttpHeaders.authorizationHeader: "Bearer ${Auth.token}"
@@ -62,7 +62,7 @@ class AccountSettingBloc
       try {
         emit(Loading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/user/changePass"),
+          Uri.parse("${ApiConfig.url}/user/changePass"),
           headers: {
             HttpHeaders.acceptHeader: "application/json",
             HttpHeaders.authorizationHeader: "Bearer ${Auth.token}",

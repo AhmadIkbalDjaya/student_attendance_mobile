@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:student_attendance/models/admin/student.dart';
 
 part 'student_event.dart';
@@ -14,9 +14,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentGetLoading());
         final response = await http.get(
-          Uri.parse(
-              "${constant.apiUrl}/admin/studentByClaass/${event.claassId}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/studentByClaass/${event.claassId}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentAllSuccess(students: studentsFromJson(response.body)));
@@ -32,8 +31,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/student/${event.studentId}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/student/${event.studentId}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentDetailSuccess(student: studentFromJson(response.body)));
@@ -49,14 +48,14 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/student"),
+          Uri.parse("${ApiConfig.url}/admin/student"),
           body: {
             "nis": event.nis,
             "name": event.name,
             "gender": event.gender,
             "claass_id": event.classId
           },
-          headers: constant.apiHeaderWithToken,
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentAddSuccess());
@@ -73,14 +72,14 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/student/${event.id}?_method=put"),
+          Uri.parse("${ApiConfig.url}/admin/student/${event.id}?_method=put"),
           body: {
             "nis": event.nis,
             "name": event.name,
             "gender": event.gender,
             "claass_id": event.classId
           },
-          headers: constant.apiHeaderWithToken,
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentEditSuccess());
@@ -97,8 +96,8 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentLoading());
         final response = await http.delete(
-          Uri.parse("${constant.apiUrl}/admin/student/${event.id}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/student/${event.id}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(StudentDeleteSuccess());

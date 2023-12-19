@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 
 part 'create_attendance_event.dart';
 part 'create_attendance_state.dart';
@@ -14,8 +14,8 @@ class CreateAttendanceBloc
       try {
         emit(CreateAttendanceLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/teacher/attendance"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/teacher/attendance"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "course_id": event.courseId,
             "title": event.title,

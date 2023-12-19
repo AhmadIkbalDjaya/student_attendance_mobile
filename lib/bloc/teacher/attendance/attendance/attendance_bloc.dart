@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:student_attendance/models/teacher/course_attendance.dart';
 
 part 'attendance_event.dart';
@@ -16,8 +16,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           emit(AttendanceGetLoading());
           final response = await http.get(
             Uri.parse(
-                "${constant.apiUrl}/teacher/attendance/course/${event.courseId}"),
-            headers: constant.apiHeaderWithToken,
+                "${ApiConfig.url}/teacher/attendance/course/${event.courseId}"),
+            headers: ApiConfig.headerWithToken,
           );
           if (response.statusCode == 200) {
             emit(AttendanceGetSuccess(
@@ -38,8 +38,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           emit(AttendanceGetLoading());
           final response = await http.get(
             Uri.parse(
-                "${constant.apiUrl}/teacher/attendance/${event.attendanceId}"),
-            headers: constant.apiHeaderWithToken,
+                "${ApiConfig.url}/teacher/attendance/${event.attendanceId}"),
+            headers: ApiConfig.headerWithToken,
           );
           if (response.statusCode == 200) {
             emit(AttendanceDetailSucces(
@@ -61,8 +61,8 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           emit(AttendanceLoading());
           final response = await http.delete(
             Uri.parse(
-                "${constant.apiUrl}/teacher/attendance/${event.attendanceId}"),
-            headers: constant.apiHeaderWithToken,
+                "${ApiConfig.url}/teacher/attendance/${event.attendanceId}"),
+            headers: ApiConfig.headerWithToken,
           );
           if (response.statusCode == 200) {
             emit(AttendanceDeleteSuccess());

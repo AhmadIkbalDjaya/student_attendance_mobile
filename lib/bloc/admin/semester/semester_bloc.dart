@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:student_attendance/models/admin/semester.dart';
 
 part 'semester_event.dart';
@@ -14,8 +14,8 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/semester"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/semester"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(SemesterAllSuccess(semesters: semestersFromJson(response.body)));
@@ -31,8 +31,8 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/semester/${event.semesterId}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/semester/${event.semesterId}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(
@@ -49,8 +49,8 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/semester"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/semester"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "start_year": event.startYear,
             "odd_even": event.oddEven,
@@ -71,9 +71,8 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterLoading());
         final response = await http.post(
-          Uri.parse(
-              "${constant.apiUrl}/admin/semester/${event.id}?_method=put"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/semester/${event.id}?_method=put"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "start_year": event.startYear,
             "odd_even": event.oddEven,
@@ -94,8 +93,8 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterLoading());
         final response = await http.delete(
-          Uri.parse("${constant.apiUrl}/admin/semester/${event.id}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/semester/${event.id}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(SemesterDeleteSuccess());
@@ -111,8 +110,8 @@ class SemesterBloc extends Bloc<SemesterEvent, SemesterState> {
       try {
         emit(SemesterLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/semester/${event.id}/setActive"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/semester/${event.id}/setActive"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(SemesterChangeSuccess());

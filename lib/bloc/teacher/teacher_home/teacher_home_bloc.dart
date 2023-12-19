@@ -3,7 +3,8 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:student_attendance/models/teacher/teacher_home.dart';
-import 'package:student_attendance/values/constant.dart' as constant;
+// import 'package:student_attendance/values/constant.dart';
+import 'package:student_attendance/values/constant.dart';
 
 part 'teacher_home_event.dart';
 part 'teacher_home_state.dart';
@@ -14,8 +15,8 @@ class TeacherHomeBloc extends Bloc<TeacherHomeEvent, TeacherHomeState> {
       try {
         emit(TeacherHomeLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/teacher/home"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/teacher/home"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(TeacherHomeSuccess(

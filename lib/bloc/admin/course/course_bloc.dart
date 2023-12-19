@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
-import 'package:student_attendance/values/constant.dart' as constant;
+import 'package:student_attendance/values/constant.dart';
 import 'package:student_attendance/models/admin/course.dart';
 
 part 'course_event.dart';
@@ -14,8 +14,8 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/course"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/course"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(CourseAllSuccess(courses: coursesFromJson(response.body)));
@@ -31,8 +31,8 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseGetLoading());
         final response = await http.get(
-          Uri.parse("${constant.apiUrl}/admin/course/${event.id}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/course/${event.id}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(CourseDetailSuccess(course: courseFromJson(response.body)));
@@ -48,8 +48,8 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/course"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/course"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "name": event.name,
             "claass_id": event.claassId,
@@ -72,8 +72,8 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseLoading());
         final response = await http.post(
-          Uri.parse("${constant.apiUrl}/admin/course/${event.id}?_method=put"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/course/${event.id}?_method=put"),
+          headers: ApiConfig.headerWithToken,
           body: {
             "name": event.name,
             "claass_id": event.claassId,
@@ -96,8 +96,8 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       try {
         emit(CourseLoading());
         final response = await http.delete(
-          Uri.parse("${constant.apiUrl}/admin/course/${event.id}"),
-          headers: constant.apiHeaderWithToken,
+          Uri.parse("${ApiConfig.url}/admin/course/${event.id}"),
+          headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
           emit(CourseDeleteSuccess());
