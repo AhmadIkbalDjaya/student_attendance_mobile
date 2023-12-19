@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -75,19 +74,17 @@ class TeacherBloc extends Bloc<TeacherEvent, TeacherState> {
       try {
         emit(TeacherLoading());
         final response = await http.post(
-            Uri.parse(
-                "${constant.apiUrl}/admin/teacher/${event.id}?_method=put"),
-            body: {
-              "username": event.username,
-              "password": event.password,
-              "email": event.email,
-              "name": event.name,
-              "phone": event.phone,
-              "gender": event.gender,
-            },
-            headers: {
-              HttpHeaders.acceptHeader: "application/json",
-            });
+          Uri.parse("${constant.apiUrl}/admin/teacher/${event.id}?_method=put"),
+          body: {
+            "username": event.username,
+            "password": event.password,
+            "email": event.email,
+            "name": event.name,
+            "phone": event.phone,
+            "gender": event.gender,
+          },
+          headers: constant.apiHeaderWithToken,
+        );
         if (response.statusCode == 200) {
           emit(TeacherEditSuccess());
         } else {

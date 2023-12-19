@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:student_attendance/models/about_us.dart';
@@ -16,7 +15,7 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
         emit(AboutUsGetLoading());
         final response = await http.get(
           Uri.parse("${constant.apiUrl}/admin/aboutUs"),
-          headers: {HttpHeaders.acceptHeader: "apllication/json"},
+          headers: constant.apiHeaderWithToken,
         );
         if (response.statusCode == 200) {
           emit(AboutUsAllSuccess(aboutUses: aboutUsesFromJson(response.body)));
@@ -73,17 +72,15 @@ class AboutUsBloc extends Bloc<AboutUsEvent, AboutUsState> {
       try {
         emit(AboutUsLoading());
         final response = await http.post(
-            Uri.parse(
-                "${constant.apiUrl}/admin/aboutUs/${event.id}?_method=put"),
-            body: {
-              "name": event.name,
-              "position": event.position,
-              "email": event.email,
-              "phone": event.phone,
-            },
-            headers: {
-              HttpHeaders.acceptHeader: "application/json",
-            });
+          Uri.parse("${constant.apiUrl}/admin/aboutUs/${event.id}?_method=put"),
+          body: {
+            "name": event.name,
+            "position": event.position,
+            "email": event.email,
+            "phone": event.phone,
+          },
+          headers: constant.apiHeaderWithToken,
+        );
         if (response.statusCode == 200) {
           emit(AboutUsEditSuccess());
         } else {

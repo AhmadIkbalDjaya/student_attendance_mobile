@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
@@ -40,9 +39,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           final response = await http.get(
             Uri.parse(
                 "${constant.apiUrl}/teacher/attendance/${event.attendanceId}"),
-            headers: {
-              HttpHeaders.acceptHeader: "application/json",
-            },
+            headers: constant.apiHeaderWithToken,
           );
           if (response.statusCode == 200) {
             emit(AttendanceDetailSucces(
@@ -65,9 +62,7 @@ class AttendanceBloc extends Bloc<AttendanceEvent, AttendanceState> {
           final response = await http.delete(
             Uri.parse(
                 "${constant.apiUrl}/teacher/attendance/${event.attendanceId}"),
-            headers: {
-              HttpHeaders.acceptHeader: "application/json",
-            },
+            headers: constant.apiHeaderWithToken,
           );
           if (response.statusCode == 200) {
             emit(AttendanceDeleteSuccess());
