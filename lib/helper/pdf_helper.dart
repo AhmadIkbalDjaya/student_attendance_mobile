@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:typed_data';
+// import 'dart:typed_data';
 
 import 'package:document_file_save_plus/document_file_save_plus.dart';
 import 'package:flutter/services.dart';
@@ -15,11 +15,47 @@ class PdfHelper {
     Course course = courseRecap.course;
     final pdf = pw.Document();
 
+    final img = await rootBundle.load('assets/images/logo.png');
+    final imageBytes = img.buffer.asUint8List();
+    pw.Image image1 = pw.Image(
+      pw.MemoryImage(imageBytes),
+      width: 50,
+      height: 50,
+    );
+
     pdf.addPage(
       pw.MultiPage(
         build: (context) {
           return [
-            docHeader(),
+            pw.Stack(
+              children: [
+                pw.Positioned(
+                  child: image1,
+                  top: 0,
+                  left: 0,
+                ),
+                pw.Column(
+                  children: [
+                    pw.Text(
+                      "YAYASAN AL-MA'ARIF MA POMPANUA\nKABUPATEN BONE",
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(
+                        fontSize: 18,
+                        fontWeight: pw.FontWeight.bold,
+                      ),
+                    ),
+                    pw.Text(
+                      "Jl. Ahmad Yani No. 97 Kelurahan Pompanua, Telp : 0852-4693-8443",
+                    ),
+                    pw.Divider(
+                      height: 2,
+                      color: PdfColors.grey,
+                    ),
+                  ],
+                )
+              ],
+            ),
+            // docHeader(),
             pw.SizedBox(height: 10),
             recapDetail(courseRecap),
             pw.SizedBox(height: 10),
@@ -209,27 +245,36 @@ class PdfHelper {
     );
   }
 
-  static pw.Column docHeader() {
-    return pw.Column(
-      children: [
-        pw.Text(
-          "YAYASAN AL-MA'ARIF POMPANUA\nKAB. BONE",
-          textAlign: pw.TextAlign.center,
-          style: pw.TextStyle(
-            fontSize: 20,
-            fontWeight: pw.FontWeight.bold,
-          ),
-        ),
-        pw.Text(
-          "Jl. Ahmad Yani No. 97 Kelurahan Pompanua, Telp : 0852-4693-8443",
-        ),
-        pw.Divider(
-          height: 2,
-          color: PdfColors.grey,
-        ),
-      ],
-    );
-  }
+  // static pw.Stack docHeader() {
+  //   return pw.Stack(
+  //     children: [
+  //       pw.Positioned(
+  //         child: image1,
+  //         top: 10,
+  //         left: 10,
+  //       ),
+  //       pw.Column(
+  //         children: [
+  //           pw.Text(
+  //             "YAYASAN AL-MA'ARIF POMPANUA\nKAB. BONE",
+  //             textAlign: pw.TextAlign.center,
+  //             style: pw.TextStyle(
+  //               fontSize: 20,
+  //               fontWeight: pw.FontWeight.bold,
+  //             ),
+  //           ),
+  //           pw.Text(
+  //             "Jl. Ahmad Yani No. 97 Kelurahan Pompanua, Telp : 0852-4693-8443",
+  //           ),
+  //           pw.Divider(
+  //             height: 2,
+  //             color: PdfColors.grey,
+  //           ),
+  //         ],
+  //       )
+  //     ],
+  //   );
+  // }
 
   static pw.Row detailItem(
       String key, String value, double widthLeft, double widthRight) {
