@@ -45,7 +45,10 @@ class PdfHelper {
                       ),
                     ),
                     pw.Text(
-                      "Jl. Ahmad Yani No. 97 Kelurahan Pompanua, Telp : 0852-4693-8443",
+                      "Jalan Timurung Kel. Pompanua Kec. Ajangale Kab. Bone Kode Pos 92755",
+                      style: const pw.TextStyle(
+                        fontSize: 11,
+                      ),
                     ),
                     pw.Divider(
                       height: 2,
