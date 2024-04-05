@@ -92,7 +92,7 @@ class AdminCreateTeacherPage extends StatelessWidget {
                         TextField(
                           controller: nipController,
                           decoration: const InputDecoration(
-                            label: Text("NIP"),
+                            label: Text("Username"),
                           ),
                           textInputAction: TextInputAction.next,
                         ),

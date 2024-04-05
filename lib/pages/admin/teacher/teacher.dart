@@ -82,7 +82,7 @@ class AdminTeacherPage extends StatelessWidget {
                               DataColumn(
                                 label: Expanded(
                                   child: Text(
-                                    "NIP",
+                                    "Username",
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

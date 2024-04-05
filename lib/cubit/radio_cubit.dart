@@ -18,4 +18,12 @@ class RadioCubit extends Cubit<List<String>> {
       emit(newState);
     }
   }
+
+  void setAllToXValue(String value) {
+    List<String> newState = List.from(state);
+    for (var i = 0; i < state.length; i++) {
+      newState[i] = value;
+    }
+    emit(newState);
+  }
 }

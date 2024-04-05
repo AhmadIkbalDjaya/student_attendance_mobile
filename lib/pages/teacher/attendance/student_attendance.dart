@@ -5,6 +5,7 @@ import 'package:student_attendance/bloc/teacher/attendance/student_attendance/up
 import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
 import 'package:student_attendance/cubit/radio_cubit.dart';
+import 'package:student_attendance/cubit/show_password_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
 import 'package:student_attendance/components/my_bottom_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ class StudentAttendancePage extends StatelessWidget {
   final int courseId;
   final RadioCubit idsValue = RadioCubit();
   final RadioCubit statusesValue = RadioCubit();
+  final ShowPassCubit presentAll = ShowPassCubit();
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +206,54 @@ class StudentAttendancePage extends StatelessWidget {
                                           ),
                                         ),
                                       ],
-                                    )
+                                    ),
+                                    const SizedBox(height: 2),
+                                    BlocBuilder<StudentAttendanceBloc,
+                                        StudentAttendanceState>(
+                                      builder: (context, state) {
+                                        return Skeletonizer(
+                                          enabled: state
+                                              is! StudentAttendanceGetSuccess,
+                                          child: Row(
+                                            children: [
+                                              const Text(
+                                                "Tandai Hadir Semua",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              Skeleton.ignore(
+                                                child: BlocBuilder<
+                                                    ShowPassCubit, bool>(
+                                                  bloc: presentAll,
+                                                  builder: (context, state) {
+                                                    return Checkbox(
+                                                      value: !state,
+                                                      onChanged: (value) {
+                                                        presentAll
+                                                            .handleClick();
+                                                        if (!state) {
+                                                          statusesValue
+                                                              .setAllToXValue(
+                                                            "5",
+                                                          );
+                                                        } else {
+                                                          statusesValue
+                                                              .setAllToXValue(
+                                                            "1",
+                                                          );
+                                                        }
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    ),
                                   ],
                                 ),
                               ),
