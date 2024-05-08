@@ -368,6 +368,9 @@ class StudentAttendancePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              DataColumn(
+                                label: Text("Bukti Keterangan"),
+                              )
                             ],
                             rows: List<DataRow>.generate(
                               studentAttendances.length,
@@ -463,6 +466,101 @@ class StudentAttendancePage extends StatelessWidget {
                                               ],
                                             ),
                                           );
+                                        },
+                                      ),
+                                    ),
+                                    DataCell(
+                                      BlocBuilder<RadioCubit, List<String>>(
+                                        bloc: statusesValue,
+                                        builder: (context, state) {
+                                          return statusesValue.state.isNotEmpty
+                                              ? statusesValue.state[index] ==
+                                                          "2" ||
+                                                      statusesValue
+                                                              .state[index] ==
+                                                          "3"
+                                                  ? Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 8,
+                                                      ),
+                                                      child: Center(
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            showModalBottomSheet(
+                                                              context: context,
+                                                              builder:
+                                                                  (context) {
+                                                                return Container(
+                                                                  width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width,
+                                                                  height: 100,
+                                                                  color: const Color(
+                                                                      0xFF696CFF),
+                                                                  child:
+                                                                      const Column(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: [
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceAround,
+                                                                        children: [
+                                                                          InkWell(
+                                                                            child:
+                                                                                Column(
+                                                                              children: [
+                                                                                Icon(
+                                                                                  Icons.image,
+                                                                                  size: 32,
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                                Text(
+                                                                                  "Galery",
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: 14,
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          Column(
+                                                                            children: [
+                                                                              Icon(
+                                                                                Icons.camera_alt,
+                                                                                size: 32,
+                                                                                color: Colors.white,
+                                                                              ),
+                                                                              Text(
+                                                                                "Camera",
+                                                                                style: TextStyle(
+                                                                                  color: Colors.white,
+                                                                                  fontSize: 14,
+                                                                                  fontWeight: FontWeight.w400,
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                );
+                                                              },
+                                                            );
+                                                          },
+                                                          child: const Text(
+                                                              "Upload"),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container()
+                                              : Container();
                                         },
                                       ),
                                     ),

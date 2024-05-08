@@ -16,6 +16,7 @@ class UpdateStudentAttendanceBloc
         for (var i = 0; i < event.ids.length; i++) {
           requrestBody['ids[$i]'] = event.ids[i];
           requrestBody['status_ids[$i]'] = event.statusesId[i];
+          requrestBody['images[$i]'] = "stringg";
         }
         final response = await http.post(
           Uri.parse(
