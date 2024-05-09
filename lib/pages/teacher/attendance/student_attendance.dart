@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:student_attendance/bloc/teacher/attendance/student_attendance/student_attendance/student_attendance_bloc.dart';
 import 'package:student_attendance/bloc/teacher/attendance/student_attendance/update_student_attendance/update_student_attendance_bloc.dart';
@@ -499,8 +500,7 @@ class StudentAttendancePage extends StatelessWidget {
                                                                   height: 100,
                                                                   color: const Color(
                                                                       0xFF696CFF),
-                                                                  child:
-                                                                      const Column(
+                                                                  child: Column(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
                                                                             .center,
@@ -510,8 +510,12 @@ class StudentAttendancePage extends StatelessWidget {
                                                                             MainAxisAlignment.spaceAround,
                                                                         children: [
                                                                           InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              _pickImageFromGallery();
+                                                                            },
                                                                             child:
-                                                                                Column(
+                                                                                const Column(
                                                                               children: [
                                                                                 Icon(
                                                                                   Icons.image,
@@ -529,22 +533,29 @@ class StudentAttendancePage extends StatelessWidget {
                                                                               ],
                                                                             ),
                                                                           ),
-                                                                          Column(
-                                                                            children: [
-                                                                              Icon(
-                                                                                Icons.camera_alt,
-                                                                                size: 32,
-                                                                                color: Colors.white,
-                                                                              ),
-                                                                              Text(
-                                                                                "Camera",
-                                                                                style: TextStyle(
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              _pickImageFromCamera();
+                                                                            },
+                                                                            child:
+                                                                                const Column(
+                                                                              children: [
+                                                                                Icon(
+                                                                                  Icons.camera_alt,
+                                                                                  size: 32,
                                                                                   color: Colors.white,
-                                                                                  fontSize: 14,
-                                                                                  fontWeight: FontWeight.w400,
                                                                                 ),
-                                                                              ),
-                                                                            ],
+                                                                                Text(
+                                                                                  "Camera",
+                                                                                  style: TextStyle(
+                                                                                    color: Colors.white,
+                                                                                    fontSize: 14,
+                                                                                    fontWeight: FontWeight.w400,
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
                                                                           ),
                                                                         ],
                                                                       ),
@@ -630,5 +641,17 @@ class StudentAttendancePage extends StatelessWidget {
       ),
       bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
     );
+  }
+
+  Future _pickImageFromGallery() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (returnImage == null) return;
+  }
+
+  Future _pickImageFromCamera() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
   }
 }
