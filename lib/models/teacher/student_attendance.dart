@@ -76,6 +76,7 @@ class StudentAttendanceElement {
   final String nis;
   final String gender;
   final String statusId;
+  final String? image;
 
   StudentAttendanceElement({
     required this.id,
@@ -83,6 +84,7 @@ class StudentAttendanceElement {
     required this.nis,
     required this.gender,
     required this.statusId,
+    required this.image,
   });
 
   factory StudentAttendanceElement.fromJson(Map<String, dynamic> json) =>
@@ -92,6 +94,7 @@ class StudentAttendanceElement {
         nis: json["nis"],
         gender: json["gender"],
         statusId: json["status_id"],
+        image: json["image"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -100,6 +103,7 @@ class StudentAttendanceElement {
         "nis": nis,
         "gender": gender,
         "status_id": statusId,
+        "image": image
       };
 }
 
@@ -118,6 +122,7 @@ StudentAttendance dummyStudentAttendance = StudentAttendance(
       nis: "123456",
       gender: "male",
       statusId: "5",
+      image: null,
     ),
     StudentAttendanceElement(
       id: 3,
@@ -125,6 +130,7 @@ StudentAttendance dummyStudentAttendance = StudentAttendance(
       nis: "123456",
       gender: "male",
       statusId: "5",
+      image: null,
     ),
     StudentAttendanceElement(
       id: 4,
@@ -132,6 +138,7 @@ StudentAttendance dummyStudentAttendance = StudentAttendance(
       nis: "123456",
       gender: "male",
       statusId: "5",
+      image: null,
     ),
     StudentAttendanceElement(
       id: 5,
@@ -139,6 +146,7 @@ StudentAttendance dummyStudentAttendance = StudentAttendance(
       nis: "123456",
       gender: "male",
       statusId: "5",
+      image: "null",
     ),
   ],
 );

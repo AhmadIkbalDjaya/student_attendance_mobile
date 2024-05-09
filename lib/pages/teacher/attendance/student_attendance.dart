@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -5,6 +7,7 @@ import 'package:student_attendance/bloc/teacher/attendance/student_attendance/st
 import 'package:student_attendance/bloc/teacher/attendance/student_attendance/update_student_attendance/update_student_attendance_bloc.dart';
 import 'package:student_attendance/components/loading_button.dart';
 import 'package:student_attendance/components/my_snack_bar.dart';
+import 'package:student_attendance/cubit/files_cubit.dart';
 import 'package:student_attendance/cubit/radio_cubit.dart';
 import 'package:student_attendance/cubit/show_password_cubit.dart';
 import 'package:student_attendance/cubit/teacher_tab_bloc.dart';
@@ -19,6 +22,7 @@ class StudentAttendancePage extends StatelessWidget {
   final int courseId;
   final RadioCubit idsValue = RadioCubit();
   final RadioCubit statusesValue = RadioCubit();
+  final FilesCubit files = FilesCubit();
   final ShowPassCubit presentAll = ShowPassCubit();
 
   @override
@@ -293,6 +297,7 @@ class StudentAttendancePage extends StatelessWidget {
                         studentAttendance.id.toString(),
                       );
                       statusesValue.setInitValue(i, studentAttendance.statusId);
+                      files.setInitValue(i, studentAttendance.image);
                     }
                   }
                 },
@@ -511,8 +516,26 @@ class StudentAttendancePage extends StatelessWidget {
                                                                         children: [
                                                                           InkWell(
                                                                             onTap:
-                                                                                () {
-                                                                              _pickImageFromGallery();
+                                                                                () async {
+                                                                              dynamic value;
+                                                                              final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                                                              if (image != null) {
+                                                                                value = await image.readAsBytes();
+                                                                                showCostumSnackBar(
+                                                                                  context: context,
+                                                                                  message: "Gambar Berhasil Ditambahkan",
+                                                                                  type: "success",
+                                                                                );
+                                                                                files.setRadioValue(index, value);
+                                                                              }
+                                                                              if (image == null) {
+                                                                                showCostumSnackBar(
+                                                                                  context: context,
+                                                                                  message: "Gambar Gagal Ditambahkan",
+                                                                                  type: "danger",
+                                                                                );
+                                                                              }
+                                                                              Navigator.pop(context);
                                                                             },
                                                                             child:
                                                                                 const Column(
@@ -535,8 +558,26 @@ class StudentAttendancePage extends StatelessWidget {
                                                                           ),
                                                                           InkWell(
                                                                             onTap:
-                                                                                () {
-                                                                              _pickImageFromCamera();
+                                                                                () async {
+                                                                              dynamic value;
+                                                                              final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+                                                                              if (image != null) {
+                                                                                value = await image.readAsBytes();
+                                                                                showCostumSnackBar(
+                                                                                  context: context,
+                                                                                  message: "Gambar Berhasil Ditambahkan",
+                                                                                  type: "success",
+                                                                                );
+                                                                                files.setRadioValue(index, value);
+                                                                              }
+                                                                              if (image == null) {
+                                                                                showCostumSnackBar(
+                                                                                  context: context,
+                                                                                  message: "Gambar Gagal Ditambahkan",
+                                                                                  type: "danger",
+                                                                                );
+                                                                              }
+                                                                              Navigator.pop(context);
                                                                             },
                                                                             child:
                                                                                 const Column(
@@ -619,6 +660,7 @@ class StudentAttendancePage extends StatelessWidget {
                                           attendanceId: attendanceId,
                                           ids: idsValue.state,
                                           statusesId: statusesValue.state,
+                                          images: files.state,
                                         ),
                                       );
                                 },
@@ -641,17 +683,5 @@ class StudentAttendancePage extends StatelessWidget {
       ),
       bottomNavigationBar: MyBottomNavBar(teacherTab: teacherTab),
     );
-  }
-
-  Future _pickImageFromGallery() async {
-    final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (returnImage == null) return;
-  }
-
-  Future _pickImageFromCamera() async {
-    final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (returnImage == null) return;
   }
 }
