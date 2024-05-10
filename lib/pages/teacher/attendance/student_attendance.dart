@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -22,6 +24,7 @@ class StudentAttendancePage extends StatelessWidget {
   final int courseId;
   final RadioCubit idsValue = RadioCubit();
   final RadioCubit statusesValue = RadioCubit();
+  final FilesCubit imagesPath = FilesCubit();
   final FilesCubit files = FilesCubit();
   final ShowPassCubit presentAll = ShowPassCubit();
 
@@ -298,6 +301,7 @@ class StudentAttendancePage extends StatelessWidget {
                       );
                       statusesValue.setInitValue(i, studentAttendance.statusId);
                       files.setInitValue(i, studentAttendance.image);
+                      imagesPath.setInitValue(i, studentAttendance.image);
                     }
                   }
                 },
@@ -490,125 +494,171 @@ class StudentAttendancePage extends StatelessWidget {
                                                           .symmetric(
                                                         vertical: 8,
                                                       ),
-                                                      child: Center(
-                                                        child: ElevatedButton(
-                                                          onPressed: () {
-                                                            showModalBottomSheet(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) {
-                                                                return Container(
-                                                                  width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width,
-                                                                  height: 100,
-                                                                  color: const Color(
-                                                                      0xFF696CFF),
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    children: [
-                                                                      Row(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.spaceAround,
-                                                                        children: [
-                                                                          InkWell(
-                                                                            onTap:
-                                                                                () async {
-                                                                              dynamic value;
-                                                                              final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                                                                              if (image != null) {
-                                                                                value = await image.readAsBytes();
-                                                                                showCostumSnackBar(
-                                                                                  context: context,
-                                                                                  message: "Gambar Berhasil Ditambahkan",
-                                                                                  type: "success",
-                                                                                );
-                                                                                files.setRadioValue(index, value);
-                                                                              }
-                                                                              if (image == null) {
-                                                                                showCostumSnackBar(
-                                                                                  context: context,
-                                                                                  message: "Gambar Gagal Ditambahkan",
-                                                                                  type: "danger",
-                                                                                );
-                                                                              }
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                            child:
-                                                                                const Column(
-                                                                              children: [
-                                                                                Icon(
-                                                                                  Icons.image,
-                                                                                  size: 32,
-                                                                                  color: Colors.white,
-                                                                                ),
-                                                                                Text(
-                                                                                  "Galery",
-                                                                                  style: TextStyle(
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
+                                                        children: [
+                                                          ElevatedButton(
+                                                            onPressed: () {
+                                                              showModalBottomSheet(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (context) {
+                                                                  return Container(
+                                                                    width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width,
+                                                                    height: 100,
+                                                                    color: const Color(
+                                                                        0xFF696CFF),
+                                                                    child:
+                                                                        Column(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                      children: [
+                                                                        Row(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.spaceAround,
+                                                                          children: [
+                                                                            InkWell(
+                                                                              onTap: () async {
+                                                                                dynamic value;
+                                                                                final XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                                                                                if (image != null) {
+                                                                                  value = await image.readAsBytes();
+                                                                                  showCostumSnackBar(
+                                                                                    context: context,
+                                                                                    message: "Gambar Berhasil Ditambahkan",
+                                                                                    type: "success",
+                                                                                  );
+                                                                                  files.setRadioValue(index, value);
+                                                                                  imagesPath.setRadioValue(index, value);
+                                                                                }
+                                                                                if (image == null) {
+                                                                                  showCostumSnackBar(
+                                                                                    context: context,
+                                                                                    message: "Gambar Gagal Ditambahkan",
+                                                                                    type: "danger",
+                                                                                  );
+                                                                                }
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: const Column(
+                                                                                children: [
+                                                                                  Icon(
+                                                                                    Icons.image,
+                                                                                    size: 32,
                                                                                     color: Colors.white,
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: FontWeight.w400,
                                                                                   ),
-                                                                                ),
-                                                                              ],
+                                                                                  Text(
+                                                                                    "Galery",
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.white,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.w400,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                          InkWell(
-                                                                            onTap:
-                                                                                () async {
-                                                                              dynamic value;
-                                                                              final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
-                                                                              if (image != null) {
-                                                                                value = await image.readAsBytes();
-                                                                                showCostumSnackBar(
-                                                                                  context: context,
-                                                                                  message: "Gambar Berhasil Ditambahkan",
-                                                                                  type: "success",
-                                                                                );
-                                                                                files.setRadioValue(index, value);
-                                                                              }
-                                                                              if (image == null) {
-                                                                                showCostumSnackBar(
-                                                                                  context: context,
-                                                                                  message: "Gambar Gagal Ditambahkan",
-                                                                                  type: "danger",
-                                                                                );
-                                                                              }
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                            child:
-                                                                                const Column(
-                                                                              children: [
-                                                                                Icon(
-                                                                                  Icons.camera_alt,
-                                                                                  size: 32,
-                                                                                  color: Colors.white,
-                                                                                ),
-                                                                                Text(
-                                                                                  "Camera",
-                                                                                  style: TextStyle(
+                                                                            InkWell(
+                                                                              onTap: () async {
+                                                                                dynamic value;
+                                                                                final XFile? image = await ImagePicker().pickImage(source: ImageSource.camera);
+                                                                                if (image != null) {
+                                                                                  value = await image.readAsBytes();
+                                                                                  showCostumSnackBar(
+                                                                                    context: context,
+                                                                                    message: "Gambar Berhasil Ditambahkan",
+                                                                                    type: "success",
+                                                                                  );
+                                                                                  files.setRadioValue(index, value);
+                                                                                  imagesPath.setRadioValue(index, value);
+                                                                                }
+                                                                                if (image == null) {
+                                                                                  showCostumSnackBar(
+                                                                                    context: context,
+                                                                                    message: "Gambar Gagal Ditambahkan",
+                                                                                    type: "danger",
+                                                                                  );
+                                                                                }
+                                                                                Navigator.pop(context);
+                                                                              },
+                                                                              child: const Column(
+                                                                                children: [
+                                                                                  Icon(
+                                                                                    Icons.camera_alt,
+                                                                                    size: 32,
                                                                                     color: Colors.white,
-                                                                                    fontSize: 14,
-                                                                                    fontWeight: FontWeight.w400,
                                                                                   ),
-                                                                                ),
-                                                                              ],
+                                                                                  Text(
+                                                                                    "Camera",
+                                                                                    style: TextStyle(
+                                                                                      color: Colors.white,
+                                                                                      fontSize: 14,
+                                                                                      fontWeight: FontWeight.w400,
+                                                                                    ),
+                                                                                  ),
+                                                                                ],
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        ],
+                                                                          ],
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            child: const Text(
+                                                                "Upload"),
+                                                          ),
+                                                          BlocBuilder<
+                                                              FilesCubit,
+                                                              List<dynamic>>(
+                                                            bloc: imagesPath,
+                                                            builder: (context,
+                                                                state) {
+                                                              return imagesPath
+                                                                              .state[
+                                                                          index] !=
+                                                                      "null"
+                                                                  ? Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              5),
+                                                                      child:
+                                                                          ElevatedButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          showDialog(
+                                                                            context:
+                                                                                context,
+                                                                            builder:
+                                                                                (context) {
+                                                                              return Dialog(
+                                                                                // child: Text(imagesPath.state[index])
+                                                                                child: imagesPath.state[index] is Uint8List ? Image.memory(imagesPath.state[index]) : Image.network(imagesPath.state[index]),
+                                                                              );
+                                                                            },
+                                                                          );
+                                                                        },
+                                                                        child:
+                                                                            const Icon(
+                                                                          Icons
+                                                                              .image,
+                                                                        ),
                                                                       ),
-                                                                    ],
-                                                                  ),
-                                                                );
-                                                              },
-                                                            );
-                                                          },
-                                                          child: const Text(
-                                                              "Upload"),
-                                                        ),
+                                                                    )
+                                                                  : Container();
+                                                            },
+                                                          ),
+                                                        ],
                                                       ),
                                                     )
                                                   : Container()
