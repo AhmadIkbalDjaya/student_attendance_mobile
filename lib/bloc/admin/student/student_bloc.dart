@@ -14,7 +14,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
       try {
         emit(StudentGetLoading());
         final response = await http.get(
-          Uri.parse("${ApiConfig.url}/admin/studentByClaass/${event.claassId}"),
+          Uri.parse("${ApiConfig.url}/admin/student?claass_id=${event.claassId}"),
           headers: ApiConfig.headerWithToken,
         );
         if (response.statusCode == 200) {
